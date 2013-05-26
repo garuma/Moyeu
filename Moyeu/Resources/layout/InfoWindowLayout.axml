@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp">
+        <TextView
+            android:text="Text"
+            android:layout_width="105dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/InfoViewName"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:ellipsize="marquee"
+            android:layout_gravity="center"
+            android:lines="1" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout1"
+            android:layout_marginTop="2dp"
+            android:layout_gravity="center"
+            android:padding="4dp">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout2"
+                android:layout_gravity="center"
+                android:layout_marginRight="8dp">
+                <ImageView
+                    android:src="@drawable/bike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView2"
+                    android:scaleType="center"
+                    android:layout_gravity="center" />
+                <TextView
+                    android:text="8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/InfoViewBikeNumber"
+                    android:layout_gravity="center"
+                    android:textColor="#ff333333"
+                    android:textSize="10sp"
+                    android:layout_marginLeft="3dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout3"
+                android:layout_gravity="center"
+                android:layout_marginLeft="8dp">
+                <ImageView
+                    android:src="@drawable/lock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView1"
+                    android:scaleType="center"
+                    android:layout_gravity="center" />
+                <TextView
+                    android:text="6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/InfoViewSlotNumber"
+                    android:layout_gravity="center"
+                    android:textColor="#ff333333"
+                    android:textSize="10sp"
+                    android:layout_marginLeft="3dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <ToggleButton
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:id="@+id/StarButton"
+        android:background="@drawable/btn_star"
+        android:textOff=""
+        android:textOn=""
+        android:layout_marginTop="3dp" />
+</LinearLayout>

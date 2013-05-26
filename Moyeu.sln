@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moyeu", "Moyeu\Moyeu.csproj", "{12143BA7-FFC5-4E11-8B31-89A96247F504}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooglePlayServices", "GooglePlayServices\GooglePlayServices.csproj", "{C388951C-C427-4F44-A54B-5A64BAE0DA39}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12143BA7-FFC5-4E11-8B31-89A96247F504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12143BA7-FFC5-4E11-8B31-89A96247F504}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12143BA7-FFC5-4E11-8B31-89A96247F504}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12143BA7-FFC5-4E11-8B31-89A96247F504}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C388951C-C427-4F44-A54B-5A64BAE0DA39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C388951C-C427-4F44-A54B-5A64BAE0DA39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C388951C-C427-4F44-A54B-5A64BAE0DA39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C388951C-C427-4F44-A54B-5A64BAE0DA39}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Moyeu\Moyeu.csproj
+	EndGlobalSection
+EndGlobal
