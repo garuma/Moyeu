@@ -55,6 +55,8 @@ namespace Moyeu
 	{
 		const string HubwayApiEndpoint = "http://thehubway.com/data/stations/bikeStations.xml";
 
+		public static readonly Func<Station, bool> AvailableBikeStationPredicate = s => s.BikeCount > 1 && s.EmptySlotCount > 1;
+
 		HttpClient client = new HttpClient ();
 		TimeSpan freshnessTimeout;
 		string savedData;
@@ -83,8 +85,14 @@ namespace Moyeu
 
 		public Station[] GetClosestStationTo (Station[] stations, params GeoPoint[] locations)
 		{
+			return GetClosestStationTo (stations, null, locations);
+		}
+
+		public Station[] GetClosestStationTo (Station[] stations, Func<Station, bool> filter, params GeoPoint[] locations)
+		{
 			var distanceToGeoPoints = new SortedDictionary<double, Station>[locations.Length];
-			foreach (var station in stations.Where (s => s.BikeCount > 1 && s.EmptySlotCount > 1)) {
+			var ss = filter == null ? (IEnumerable<Station>)stations : stations.Where (filter);
+			foreach (var station in ss) {
 				for (int i = 0; i < locations.Length; i++) {
 					if (distanceToGeoPoints [i] == null)
 						distanceToGeoPoints [i] = new SortedDictionary<double, Station> ();
