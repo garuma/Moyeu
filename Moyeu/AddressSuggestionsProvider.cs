@@ -36,12 +36,19 @@ namespace Moyeu
 		public override ICursor Query (Android.Net.Uri uri, string[] projection, string selection, string[] selectionArgs, string sortOrder)
 		{
 			var query = uri.LastPathSegment.ToLowerInvariant ();
-			var addresses = geocoder.GetFromLocationName (query,
-			                                              SuggestionCount,
+
+			IList<Address> addresses = null;
+			try {
+				addresses = geocoder.GetFromLocationName (query,
+				                                          SuggestionCount,
 			                                              LowerLeftLat,
 			                                              LowerLeftLon,
 			                                              UpperRightLat,
 			                                              UpperRightLon);
+			} catch (Exception e) {
+				Android.Util.Log.Warn ("SuggestionsFetcher", e.ToString ());
+				addresses = new Address[0];
+			}
 
 			var cursor = new MatrixCursor (new string[] {
 				BaseColumns.Id,
