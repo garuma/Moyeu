@@ -64,7 +64,7 @@ namespace Moyeu
 		public override void OnViewCreated (View view, Bundle savedInstanceState)
 		{
 			base.OnViewCreated (view, savedInstanceState);
-			SetEmptyText ("Add favorites by clicking\non an station info window");
+			SetEmptyText ("Add favorites by tapping\non a station info window");
 		}
 	}
 
