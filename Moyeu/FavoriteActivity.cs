@@ -18,7 +18,8 @@ namespace Moyeu
 {
 	[Activity (Label = "Favorites",
 	           Theme = "@android:style/Theme.Holo.Light.DarkActionBar",
-	           ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
+	           ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize,
+	           LaunchMode = LaunchMode.SingleTop)]
 	public class FavoriteActivity : Activity
 	{
 		const int ContentViewID = 1010111;
