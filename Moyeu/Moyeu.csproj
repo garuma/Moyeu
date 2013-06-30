@@ -120,6 +120,7 @@
     <AndroidResource Include="Resources\drawable-mdpi\map_placeholder.png" />
     <AndroidResource Include="Resources\drawable-mdpi\star_off.png" />
     <AndroidResource Include="Resources\drawable-mdpi\star_on.png" />
+    <AndroidResource Include="Resources\layout\FavoriteActivityLayout.axml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>

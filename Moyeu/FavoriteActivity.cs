@@ -22,8 +22,7 @@ namespace Moyeu
 	           LaunchMode = LaunchMode.SingleTop)]
 	public class FavoriteActivity : Activity
 	{
-		const int ContentViewID = 1010111;
-		ListFragment list;
+		FavoriteListFragment list;
 		FavoriteManager favManager;
 
 		protected override void OnCreate (Bundle bundle)
@@ -33,17 +32,9 @@ namespace Moyeu
 			var adapter = new FavoriteAdapter (this);
 			adapter.SetStationIds (favManager.GetFavoritesStationIds ());
 
-			var frame = new FrameLayout (this) {
-				LayoutParameters = new FrameLayout.LayoutParams (ViewGroup.LayoutParams.MatchParent,
-				                                                 ViewGroup.LayoutParams.MatchParent),
-				Id = ContentViewID
-			};
-			SetContentView (frame);
-			list = new FavoriteListFragment ();
+			SetContentView (Resource.Layout.FavoriteActivityLayout);
+			list = (FavoriteListFragment)FragmentManager.FindFragmentById (Resource.Id.FavoriteListFragment);
 			list.ListAdapter = adapter;
-			FragmentManager.BeginTransaction ()
-				.Add (ContentViewID, list)
-				.Commit ();
 			
 			ActionBar.SetDisplayOptions (ActionBarDisplayOptions.HomeAsUp,
 			                             ActionBarDisplayOptions.HomeAsUp);
