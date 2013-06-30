@@ -183,7 +183,7 @@ namespace Moyeu
 				FillUpMap (forceRefresh: true);
 				break;
 			case Resource.Id.menu_star:
-				StartActivity (typeof (FavoriteActivity));
+				StartActivityForResult (typeof (FavoriteActivity), 0);
 				break;
 			default:
 				return base.OnOptionsItemSelected (item);
@@ -208,6 +208,22 @@ namespace Moyeu
 			var camera = CameraUpdateFactory.NewLatLngZoom (finalLatLng, 16);
 			mapFragment.Map.AnimateCamera (camera,
 			                               new MapAnimCallback (() => SetLocationPin (finalLatLng)));
+		}
+
+		protected override void OnActivityResult (int requestCode, Result resultCode, Intent data)
+		{
+			var stations = hubway.LastStations;
+			if (resultCode == Result.Canceled || stations == null)
+				return;
+			var id = (int)resultCode;
+			var stationIndex = Array.FindIndex (stations, s => s.Id == id);
+			if (stationIndex == -1)
+				return;
+			var station = stations [stationIndex];
+			var loc = station.Location;
+			var latLng = new LatLng (loc.Lat, loc.Lon);
+			var camera = CameraUpdateFactory.NewLatLngZoom (latLng, 15);
+			mapFragment.Map.AnimateCamera (camera);
 		}
 
 		void SetLocationPin (LatLng finalLatLng)

@@ -35,6 +35,10 @@ namespace Moyeu
 			SetContentView (Resource.Layout.FavoriteActivityLayout);
 			list = (FavoriteListFragment)FragmentManager.FindFragmentById (Resource.Id.FavoriteListFragment);
 			list.ListAdapter = adapter;
+			list.ItemClick += (sender, e) => {
+				SetResult ((Result)e.Id);
+				Finish ();
+			};
 			
 			ActionBar.SetDisplayOptions (ActionBarDisplayOptions.HomeAsUp,
 			                             ActionBarDisplayOptions.HomeAsUp);
@@ -44,6 +48,7 @@ namespace Moyeu
 		public override bool OnOptionsItemSelected (IMenuItem item)
 		{
 			if (item.ItemId == Android.Resource.Id.Home) {
+				SetResult (Result.Canceled);
 				Finish ();
 				return true;
 			} else
@@ -53,10 +58,16 @@ namespace Moyeu
 
 	class FavoriteListFragment : ListFragment
 	{
+		public event EventHandler<AdapterView.ItemClickEventArgs> ItemClick;
+
 		public override void OnViewCreated (View view, Bundle savedInstanceState)
 		{
 			base.OnViewCreated (view, savedInstanceState);
 			SetEmptyText ("Add favorites by tapping\non a station info window");
+			ListView.ItemClick += (sender, e) => {
+				if (ItemClick != null)
+					ItemClick (this, e);
+			};
 		}
 	}
 
@@ -151,7 +162,7 @@ namespace Moyeu
 
 		public override bool IsEnabled (int position)
 		{
-			return false;
+			return true;
 		}
 
 		async void LoadMap (FavoriteView view, ImageView mapView, long version, string mapUrl)
@@ -199,6 +210,8 @@ namespace Moyeu
 			var inflater = Context.GetSystemService (Context.LayoutInflaterService).JavaCast<LayoutInflater> ();
 			inflater.Inflate (Resource.Layout.FavoriteItem, this, true);
 			var mapView = FindViewById<ImageView> (Resource.Id.StationMap);
+			mapView.Focusable = false;
+			mapView.FocusableInTouchMode = false;
 			mapView.Click += (sender, e) => {
 				var uri = Android.Net.Uri.Parse (Station.GeoUrl);
 				Android.Util.Log.Info ("MapUri", uri.ToString ());
