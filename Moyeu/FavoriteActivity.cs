@@ -149,7 +149,7 @@ namespace Moyeu
 
 		public override int Count {
 			get {
-				return stations.Count;
+				return stations == null ? 0 : stations.Count;
 			}
 		}
 
