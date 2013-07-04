@@ -46,4 +46,18 @@
                 android:textSize="14sp" />
         </LinearLayout>
     </FrameLayout>
+    <TextView
+        android:id="@+id/UpdateTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:textColor="#333333"
+        android:layout_marginTop="?android:attr/actionBarSize"
+        android:paddingTop="4dp"
+        android:layout_marginRight="4dp"
+        android:shadowColor="#eeeeee"
+        android:shadowDx="0"
+        android:shadowDy="1"
+        android:shadowRadius="0.1"
+        android:textSize="8sp" />
 </FrameLayout>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="org.neteril.Moyeu">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.1" package="org.neteril.Moyeu" android:versionCode="4">
 	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="17" />
 	<uses-feature android:glEsVersion="0x00020000" android:required="true" />
 	<application android:label="Moyeu" android:icon="@drawable/icon">

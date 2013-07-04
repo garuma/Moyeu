@@ -34,8 +34,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AndroidLinkMode>Full</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -61,6 +61,10 @@
     <Compile Include="Storage\LruCache.cs" />
     <Compile Include="DensityExtensions.cs" />
     <Compile Include="RoundCornerDrawable.cs" />
+    <Compile Include="HubwayRentals.cs" />
+    <Compile Include="ChronometerView.cs" />
+    <Compile Include="RentalActivity.cs" />
+    <Compile Include="LoginDialogFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -121,12 +125,33 @@
     <AndroidResource Include="Resources\drawable-mdpi\star_off.png" />
     <AndroidResource Include="Resources\drawable-mdpi\star_on.png" />
     <AndroidResource Include="Resources\layout\FavoriteActivityLayout.axml" />
+    <AndroidResource Include="Resources\layout\RentalItem.axml" />
+    <AndroidResource Include="Resources\drawable\bike_separator.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\bike_separator.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_rentals.png" />
+    <AndroidResource Include="Resources\drawable\ic_action_rentals.png" />
+    <AndroidResource Include="Resources\layout\RentalActivityLayout.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_refresh.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_refresh.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_refresh.png" />
+    <AndroidResource Include="Resources\menu\rentals_menu.xml" />
+    <AndroidResource Include="Resources\drawable-nodpi\background.9.png" />
+    <AndroidResource Include="Resources\drawable\background.9.png" />
+    <AndroidResource Include="Resources\layout\LoginDialogLayout.axml" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_rentals.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_rentals.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\bike_separator.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\bike_separator.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\GooglePlayServices\GooglePlayServices.csproj">
       <Project>{C388951C-C427-4F44-A54B-5A64BAE0DA39}</Project>
       <Name>GooglePlayServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MobileHtmlAgilityPack\MobileHtmlAgilityPack.csproj">
+      <Project>{87DC26FB-DB8B-4FC0-BE60-EFC12A8B935F}</Project>
+      <Name>MobileHtmlAgilityPack</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -137,5 +162,6 @@
     <Folder Include="Resources\drawable-hdpi\" />
     <Folder Include="Resources\drawable-mdpi\" />
     <Folder Include="Assets\" />
+    <Folder Include="Resources\drawable-nodpi\" />
   </ItemGroup>
 </Project>

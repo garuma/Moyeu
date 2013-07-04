@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    <moyeu.ChronometerView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:id="@+id/rentalTime"
+        android:layout_gravity="center"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1"
+        android:layout_gravity="center">
+        <TextView
+            android:text="05 min"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rentalTimePrimary"
+            android:textSize="8sp"
+            android:textColor="#ff4e4e4e" />
+        <TextView
+            android:text="30 sec"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rentalTimeSecondary"
+            android:textSize="8sp"
+            android:textColor="#ff4e4e4e" />
+    </LinearLayout>
+    <TextView
+        android:text="Harvard Square"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rentalFromStation"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:textSize="14sp"
+        android:lines="2"
+        android:ellipsize="marquee" />
+    <ImageView
+        android:src="@drawable/bike_separator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView1"
+        android:layout_gravity="center"
+        android:scaleType="center" />
+    <TextView
+        android:text="Union Square"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rentalToStation"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:textSize="14sp"
+        android:lines="2"
+        android:ellipsize="marquee" />
+    <TextView
+        android:text="$"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView5"
+        android:layout_gravity="center"
+        android:layout_marginRight="2dp"
+        android:textColor="#ff4e4e4e"
+        android:textSize="12sp" />
+    <TextView
+        android:text="1.50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rentalPrice"
+        android:layout_gravity="center"
+        android:textSize="12sp"
+        android:layout_marginRight="8dp" />
+</LinearLayout>

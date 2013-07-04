@@ -39,6 +39,7 @@ namespace Moyeu
 		FlashBarController flashBar;
 		IMenuItem searchItem;
 		FavoriteManager favManager;
+		TextView lastUpdateText;
 
 		protected override void OnCreate (Bundle bundle)
 		{
@@ -62,6 +63,8 @@ namespace Moyeu
 			mapFragment.Map.InfoWindowClick += HandleInfoWindowClick;
 			mapFragment.Map.MapLongClick += HandleMapLongClick;
 			mapFragment.Map.MarkerClick += HandleMarkerClick;
+
+			lastUpdateText = FindViewById<TextView> (Resource.Id.UpdateTimeText);
 
 			flashBar = new FlashBarController (this);
 		}
@@ -137,6 +140,7 @@ namespace Moyeu
 						.InvokeIcon (BitmapDescriptorFactory.DefaultMarker (hue));
 					existingMarkers[station.Id] = mapFragment.Map.AddMarker (markerOptions);
 				}
+				lastUpdateText.Text = "Last refreshed: " + DateTime.Now.ToShortTimeString ();
 			} catch (Exception e) {
 				Android.Util.Log.Debug ("DataFetcher", e.ToString ());
 			}
@@ -185,6 +189,9 @@ namespace Moyeu
 			case Resource.Id.menu_star:
 				StartActivityForResult (typeof (FavoriteActivity), 0);
 				break;
+			case Resource.Id.menu_rentals:
+				StartActivity (typeof(RentalActivity));
+				break;
 			default:
 				return base.OnOptionsItemSelected (item);
 			}
@@ -223,7 +230,11 @@ namespace Moyeu
 			var loc = station.Location;
 			var latLng = new LatLng (loc.Lat, loc.Lon);
 			var camera = CameraUpdateFactory.NewLatLngZoom (latLng, 15);
-			mapFragment.Map.AnimateCamera (camera);
+			mapFragment.Map.AnimateCamera (camera, new MapAnimCallback (() => {
+				Marker marker;
+				if (existingMarkers.TryGetValue (station.Id, out marker))
+					marker.ShowInfoWindow ();
+			}));
 		}
 
 		void SetLocationPin (LatLng finalLatLng)

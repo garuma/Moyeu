@@ -63,7 +63,7 @@ namespace Moyeu
 
 		public static readonly Hubway Instance = new Hubway ();
 
-		public Hubway () : this (TimeSpan.FromMinutes (10))
+		public Hubway () : this (TimeSpan.FromMinutes (5))
 		{
 
 		}
@@ -150,6 +150,12 @@ namespace Moyeu
 		DateTime FromUnixTime (long secs)
 		{
 			return (new DateTime (1970, 1, 1, 0, 0, 1, DateTimeKind.Utc) + TimeSpan.FromSeconds (secs / 1000.0)).ToLocalTime ();
+		}
+
+		public static string CutStationName (string rawStationName)
+		{
+			var nameParts = rawStationName.Split (new string[] { "-", " at " }, StringSplitOptions.RemoveEmptyEntries);
+			return nameParts [0].Trim ();
 		}
 	}
 }
