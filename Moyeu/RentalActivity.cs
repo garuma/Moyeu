@@ -141,6 +141,7 @@ namespace Moyeu
 			var newRentals = await rentals.GetRentals (currentPageId++);
 			hasNextPage = newRentals != null && newRentals.Last ().Id != 1;
 			if (newRentals == null) {
+				currentPageId--;
 				loading = false;
 				return false;
 			}
