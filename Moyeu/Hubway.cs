@@ -25,7 +25,7 @@ namespace Moyeu
 		public int BikeCount { get; set; }
 		public int EmptySlotCount { get; set; }
 		public int Capacity { get { return BikeCount + EmptySlotCount; } }
-		public DateTime LastUpdateTime { get; set; }
+		//public DateTime LastUpdateTime { get; set; }
 
 		public override bool Equals (object obj)
 		{
@@ -127,6 +127,7 @@ namespace Moyeu
 			LastUpdateTime = FromUnixTime (long.Parse (((string)doc.Root.Attribute ("lastUpdate"))));
 
 			var stations = doc.Root.Elements ("station")
+				.Where (station => !string.IsNullOrEmpty (station.Element ("latestUpdateTime").Value))
 				.Select (station => new Station {
 					Id = int.Parse (station.Element ("id").Value),
 					Name = station.Element ("name").Value,
@@ -140,7 +141,7 @@ namespace Moyeu
 					Public = station.Element ("public").Value == "true",
 					BikeCount = int.Parse (station.Element ("nbBikes").Value),
 					EmptySlotCount = int.Parse (station.Element ("nbEmptyDocks").Value),
-					LastUpdateTime = FromUnixTime (long.Parse (station.Element ("latestUpdateTime").Value)),
+					//LastUpdateTime = FromUnixTime (long.Parse (station.Element ("latestUpdateTime").Value)),
 				})
 				.ToArray ();
 			LastStations = stations;
