@@ -57,10 +57,10 @@ namespace Moyeu
 			statusProgress.Alpha = 0;
 			statusProgress.Visibility = ViewStates.Visible;
 			if (statusText.Visibility == ViewStates.Visible) {
-				statusText.Animate ().Alpha (0).WithEndAction (new Runnable (() => {
+				statusText.AlphaAnimate (0, endAction: () => {
 					statusText.Visibility = ViewStates.Gone;
-					statusProgress.Animate ().Alpha (1).Start ();
-				})).Start ();
+					statusProgress.AlphaAnimate (1);
+				});
 			} else {
 				statusProgress.Animate ().Alpha (1).Start ();
 			}
@@ -79,12 +79,12 @@ namespace Moyeu
 			password.Enabled = true;
 			username.Enabled = true;
 
-			statusProgress.Animate ().Alpha (0).WithEndAction (new Runnable (() => {
+			statusProgress.AlphaAnimate (0, endAction: () => {
 				statusProgress.Visibility = ViewStates.Gone;
 				statusText.Alpha = 0;
 				statusText.Visibility = ViewStates.Visible;
-				statusText.Animate ().Alpha (1).Start ();
-			})).Start ();
+				statusText.AlphaAnimate (1);
+			});
 		}
 
 		public Task<RentalCrendentials> GetCredentialsAsync ()

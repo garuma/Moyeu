@@ -301,7 +301,6 @@ namespace Moyeu
 			TextView MakeHeaderView ()
 			{
 				var result = new TextView (context) {
-					TextAlignment = TextAlignment.Center,
 					Gravity = GravityFlags.Center,
 					TextSize = 10,
 				};

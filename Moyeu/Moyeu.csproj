@@ -65,6 +65,7 @@
     <Compile Include="ChronometerView.cs" />
     <Compile Include="RentalActivity.cs" />
     <Compile Include="LoginDialogFragment.cs" />
+    <Compile Include="AnimationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />

@@ -26,16 +26,16 @@ namespace Moyeu
 			text.Text = "Loading";
 			progress.Visibility = ViewStates.Visible;
 			layout.Visibility = ViewStates.Visible;
-			layout.Animate ().Alpha (1).SetDuration (400).Start ();
+			layout.AlphaAnimate (1, duration: 400);
 		}
 
 		public void ShowLoaded ()
 		{
 			text.Text = "Loaded";
 			progress.Visibility = ViewStates.Gone;
-			layout.Animate ().Alpha (0).SetStartDelay (500).SetDuration (400).WithEndAction (new Java.Lang.Runnable (() => {
+			layout.AlphaAnimate (0, duration: 400, startDelay: 500, endAction: () => {
 				layout.Visibility = ViewStates.Gone;
-			})).Start ();
+			});
 		}
 
 		public void ShowInformation (string info)
@@ -43,15 +43,9 @@ namespace Moyeu
 			text.Text = info;
 			progress.Visibility = ViewStates.Gone;
 			layout.Visibility = ViewStates.Visible;
-			layout.Animate ()
-				.Alpha (1)
-				.SetDuration (500)
-				.WithEndAction (new Java.Lang.Runnable (() => layout.Animate ()
-					                                        .Alpha (0)
-					                                        .SetStartDelay (2000)
-					                                        .SetDuration (400)
-					                                        .Start ()))
-				.Start ();
+			layout.AlphaAnimate (1, duration: 500, endAction: () => {
+				layout.AlphaAnimate (0, duration: 400, startDelay: 2000);
+			});
 		}
 	}
 }

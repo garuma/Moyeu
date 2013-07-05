@@ -13,6 +13,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Graphics;
+using Android.Animation;
 
 namespace Moyeu
 {
@@ -173,10 +174,10 @@ namespace Moyeu
 				var bmp = await BitmapFactory.DecodeByteArrayAsync (data, 0, data.Length);
 				cache.AddOrUpdate (mapUrl, bmp, TimeSpan.FromDays (90));
 				if (view.VersionNumber == version) {
-					mapView.Animate ().Alpha (0).WithEndAction (new Java.Lang.Runnable (() => {
+					mapView.AlphaAnimate (0, duration: 150, endAction: () => {
 						mapView.SetImageDrawable (new RoundCornerDrawable (bmp));
-						mapView.Animate ().Alpha (1).SetDuration (250).Start ();
-					})).SetDuration (150).Start ();
+						mapView.AlphaAnimate (1, duration: 250);
+					});
 				}
 			} catch (Exception e) {
 				Android.Util.Log.Error ("MapDownloader", e.ToString ());
