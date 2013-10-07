@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        map:mapType="normal"
+        map:cameraTargetLat="42.381487"
+        map:cameraTargetLng="-71.099185"
+        map:cameraZoom="13"
+        map:uiZoomControls="false"
+        map:uiCompass="false"
+        map:uiRotateGestures="false"
+        map:uiTiltGestures="false" />
+    <FrameLayout
+        android:background="@drawable/flash_bar_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="72dp"
+        android:alpha="0"
+        android:visibility="gone"
+        android:id="@+id/FlashBarLayout"
+        android:padding="4dp">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/FlashBarProgress"
+                android:layout_gravity="center" />
+            <TextView
+                android:text="Loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff2f2f2"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_gravity="center"
+                android:id="@+id/FlashBarText"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </FrameLayout>
+    <TextView
+        android:id="@+id/UpdateTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:textColor="#333333"
+        android:paddingTop="4dp"
+        android:layout_marginRight="4dp"
+        android:shadowColor="#eeeeee"
+        android:shadowDx="0"
+        android:shadowDy="1"
+        android:shadowRadius="0.1"
+        android:textSize="8sp" />
+    <include
+        layout="@layout/InfoPaneLayout" />
+</FrameLayout>

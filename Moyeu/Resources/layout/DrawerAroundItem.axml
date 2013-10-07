@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="240dp"
+    android:layout_height="fill_parent"
+    android:background="@drawable/texture_pattern"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1"
+        android:padding="4dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout2"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+            <TextView
+                android:text="Union Square"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/aroundStation1"
+                android:textColor="#eeffffff"
+                android:textSize="14sp"
+                style="@style/drawer_item_shadow"
+                android:textStyle="bold" />
+            <TextView
+                android:text="at Somerville Ave"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/aroundStation2"
+                android:textColor="#dbffffff"
+                android:textSize="12sp"
+                style="@style/drawer_item_shadow" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout3"
+            android:layout_gravity="center"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp">
+            <TextView
+                android:text="6"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/aroundBikes"
+                android:textColor="#eeffffff"
+                android:gravity="center"
+                android:textSize="20sp"
+                style="@style/drawer_item_shadow"
+                android:textStyle="bold" />
+            <TextView
+                android:text="bikes"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView4"
+                android:textColor="#dbffffff"
+                android:textSize="10sp"
+                android:gravity="center"
+                style="@style/drawer_item_shadow" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout4"
+            android:layout_gravity="center"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp">
+            <TextView
+                android:text="10"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/aroundRacks"
+                android:textColor="#eeffffff"
+                android:gravity="center"
+                android:textSize="20sp"
+                style="@style/drawer_item_shadow"
+                android:textStyle="bold" />
+            <TextView
+                android:text="racks"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView4"
+                android:textColor="#dbffffff"
+                android:textSize="10sp"
+                android:gravity="center"
+                style="@style/drawer_item_shadow" />
+        </LinearLayout>
+        <ImageView
+            android:src="@android:color/transparent"
+            android:layout_width="13dp"
+            android:layout_height="12dp"
+            android:id="@+id/aroundStar"
+            android:alpha="0.2"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="4dp" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/menu_mylocation"
+		android:icon="@drawable/ic_menu_mylocation"
+		android:title="My Location"
+		android:showAsAction="always" />
 	<item android:id="@+id/menu_search"
-		android:icon="@drawable/ic_action_search"
+		android:icon="@drawable/ic_menu_search"
 		android:title="Search"
 		android:showAsAction="always|collapseActionView"
 		android:actionViewClass="android.widget.SearchView" />
 	<item android:id="@+id/menu_refresh"
-		android:icon="@drawable/ic_action_refresh"
+		android:icon="@drawable/ic_menu_refresh"
 		android:title="Refresh"
-		android:showAsAction="ifRoom" />
-	<item android:id="@+id/menu_locate"
-		android:icon="@drawable/ic_action_locate"
-		android:title="Locate"
-		android:showAsAction="ifRoom" />
-	<item android:id="@+id/menu_rentals"
-		android:icon="@drawable/ic_action_rentals"
-		android:title="Rentals History"
-		android:showAsAction="ifRoom" />
-	<item android:id="@+id/menu_star"
-		android:icon="@drawable/ic_action_star"
-		android:title="Favorites"
 		android:showAsAction="ifRoom" />
 </menu>

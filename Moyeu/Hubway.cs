@@ -45,13 +45,14 @@ namespace Moyeu
 		public string GeoUrl {
 			get {
 				var pos = Location.Lat + "," + Location.Lon;
-				var location = "geo:" + pos + "?q=" + pos + "(" + Name.Replace (' ', '+') + ")";
+				var location = "geo:" + pos + "?q=" + pos;
+				// + "(" + Name.Replace (' ', '+') + ")";
 				return location;
 			}
 		}
 	}
 
-	public class Hubway
+	public class Hubway : IObservable<Station[]>
 	{
 		const string HubwayApiEndpoint = "http://thehubway.com/data/stations/bikeStations.xml";
 
@@ -60,6 +61,8 @@ namespace Moyeu
 		HttpClient client = new HttpClient ();
 		TimeSpan freshnessTimeout;
 		string savedData;
+
+		List<HubwaySubscriber> subscribers = new List<HubwaySubscriber> ();
 
 		public static readonly Hubway Instance = new Hubway ();
 
@@ -83,6 +86,17 @@ namespace Moyeu
 			private set;
 		}
 
+		public static Station[] GetStationsAround (Station[] stations, GeoPoint location, double minDistance = 100, int maxItems = 4)
+		{
+			var dic = new SortedDictionary<double, Station> ();
+			foreach (var s in stations) {
+				var d = GeoUtils.Distance (location, s.Location);
+				if (d < minDistance)
+					dic.Add (d, s);
+			}
+			return dic.Select (ds => ds.Value).Take (maxItems).ToArray ();
+		}
+
 		public Station[] GetClosestStationTo (Station[] stations, params GeoPoint[] locations)
 		{
 			return GetClosestStationTo (stations, null, locations);
@@ -103,11 +117,17 @@ namespace Moyeu
 			return distanceToGeoPoints.Select (ds => ds.First ().Value).ToArray ();
 		}
 
-		public async Task<Station[]> GetStations (bool forceRefresh = false)
+		public bool HasCachedData {
+			get {
+				return savedData != null && DateTime.Now < (LastUpdateTime + freshnessTimeout);
+			}
+		}
+
+		public async Task<Station[]> GetStations (bool forceRefresh = false, Action<string> dataCacher = null)
 		{
 			string data = null;
 
-			if (savedData != null && DateTime.Now < (LastUpdateTime + freshnessTimeout) && !forceRefresh)
+			if (HasCachedData && !forceRefresh)
 				data = savedData;
 			else {
 				while (data == null) {
@@ -117,10 +137,22 @@ namespace Moyeu
 						Android.Util.Log.Error ("HubwayDownloader", e.ToString ());
 					}
 					if (data == null)
-						await Task.Delay (100);
+						await Task.Delay (500);
 				}
 			}
 
+			if (dataCacher != null)
+				dataCacher (data);
+
+			var stations = ParseStationsFromXml (data);
+			if (subscribers.Any ())
+				foreach (var sub in subscribers)
+					sub.Observer.OnNext (stations);
+			return stations;
+		}
+
+		public Station[] ParseStationsFromXml (string data)
+		{
 			var doc = XDocument.Parse (data);
 
 			savedData = data;
@@ -155,8 +187,45 @@ namespace Moyeu
 
 		public static string CutStationName (string rawStationName)
 		{
+			string dummy;
+			return CutStationName (rawStationName, out dummy);
+		}
+
+		public static string CutStationName (string rawStationName, out string secondPart)
+		{
+			secondPart = string.Empty;
 			var nameParts = rawStationName.Split (new string[] { "-", " at " }, StringSplitOptions.RemoveEmptyEntries);
+			if (nameParts.Length > 1)
+				secondPart = string.Join (", ", nameParts.Skip (1)).Trim ();
 			return nameParts [0].Trim ();
+		}
+
+		public IDisposable Subscribe (IObserver<Station[]> observer)
+		{
+			var sub = new HubwaySubscriber (subscribers.Remove, observer);
+			subscribers.Add (sub);
+			return sub;
+		}
+
+		class HubwaySubscriber : IDisposable
+		{
+			Func<HubwaySubscriber, bool> unsubscribe;
+
+			public HubwaySubscriber (Func<HubwaySubscriber, bool> unsubscribe, IObserver<Station[]> observer)
+			{
+				Observer = observer;
+				this.unsubscribe = unsubscribe;
+			}
+
+			public IObserver<Station[]> Observer {
+				get;
+				set;
+			}
+
+			public void Dispose ()
+			{
+				unsubscribe (this);
+			}
 		}
 	}
 }

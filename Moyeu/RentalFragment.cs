@@ -15,55 +15,86 @@ using Android.Views;
 using Android.Widget;
 using Android.Graphics;
 
+using XamSvg;
+using Android.Util;
+using Android.Graphics.Drawables;
+
 namespace Moyeu
 {
-	[Activity (Label = "Rentals History",
-	           Theme = "@android:style/Theme.Holo.Light.DarkActionBar",
-	           ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize,
-	           LaunchMode = LaunchMode.SingleTop)]	
-	public class RentalActivity : Activity
+	public class RentalFragment : Android.Support.V4.App.ListFragment, IMoyeuSection
 	{
 		CookieContainer cookies;
 
 		HubwayRentals rentals;
 		RentalsAdapter adapter;
 
-		ListFragment listFragment;
-
 		int currentPageId;
 		bool hasNextPage;
 		bool listInitialized;
 		bool loading;
 
-		protected override void OnCreate (Bundle bundle)
+		DateTime lastLoadingTime = DateTime.Now;
+
+		public RentalFragment (Context context)
 		{
-			base.OnCreate (bundle);
-			SetContentView (Resource.Layout.RentalActivityLayout);
-			ActionBar.SetDisplayOptions (ActionBarDisplayOptions.HomeAsUp,
-			                             ActionBarDisplayOptions.HomeAsUp);
-			ActionBar.SetHomeButtonEnabled (true);
-			listFragment = (ListFragment)FragmentManager.FindFragmentById (Resource.Id.list);
+			SetHasOptionsMenu (true);
 		}
 
-		protected override void OnStart ()
+		public string Name {
+			get {
+				return "RentalFragment";
+			}
+		}
+
+		public string Title {
+			get {
+				return "Rental History";
+			}
+		}
+
+		public void RefreshData ()
+		{
+			if ((DateTime.Now - lastLoadingTime) > TimeSpan.FromMinutes (5))
+				Refresh ();
+		}
+
+		public override void OnStart ()
 		{
 			base.OnStart ();
 			if (currentPageId == 0)
 				DoFetch ();
 			if (!listInitialized) {
-				listFragment.ListView.Scroll += HandleScroll;
+				ListView.Scroll += HandleScroll;
 				listInitialized = true;
 			}
+		}
+
+		public override void OnViewCreated (View view, Bundle savedInstanceState)
+		{
+			base.OnViewCreated (view, savedInstanceState);
+			view.SetBackgroundDrawable (AndroidExtensions.DefaultBackground);
 		}
 
 		void HandleScroll (object sender, AbsListView.ScrollEventArgs e)
 		{
 			if (loading
-			    || e.FirstVisibleItem + e.VisibleItemCount < e.TotalItemCount
+			    || e.FirstVisibleItem + e.VisibleItemCount + 1 < e.TotalItemCount
 			    || !hasNextPage)
 				return;
 			loading = true;
 			DoFetch ();
+		}
+
+		void Finish ()
+		{
+			SetEmptyText ("Hubway account required\nTap to login");
+			ListAdapter = new ArrayAdapter (Activity, Android.Resource.Layout.SimpleListItem1);
+			EventHandler handler = null;
+			handler = (e, s) => {
+				Refresh ();
+				View.Click -= handler;
+			};
+			View.Click += handler;
 		}
 
 		async void DoFetch (bool forceRefresh = false)
@@ -84,7 +115,7 @@ namespace Moyeu
 						    || hadError)
 							Finish ();
 					};
-					dialog.Show (FragmentManager, "loginDialog");
+					dialog.Show (ChildFragmentManager, "loginDialog");
 				}
 				if (dialog != null)
 					StoredCredentials = credentials = await dialog.GetCredentialsAsync ();
@@ -97,11 +128,11 @@ namespace Moyeu
 				dialog.Dismiss ();
 		}
 
-		protected override void OnPause ()
+		public override void OnPause ()
 		{
 			base.OnPause ();
 			var serializer = new XmlSerializer (typeof(CookieContainer));
-			var prefs = GetPreferences (FileCreationMode.Private);
+			var prefs = Activity.GetPreferences (FileCreationMode.Private);
 			var editor = prefs.Edit ();
 			if (cookies != null && cookies.Count > 0) {
 				var buffer = new System.IO.StringWriter ();
@@ -112,26 +143,26 @@ namespace Moyeu
 			editor.Commit ();
 		}
 
-		public override bool OnCreateOptionsMenu (IMenu menu)
+		public override void OnCreateOptionsMenu (IMenu menu, MenuInflater inflater)
 		{
-			var inflater = MenuInflater;
 			inflater.Inflate (Resource.Menu.rentals_menu, menu);
-			return true;
 		}
 
 		public override bool OnOptionsItemSelected (IMenuItem item)
 		{
 			if (item.ItemId == Resource.Id.menu_refresh) {
-				currentPageId = 0;
-				listFragment.SetListShownNoAnimation (false);
-				listFragment.ListAdapter = null;
-				DoFetch (forceRefresh: true);
-				return true;
-			} else if (item.ItemId == Android.Resource.Id.Home) {
-				Finish ();
+				Refresh ();
 				return true;
 			} else
 				return base.OnOptionsItemSelected (item);
+		}
+
+		void Refresh ()
+		{
+			currentPageId = 0;
+			SetListShownNoAnimation (false);
+			ListAdapter = null;
+			DoFetch (forceRefresh: true);
 		}
 
 		async Task<bool> GetRentals (bool forceRefresh = false)
@@ -146,12 +177,14 @@ namespace Moyeu
 				return false;
 			}
 			if (adapter == null || forceRefresh) {
-				adapter = new RentalsAdapter (this);
-				listFragment.ListAdapter = adapter;
+				adapter = new RentalsAdapter (Activity);
+				ListAdapter = adapter;
 			}
+			var oldCount = adapter.Count;
 			adapter.AppendRentals (newRentals);
-			if (!isFirst)
-				listFragment.ListView.SmoothScrollByOffset (1);
+			if (!isFirst && ListView.LastVisiblePosition > oldCount - 4)
+				ListView.SmoothScrollByOffset (1);
+			lastLoadingTime = DateTime.Now;
 			loading = false;
 			return true;
 		}
@@ -159,7 +192,7 @@ namespace Moyeu
 		CookieContainer StoredCookies {
 			get {
 				if (cookies == null) {
-					var prefs = GetPreferences (FileCreationMode.Private);
+					var prefs = Activity.GetPreferences (FileCreationMode.Private);
 					var serialized = prefs.GetString ("cookies", null);
 					if (serialized != null) {
 						var serializer = new XmlSerializer (typeof(CookieContainer));
@@ -172,14 +205,14 @@ namespace Moyeu
 
 		RentalCrendentials StoredCredentials {
 			get {
-				var prefs = GetPreferences (FileCreationMode.Private);
+				var prefs = Activity.GetPreferences (FileCreationMode.Private);
 				return new RentalCrendentials {
 					Username = prefs.GetString ("hubwayUsername", null),
 					Password = prefs.GetString ("hubwayPass", null),
 				};
 			}
 			set {
-				var prefs = GetPreferences (FileCreationMode.Private);
+				var prefs = Activity.GetPreferences (FileCreationMode.Private);
 				var editor = prefs.Edit ();
 				editor.PutString ("hubwayUsername", value.Username ?? string.Empty);
 				editor.PutString ("hubwayPass", value.Password ?? string.Empty);
@@ -195,9 +228,13 @@ namespace Moyeu
 			Color basePriceColor = Color.Rgb (0x99, 0xcc, 0x00);
 			Color endPriceColor = Color.Rgb (0xff, 0x44, 0x44);
 
+			PictureBitmapDrawable bikeSeparatorDrawable;
+
 			public RentalsAdapter (Context context)
 			{
 				this.context = context;
+				bikeSeparatorDrawable = SvgFactory.GetDrawable (context.Resources,
+				                                                Resource.Raw.bike_separator);
 			}
 
 			public void AppendRentals (IEnumerable<Rental> newRentals)
@@ -256,8 +293,11 @@ namespace Moyeu
 					return header;
 				} else {
 					var view = convertView as RentalView;
-					if (view == null)
+					if (view == null) {
 						view = new RentalView (context);
+						view.FindViewById<ImageView> (Resource.Id.bikeImageView)
+							.SetImageDrawable (bikeSeparatorDrawable);
+					}
 					var stationFromText = view.FindViewById<TextView> (Resource.Id.rentalFromStation);
 					var stationToText = view.FindViewById<TextView> (Resource.Id.rentalToStation);
 					var priceText = view.FindViewById<TextView> (Resource.Id.rentalPrice);

@@ -80,7 +80,7 @@ namespace Moyeu
 			Paint chromeBorder = new Paint {
 				AntiAlias = true,
 				Color = chromeColor,
-				StrokeWidth = 2
+				StrokeWidth = 1.ToPixels ()
 			};
 			chromeBorder.SetStyle (Paint.Style.Stroke);
 			canvas.DrawCircle (middleX, middleY, radius, chromeBorder);

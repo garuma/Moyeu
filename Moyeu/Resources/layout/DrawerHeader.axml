@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp">
+    <TextView
+        android:text="Sections"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleText"
+        android:textAllCaps="true"
+        android:textColor="#ffffffff"
+        android:textStyle="bold"
+        android:textSize="11sp"
+        android:layout_marginBottom="2dp" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:id="@+id/view1"
+        android:background="#ffffffff" />
+</LinearLayout>

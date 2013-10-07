@@ -14,11 +14,11 @@ namespace Moyeu
 		TextView text;
 		ProgressBar progress;
 
-		public FlashBarController (Activity parentActivity)
+		public FlashBarController (View parentView)
 		{
-			layout = parentActivity.FindViewById<FrameLayout> (Resource.Id.FlashBarLayout);
-			text = parentActivity.FindViewById<TextView> (Resource.Id.FlashBarText);
-			progress = parentActivity.FindViewById<ProgressBar> (Resource.Id.FlashBarProgress);
+			layout = parentView.FindViewById<FrameLayout> (Resource.Id.FlashBarLayout);
+			text = parentView.FindViewById<TextView> (Resource.Id.FlashBarText);
+			progress = parentView.FindViewById<ProgressBar> (Resource.Id.FlashBarProgress);
 		}
 
 		public void ShowLoading ()

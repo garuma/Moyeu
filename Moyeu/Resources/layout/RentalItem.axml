@@ -46,12 +46,12 @@
         android:lines="2"
         android:ellipsize="marquee" />
     <ImageView
-        android:src="@drawable/bike_separator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView1"
+        android:src="@android:drawable/ic_menu_gallery"
+        android:layout_width="33dp"
+        android:layout_height="16dp"
+        android:id="@+id/bikeImageView"
         android:layout_gravity="center"
-        android:scaleType="center" />
+        android:scaleType="fitXY" />
     <TextView
         android:text="Union Square"
         android:layout_width="match_parent"

@@ -3,4 +3,6 @@
 	<string name="hello">Hello World, Click Me!</string>
 	<string name="app_name">Moyeu</string>
 	<string name="search_hint">Search location</string>
+	<string name="open_drawer">Open drawer</string>
+	<string name="close_drawer">Close Drawer</string>
 </resources>

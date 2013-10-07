@@ -16,7 +16,7 @@ using Runnable = Java.Lang.Runnable;
 
 namespace Moyeu
 {
-	public class LoginDialogFragment : DialogFragment
+	public class LoginDialogFragment : Android.Support.V4.App.DialogFragment
 	{
 		public event EventHandler Dismissed;
 
@@ -32,7 +32,7 @@ namespace Moyeu
 		public override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
-			SetStyle (DialogFragmentStyle.NoFrame, Android.Resource.Style.ThemeHoloLightDialogNoActionBar);
+			SetStyle ((int)DialogFragmentStyle.NoFrame, Android.Resource.Style.ThemeHoloLightDialogNoActionBar);
 		}
 
 		public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

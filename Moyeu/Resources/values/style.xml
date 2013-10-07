@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="drawer_item_shadow">
+        <item name="android:shadowColor">#25222222</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">-1</item>
+        <item name="android:shadowRadius">0.1</item>
+    </style>
+	<color name="pane_btn_bg_selected">#9099cc00</color>
+</resources>

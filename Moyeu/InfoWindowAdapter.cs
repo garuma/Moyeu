@@ -14,6 +14,8 @@ using Android.Widget;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
 
+using FooSvg;
+
 namespace Moyeu
 {
 	public class InfoWindowAdapter : Java.Lang.Object, GoogleMap.IInfoWindowAdapter
@@ -21,11 +23,19 @@ namespace Moyeu
 		Context context;
 		View view;
 		FavoriteManager favManager;
+		PictureBitmapDrawable bikeDrawable;
+		PictureBitmapDrawable lockDrawable;
+		PictureBitmapDrawable starOnDrawable;
+		PictureBitmapDrawable starOffDrawable;
 
 		public InfoWindowAdapter (Context context)
 		{
 			this.context = context;
 			this.favManager = new FavoriteManager (context);
+			bikeDrawable = SvgUtils.GetDrawableFromSvgRes (context.Resources, Resource.Raw.bike);
+			lockDrawable = SvgUtils.GetDrawableFromSvgRes (context.Resources, Resource.Raw.ic_lock);
+			starOnDrawable = SvgUtils.GetDrawableFromSvgRes (context.Resources, Resource.Raw.star_on);
+			starOffDrawable = SvgUtils.GetDrawableFromSvgRes (context.Resources, Resource.Raw.star_off);
 		}
 
 		public int Id {
@@ -40,10 +50,10 @@ namespace Moyeu
 			var starButton = view.FindViewById<ToggleButton> (Resource.Id.StarButton);
 			if (starButton.Activated) {
 				starButton.Activated = false;
-				starButton.SetBackgroundResource (Resource.Drawable.star_off);
+				starButton.SetBackgroundDrawable (starOffDrawable);
 			} else {
 				starButton.Activated = true;
-				starButton.SetBackgroundResource (Resource.Drawable.star_on);
+				starButton.SetBackgroundDrawable (starOnDrawable);
 			}
 		}
 
@@ -52,6 +62,10 @@ namespace Moyeu
 			if (view == null) {
 				var inflater = context.GetSystemService (Context.LayoutInflaterService).JavaCast<LayoutInflater> ();
 				view = inflater.Inflate (Resource.Layout.InfoWindowLayout, null);
+				var bikeView = view.FindViewById<ImageView> (Resource.Id.bikeImageView);
+				var lockView = view.FindViewById<ImageView> (Resource.Id.lockImageView);
+				bikeView.SetImageDrawable (bikeDrawable);
+				lockView.SetImageDrawable (lockDrawable);
 			}
 
 			var name = view.FindViewById<TextView> (Resource.Id.InfoViewName);
@@ -71,7 +85,7 @@ namespace Moyeu
 
 			bool activated = favManager.GetFavoritesStationIds ().Contains (Id);
 			starButton.Activated = activated;
-			starButton.SetBackgroundResource (activated ? Resource.Drawable.star_on : Resource.Drawable.star_off);
+			starButton.SetBackgroundDrawable (activated ? starOnDrawable : starOffDrawable);
 
 			return view;
 		}

@@ -77,41 +77,12 @@
                 android:textColor="#636363" />
         </LinearLayout>
         <ImageView
-            android:src="@drawable/bike"
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="center"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:id="@+id/bikeImageView"
+            android:layout_width="14dp"
+            android:layout_height="9dp"
+            android:scaleType="fitXY"
             android:layout_gravity="right"
             android:layout_marginRight="11dp" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout4"
-        android:layout_marginLeft="12dp"
-        android:visibility="gone">
-        <ImageView
-            android:src="@drawable/privated"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView4"
-            android:scaleType="center"
-            android:layout_marginBottom="2dp" />
-        <ImageView
-            android:src="@drawable/locked"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView3"
-            android:scaleType="center" />
-        <ImageView
-            android:src="@drawable/temporary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView5"
-            android:scaleType="center" />
     </LinearLayout>
 </LinearLayout>

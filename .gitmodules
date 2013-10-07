@@ -1,0 +1,3 @@
+[submodule "xamsvg"]
+	path = xamsvg
+	url = git://github.com/garuma/xamsvg.git

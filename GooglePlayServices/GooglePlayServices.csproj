@@ -5,13 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C388951C-C427-4F44-A54B-5A64BAE0DA39}</ProjectGuid>
+    <ProjectGuid>{2DDFEFA4-4944-42A7-971E-A2F751BA6036}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{10368E6C-D01B-4462-8E8B-01FC667A7035};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>GooglePlayServices</RootNamespace>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AssemblyName>GooglePlayServices</AssemblyName>
+    <DroidDocPaths>../docs/reference</DroidDocPaths>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -39,9 +40,1134 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
+    <Reference Include="Mono.Android.Support.v4" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Additions\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Additions\AboutAdditions.txt" />
+    <None Include="Jars\AboutJars.txt" />
+    <None Include="..\google_play_services\docs\navtree_data.js">
+      <Link>docs\navtree_data.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\timestamp.js">
+      <Link>docs\timestamp.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\GPL-LICENSE.txt">
+      <Link>docs\assets\GPL-LICENSE.txt</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\LICENSE.txt">
+      <Link>docs\assets\LICENSE.txt</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\android-developer-core.css">
+      <Link>docs\assets\android-developer-core.css</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\android-developer-docs.css">
+      <Link>docs\assets\android-developer-docs.css</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\customizations.css">
+      <Link>docs\assets\customizations.css</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\customizations.js">
+      <Link>docs\assets\customizations.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\doclava-developer-core.css">
+      <Link>docs\assets\doclava-developer-core.css</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\doclava-developer-docs.css">
+      <Link>docs\assets\doclava-developer-docs.css</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\doclava-developer-docs.js">
+      <Link>docs\assets\doclava-developer-docs.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\doclava-developer-reference.js">
+      <Link>docs\assets\doclava-developer-reference.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\jdiff_logo.gif">
+      <Link>docs\assets\jdiff_logo.gif</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\jquery-history.js">
+      <Link>docs\assets\jquery-history.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\jquery-resizable.min.js">
+      <Link>docs\assets\jquery-resizable.min.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\prettify.js">
+      <Link>docs\assets\prettify.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\search_autocomplete.js">
+      <Link>docs\assets\search_autocomplete.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\style.css">
+      <Link>docs\assets\style.css</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\triangle-none.gif">
+      <Link>docs\assets\triangle-none.gif</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\css\default.css">
+      <Link>docs\assets\css\default.css</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\css\fullscreen.css">
+      <Link>docs\assets\css\fullscreen.css</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\design\default.js">
+      <Link>docs\assets\design\default.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\android-developers-logo.png">
+      <Link>docs\assets\images\android-developers-logo.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\android_wrench.png">
+      <Link>docs\assets\images\android_wrench.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\arrow-left-develop.png">
+      <Link>docs\assets\images\arrow-left-develop.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\arrow-left.png">
+      <Link>docs\assets\images\arrow-left.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\arrow-right-develop.png">
+      <Link>docs\assets\images\arrow-right-develop.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\arrow-right.png">
+      <Link>docs\assets\images\arrow-right.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\arrow_bluelink_down.png">
+      <Link>docs\assets\images\arrow_bluelink_down.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\arrow_bluelink_up.png">
+      <Link>docs\assets\images\arrow_bluelink_up.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\arrow_left_off.jpg">
+      <Link>docs\assets\images\arrow_left_off.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\arrow_left_on.jpg">
+      <Link>docs\assets\images\arrow_left_on.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\arrow_right_off.jpg">
+      <Link>docs\assets\images\arrow_right_off.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\arrow_right_on.jpg">
+      <Link>docs\assets\images\arrow_right_on.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\arrows-up-down.png">
+      <Link>docs\assets\images\arrows-up-down.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\bg_community_leftDiv.jpg">
+      <Link>docs\assets\images\bg_community_leftDiv.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\bg_fade.jpg">
+      <Link>docs\assets\images\bg_fade.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\bg_gradient.jpg">
+      <Link>docs\assets\images\bg_gradient.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\bg_images_sprite.png">
+      <Link>docs\assets\images\bg_images_sprite.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\bg_logo.png">
+      <Link>docs\assets\images\bg_logo.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\blog-default.png">
+      <Link>docs\assets\images\blog-default.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\body-gradient-tab.png">
+      <Link>docs\assets\images\body-gradient-tab.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\body-gradient.png">
+      <Link>docs\assets\images\body-gradient.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\close.png">
+      <Link>docs\assets\images\close.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\dac_logo.png">
+      <Link>docs\assets\images\dac_logo.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\developers-logo.png">
+      <Link>docs\assets\images\developers-logo.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\fullscreen.png">
+      <Link>docs\assets\images\fullscreen.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\grad-rule-qv.png">
+      <Link>docs\assets\images\grad-rule-qv.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\hr_gray_main.jpg">
+      <Link>docs\assets\images\hr_gray_main.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\hr_gray_side.jpg">
+      <Link>docs\assets\images\hr_gray_side.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\icon_contribute.jpg">
+      <Link>docs\assets\images\icon_contribute.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\icon_design.png">
+      <Link>docs\assets\images\icon_design.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\icon_download.jpg">
+      <Link>docs\assets\images\icon_download.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\icon_download2.jpg">
+      <Link>docs\assets\images\icon_download2.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\icon_guidelines_logo.png">
+      <Link>docs\assets\images\icon_guidelines_logo.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\icon_market.jpg">
+      <Link>docs\assets\images\icon_market.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\icon_more.png">
+      <Link>docs\assets\images\icon_more.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\icon_play.png">
+      <Link>docs\assets\images\icon_play.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\icon_robot.jpg">
+      <Link>docs\assets\images\icon_robot.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\icon_search.png">
+      <Link>docs\assets\images\icon_search.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\icon_world.jpg">
+      <Link>docs\assets\images\icon_world.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\left_off.jpg">
+      <Link>docs\assets\images\left_off.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\left_on.jpg">
+      <Link>docs\assets\images\left_on.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\locale.png">
+      <Link>docs\assets\images\locale.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\logo_breadcrumbz.jpg">
+      <Link>docs\assets\images\logo_breadcrumbz.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\more_bottom.png">
+      <Link>docs\assets\images\more_bottom.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\more_check.png">
+      <Link>docs\assets\images\more_check.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\more_mid.png">
+      <Link>docs\assets\images\more_mid.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\more_top.png">
+      <Link>docs\assets\images\more_top.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\open_source.png">
+      <Link>docs\assets\images\open_source.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\preliminary.png">
+      <Link>docs\assets\images\preliminary.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\quicknav_arrow.png">
+      <Link>docs\assets\images\quicknav_arrow.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\quicknav_btn_bg.png">
+      <Link>docs\assets\images\quicknav_btn_bg.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resizable-e.gif">
+      <Link>docs\assets\images\resizable-e.gif</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resizable-e2.gif">
+      <Link>docs\assets\images\resizable-e2.gif</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resizable-eg.gif">
+      <Link>docs\assets\images\resizable-eg.gif</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resizable-s.gif">
+      <Link>docs\assets\images\resizable-s.gif</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resizable-s2.gif">
+      <Link>docs\assets\images\resizable-s2.gif</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resizable-s2.png">
+      <Link>docs\assets\images\resizable-s2.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resizable-sg.gif">
+      <Link>docs\assets\images\resizable-sg.gif</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resource-article.png">
+      <Link>docs\assets\images\resource-article.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resource-big-article.png">
+      <Link>docs\assets\images\resource-big-article.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resource-big-sample.png">
+      <Link>docs\assets\images\resource-big-sample.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resource-big-tutorial.png">
+      <Link>docs\assets\images\resource-big-tutorial.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resource-big-video.png">
+      <Link>docs\assets\images\resource-big-video.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resource-sample.png">
+      <Link>docs\assets\images\resource-sample.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resource-tutorial.png">
+      <Link>docs\assets\images\resource-tutorial.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\resource-video.png">
+      <Link>docs\assets\images\resource-video.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\right_off.jpg">
+      <Link>docs\assets\images\right_off.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\right_on.jpg">
+      <Link>docs\assets\images\right_on.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\sidenav-rule.png">
+      <Link>docs\assets\images\sidenav-rule.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\slide_1.jpg">
+      <Link>docs\assets\images\slide_1.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\slide_2.jpg">
+      <Link>docs\assets\images\slide_2.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\slide_3.jpg">
+      <Link>docs\assets\images\slide_3.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\slide_large_1.jpg">
+      <Link>docs\assets\images\slide_large_1.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\slide_large_2.jpg">
+      <Link>docs\assets\images\slide_large_2.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\slide_large_3.jpg">
+      <Link>docs\assets\images\slide_large_3.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\slide_off.jpg">
+      <Link>docs\assets\images\slide_off.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\slide_on.jpg">
+      <Link>docs\assets\images\slide_on.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\spacer.gif">
+      <Link>docs\assets\images\spacer.gif</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\triangle-closed-small.png">
+      <Link>docs\assets\images\triangle-closed-small.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\triangle-closed.png">
+      <Link>docs\assets\images\triangle-closed.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\triangle-opened-small.png">
+      <Link>docs\assets\images\triangle-opened-small.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\triangle-opened.png">
+      <Link>docs\assets\images\triangle-opened.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\uiguidelines1.png">
+      <Link>docs\assets\images\uiguidelines1.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\video-droid.png">
+      <Link>docs\assets\images\video-droid.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\Android_Dev_Lab_l.png">
+      <Link>docs\assets\images\home\Android_Dev_Lab_l.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\GDC2011.png">
+      <Link>docs\assets\images\home\GDC2011.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\GTV_icon_large.png">
+      <Link>docs\assets\images\home\GTV_icon_large.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\GTV_icon_small.png">
+      <Link>docs\assets\images\home\GTV_icon_small.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\IO-logo-2011.png">
+      <Link>docs\assets\images\home\IO-logo-2011.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\IO-logo.png">
+      <Link>docs\assets\images\home\IO-logo.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\adc2_l.png">
+      <Link>docs\assets\images\home\adc2_l.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\adc2_s.png">
+      <Link>docs\assets\images\home\adc2_s.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\android_adc.png">
+      <Link>docs\assets\images\home\android_adc.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\bg_home_announcement.png">
+      <Link>docs\assets\images\home\bg_home_announcement.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\bg_home_bottom.jpg">
+      <Link>docs\assets\images\home\bg_home_bottom.jpg</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\bg_home_carousel.png">
+      <Link>docs\assets\images\home\bg_home_carousel.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\bg_home_carousel_board.png">
+      <Link>docs\assets\images\home\bg_home_carousel_board.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\bg_home_carousel_wheel.png">
+      <Link>docs\assets\images\home\bg_home_carousel_wheel.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\carousel_buttons_sprite.png">
+      <Link>docs\assets\images\home\carousel_buttons_sprite.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\devphone-large.png">
+      <Link>docs\assets\images\home\devphone-large.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\devphone-small.png">
+      <Link>docs\assets\images\home\devphone-small.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\donut-android.png">
+      <Link>docs\assets\images\home\donut-android.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\eclair-android.png">
+      <Link>docs\assets\images\home\eclair-android.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\froyo-android.png">
+      <Link>docs\assets\images\home\froyo-android.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\gdc-logo.png">
+      <Link>docs\assets\images\home\gdc-logo.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\gingerdroid.png">
+      <Link>docs\assets\images\home\gingerdroid.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\google-plus-small.png">
+      <Link>docs\assets\images\home\google-plus-small.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\google-plus.png">
+      <Link>docs\assets\images\home\google-plus.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\honeycomb-android.png">
+      <Link>docs\assets\images\home\honeycomb-android.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\icon-about.png">
+      <Link>docs\assets\images\home\icon-about.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\icon-design.png">
+      <Link>docs\assets\images\home\icon-design.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\icon-develop.png">
+      <Link>docs\assets\images\home\icon-develop.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\icon-distribute.png">
+      <Link>docs\assets\images\home\icon-distribute.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\ics-android.png">
+      <Link>docs\assets\images\home\ics-android.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\io-large.png">
+      <Link>docs\assets\images\home\io-large.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\io-small.png">
+      <Link>docs\assets\images\home\io-small.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\maps-large.png">
+      <Link>docs\assets\images\home\maps-large.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\maps-small.png">
+      <Link>docs\assets\images\home\maps-small.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\market-large.png">
+      <Link>docs\assets\images\home\market-large.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\market-small.png">
+      <Link>docs\assets\images\home\market-small.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\sdk-large.png">
+      <Link>docs\assets\images\home\sdk-large.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\home\sdk-small.png">
+      <Link>docs\assets\images\home\sdk-small.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\callout.png">
+      <Link>docs\assets\images\styles\callout.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\device_galaxynexus_blank_land_span13.png">
+      <Link>docs\assets\images\styles\device_galaxynexus_blank_land_span13.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\device_galaxynexus_blank_land_span8.png">
+      <Link>docs\assets\images\styles\device_galaxynexus_blank_land_span8.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\device_galaxynexus_blank_port_span5.png">
+      <Link>docs\assets\images\styles\device_galaxynexus_blank_port_span5.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\device_galaxynexus_blank_port_span9.png">
+      <Link>docs\assets\images\styles\device_galaxynexus_blank_port_span9.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\disclosure_down.png">
+      <Link>docs\assets\images\styles\disclosure_down.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\disclosure_left.png">
+      <Link>docs\assets\images\styles\disclosure_left.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\disclosure_right.png">
+      <Link>docs\assets\images\styles\disclosure_right.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\disclosure_up.png">
+      <Link>docs\assets\images\styles\disclosure_up.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\gototop.png">
+      <Link>docs\assets\images\styles\gototop.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\ico_action.png">
+      <Link>docs\assets\images\styles\ico_action.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\ico_good.png">
+      <Link>docs\assets\images\styles\ico_good.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\ico_movie_inline.png">
+      <Link>docs\assets\images\styles\ico_movie_inline.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\ico_phone_tablet.png">
+      <Link>docs\assets\images\styles\ico_phone_tablet.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\ico_use.png">
+      <Link>docs\assets\images\styles\ico_use.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\ico_web.png">
+      <Link>docs\assets\images\styles\ico_web.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\ico_wrong.png">
+      <Link>docs\assets\images\styles\ico_wrong.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\images\styles\open_new_page.png">
+      <Link>docs\assets\images\styles\open_new_page.png</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\js\docs.js">
+      <Link>docs\assets\js\docs.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\js\global-libraries-combined.js">
+      <Link>docs\assets\js\global-libraries-combined.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\js\prettify.js">
+      <Link>docs\assets\js\prettify.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\js\grid\960.gridder.css">
+      <Link>docs\assets\js\grid\960.gridder.css</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\js\grid\960.gridder.js">
+      <Link>docs\assets\js\grid\960.gridder.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\scroller\jquery.jscrollpane.min.js">
+      <Link>docs\assets\scroller\jquery.jscrollpane.min.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\assets\scroller\jquery.mousewheel.min.js">
+      <Link>docs\assets\scroller\jquery.mousewheel.min.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\classes.html">
+      <Link>docs\reference\classes.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\hierarchy.html">
+      <Link>docs\reference\hierarchy.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\index.html">
+      <Link>docs\reference\index.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\lists.js">
+      <Link>docs\reference\lists.js</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\package-list">
+      <Link>docs\reference\package-list</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\packages.html">
+      <Link>docs\reference\packages.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\R.attr.html">
+      <Link>docs\reference\com\google\android\gms\R.attr.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\R.color.html">
+      <Link>docs\reference\com\google\android\gms\R.color.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\R.drawable.html">
+      <Link>docs\reference\com\google\android\gms\R.drawable.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\R.html">
+      <Link>docs\reference\com\google\android\gms\R.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\R.id.html">
+      <Link>docs\reference\com\google\android\gms\R.id.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\R.string.html">
+      <Link>docs\reference\com\google\android\gms\R.string.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\R.styleable.html">
+      <Link>docs\reference\com\google\android\gms\R.styleable.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\appstate\AppState.html">
+      <Link>docs\reference\com\google\android\gms\appstate\AppState.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\appstate\AppStateBuffer.html">
+      <Link>docs\reference\com\google\android\gms\appstate\AppStateBuffer.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\appstate\AppStateClient.Builder.html">
+      <Link>docs\reference\com\google\android\gms\appstate\AppStateClient.Builder.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\appstate\AppStateClient.html">
+      <Link>docs\reference\com\google\android\gms\appstate\AppStateClient.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\appstate\OnSignOutCompleteListener.html">
+      <Link>docs\reference\com\google\android\gms\appstate\OnSignOutCompleteListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\appstate\OnStateDeletedListener.html">
+      <Link>docs\reference\com\google\android\gms\appstate\OnStateDeletedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\appstate\OnStateListLoadedListener.html">
+      <Link>docs\reference\com\google\android\gms\appstate\OnStateListLoadedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\appstate\OnStateLoadedListener.html">
+      <Link>docs\reference\com\google\android\gms\appstate\OnStateLoadedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\appstate\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\appstate\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\auth\GoogleAuthException.html">
+      <Link>docs\reference\com\google\android\gms\auth\GoogleAuthException.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\auth\GoogleAuthUtil.html">
+      <Link>docs\reference\com\google\android\gms\auth\GoogleAuthUtil.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\auth\GooglePlayServicesAvailabilityException.html">
+      <Link>docs\reference\com\google\android\gms\auth\GooglePlayServicesAvailabilityException.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\auth\UserRecoverableAuthException.html">
+      <Link>docs\reference\com\google\android\gms\auth\UserRecoverableAuthException.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\auth\UserRecoverableNotifiedException.html">
+      <Link>docs\reference\com\google\android\gms\auth\UserRecoverableNotifiedException.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\auth\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\auth\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\AccountPicker.html">
+      <Link>docs\reference\com\google\android\gms\common\AccountPicker.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\ConnectionResult.html">
+      <Link>docs\reference\com\google\android\gms\common\ConnectionResult.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\GooglePlayServicesClient.ConnectionCallbacks.html">
+      <Link>docs\reference\com\google\android\gms\common\GooglePlayServicesClient.ConnectionCallbacks.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\GooglePlayServicesClient.OnConnectionFailedListener.html">
+      <Link>docs\reference\com\google\android\gms\common\GooglePlayServicesClient.OnConnectionFailedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\GooglePlayServicesClient.html">
+      <Link>docs\reference\com\google\android\gms\common\GooglePlayServicesClient.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\GooglePlayServicesNotAvailableException.html">
+      <Link>docs\reference\com\google\android\gms\common\GooglePlayServicesNotAvailableException.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\GooglePlayServicesUtil.html">
+      <Link>docs\reference\com\google\android\gms\common\GooglePlayServicesUtil.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\Scopes.html">
+      <Link>docs\reference\com\google\android\gms\common\Scopes.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\SignInButton.html">
+      <Link>docs\reference\com\google\android\gms\common\SignInButton.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\common\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\data\DataBuffer.html">
+      <Link>docs\reference\com\google\android\gms\common\data\DataBuffer.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\data\DataBufferUtils.html">
+      <Link>docs\reference\com\google\android\gms\common\data\DataBufferUtils.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\data\Freezable.html">
+      <Link>docs\reference\com\google\android\gms\common\data\Freezable.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\data\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\common\data\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\images\ImageManager.OnImageLoadedListener.html">
+      <Link>docs\reference\com\google\android\gms\common\images\ImageManager.OnImageLoadedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\images\ImageManager.html">
+      <Link>docs\reference\com\google\android\gms\common\images\ImageManager.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\common\images\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\common\images\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\Game.html">
+      <Link>docs\reference\com\google\android\gms\games\Game.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\GameBuffer.html">
+      <Link>docs\reference\com\google\android\gms\games\GameBuffer.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\GameEntity.html">
+      <Link>docs\reference\com\google\android\gms\games\GameEntity.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\GamesActivityResultCodes.html">
+      <Link>docs\reference\com\google\android\gms\games\GamesActivityResultCodes.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\GamesClient.Builder.html">
+      <Link>docs\reference\com\google\android\gms\games\GamesClient.Builder.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\GamesClient.html">
+      <Link>docs\reference\com\google\android\gms\games\GamesClient.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\OnGamesLoadedListener.html">
+      <Link>docs\reference\com\google\android\gms\games\OnGamesLoadedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\OnPlayersLoadedListener.html">
+      <Link>docs\reference\com\google\android\gms\games\OnPlayersLoadedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\OnSignOutCompleteListener.html">
+      <Link>docs\reference\com\google\android\gms\games\OnSignOutCompleteListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\PageDirection.html">
+      <Link>docs\reference\com\google\android\gms\games\PageDirection.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\Player.html">
+      <Link>docs\reference\com\google\android\gms\games\Player.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\PlayerBuffer.html">
+      <Link>docs\reference\com\google\android\gms\games\PlayerBuffer.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\PlayerEntity.html">
+      <Link>docs\reference\com\google\android\gms\games\PlayerEntity.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\RealTimeSocket.html">
+      <Link>docs\reference\com\google\android\gms\games\RealTimeSocket.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\games\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\achievement\Achievement.html">
+      <Link>docs\reference\com\google\android\gms\games\achievement\Achievement.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\achievement\AchievementBuffer.html">
+      <Link>docs\reference\com\google\android\gms\games\achievement\AchievementBuffer.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\achievement\OnAchievementUpdatedListener.html">
+      <Link>docs\reference\com\google\android\gms\games\achievement\OnAchievementUpdatedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\achievement\OnAchievementsLoadedListener.html">
+      <Link>docs\reference\com\google\android\gms\games\achievement\OnAchievementsLoadedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\achievement\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\games\achievement\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\leaderboard\Leaderboard.html">
+      <Link>docs\reference\com\google\android\gms\games\leaderboard\Leaderboard.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\leaderboard\LeaderboardBuffer.html">
+      <Link>docs\reference\com\google\android\gms\games\leaderboard\LeaderboardBuffer.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\leaderboard\LeaderboardScore.html">
+      <Link>docs\reference\com\google\android\gms\games\leaderboard\LeaderboardScore.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\leaderboard\LeaderboardScoreBuffer.html">
+      <Link>docs\reference\com\google\android\gms\games\leaderboard\LeaderboardScoreBuffer.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\leaderboard\LeaderboardVariant.html">
+      <Link>docs\reference\com\google\android\gms\games\leaderboard\LeaderboardVariant.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\leaderboard\OnLeaderboardMetadataLoadedListener.html">
+      <Link>docs\reference\com\google\android\gms\games\leaderboard\OnLeaderboardMetadataLoadedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\leaderboard\OnLeaderboardScoresLoadedListener.html">
+      <Link>docs\reference\com\google\android\gms\games\leaderboard\OnLeaderboardScoresLoadedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\leaderboard\OnScoreSubmittedListener.html">
+      <Link>docs\reference\com\google\android\gms\games\leaderboard\OnScoreSubmittedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\leaderboard\SubmitScoreResult.Result.html">
+      <Link>docs\reference\com\google\android\gms\games\leaderboard\SubmitScoreResult.Result.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\leaderboard\SubmitScoreResult.html">
+      <Link>docs\reference\com\google\android\gms\games\leaderboard\SubmitScoreResult.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\leaderboard\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\games\leaderboard\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\Invitation.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\Invitation.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\InvitationBuffer.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\InvitationBuffer.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\InvitationEntity.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\InvitationEntity.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\OnInvitationReceivedListener.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\OnInvitationReceivedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\OnInvitationsLoadedListener.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\OnInvitationsLoadedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\Participant.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\Participant.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\ParticipantBuffer.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\ParticipantBuffer.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\ParticipantEntity.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\ParticipantEntity.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\ParticipantUtils.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\ParticipantUtils.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\Participatable.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\Participatable.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\realtime\RealTimeMessage.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\realtime\RealTimeMessage.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\realtime\RealTimeMessageReceivedListener.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\realtime\RealTimeMessageReceivedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\realtime\RealTimeReliableMessageSentListener.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\realtime\RealTimeReliableMessageSentListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\realtime\Room.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\realtime\Room.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\realtime\RoomConfig.Builder.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\realtime\RoomConfig.Builder.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\realtime\RoomConfig.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\realtime\RoomConfig.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\realtime\RoomEntity.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\realtime\RoomEntity.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\realtime\RoomStatusUpdateListener.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\realtime\RoomStatusUpdateListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\realtime\RoomUpdateListener.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\realtime\RoomUpdateListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\games\multiplayer\realtime\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\games\multiplayer\realtime\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\gcm\GoogleCloudMessaging.html">
+      <Link>docs\reference\com\google\android\gms\gcm\GoogleCloudMessaging.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\gcm\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\gcm\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\location\ActivityRecognitionClient.html">
+      <Link>docs\reference\com\google\android\gms\location\ActivityRecognitionClient.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\location\ActivityRecognitionResult.html">
+      <Link>docs\reference\com\google\android\gms\location\ActivityRecognitionResult.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\location\DetectedActivity.html">
+      <Link>docs\reference\com\google\android\gms\location\DetectedActivity.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\location\Geofence.Builder.html">
+      <Link>docs\reference\com\google\android\gms\location\Geofence.Builder.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\location\Geofence.html">
+      <Link>docs\reference\com\google\android\gms\location\Geofence.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\location\LocationClient.OnAddGeofencesResultListener.html">
+      <Link>docs\reference\com\google\android\gms\location\LocationClient.OnAddGeofencesResultListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\location\LocationClient.OnRemoveGeofencesResultListener.html">
+      <Link>docs\reference\com\google\android\gms\location\LocationClient.OnRemoveGeofencesResultListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\location\LocationClient.html">
+      <Link>docs\reference\com\google\android\gms\location\LocationClient.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\location\LocationListener.html">
+      <Link>docs\reference\com\google\android\gms\location\LocationListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\location\LocationRequest.html">
+      <Link>docs\reference\com\google\android\gms\location\LocationRequest.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\location\LocationStatusCodes.html">
+      <Link>docs\reference\com\google\android\gms\location\LocationStatusCodes.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\location\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\location\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\CameraUpdate.html">
+      <Link>docs\reference\com\google\android\gms\maps\CameraUpdate.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\CameraUpdateFactory.html">
+      <Link>docs\reference\com\google\android\gms\maps\CameraUpdateFactory.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\GoogleMap.CancelableCallback.html">
+      <Link>docs\reference\com\google\android\gms\maps\GoogleMap.CancelableCallback.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\GoogleMap.InfoWindowAdapter.html">
+      <Link>docs\reference\com\google\android\gms\maps\GoogleMap.InfoWindowAdapter.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\GoogleMap.OnCameraChangeListener.html">
+      <Link>docs\reference\com\google\android\gms\maps\GoogleMap.OnCameraChangeListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\GoogleMap.OnInfoWindowClickListener.html">
+      <Link>docs\reference\com\google\android\gms\maps\GoogleMap.OnInfoWindowClickListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\GoogleMap.OnMapClickListener.html">
+      <Link>docs\reference\com\google\android\gms\maps\GoogleMap.OnMapClickListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\GoogleMap.OnMapLongClickListener.html">
+      <Link>docs\reference\com\google\android\gms\maps\GoogleMap.OnMapLongClickListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\GoogleMap.OnMarkerClickListener.html">
+      <Link>docs\reference\com\google\android\gms\maps\GoogleMap.OnMarkerClickListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\GoogleMap.OnMarkerDragListener.html">
+      <Link>docs\reference\com\google\android\gms\maps\GoogleMap.OnMarkerDragListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\GoogleMap.OnMyLocationButtonClickListener.html">
+      <Link>docs\reference\com\google\android\gms\maps\GoogleMap.OnMyLocationButtonClickListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\GoogleMap.OnMyLocationChangeListener.html">
+      <Link>docs\reference\com\google\android\gms\maps\GoogleMap.OnMyLocationChangeListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\GoogleMap.SnapshotReadyCallback.html">
+      <Link>docs\reference\com\google\android\gms\maps\GoogleMap.SnapshotReadyCallback.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\GoogleMap.html">
+      <Link>docs\reference\com\google\android\gms\maps\GoogleMap.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\GoogleMapOptions.html">
+      <Link>docs\reference\com\google\android\gms\maps\GoogleMapOptions.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\LocationSource.OnLocationChangedListener.html">
+      <Link>docs\reference\com\google\android\gms\maps\LocationSource.OnLocationChangedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\LocationSource.html">
+      <Link>docs\reference\com\google\android\gms\maps\LocationSource.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\MapFragment.html">
+      <Link>docs\reference\com\google\android\gms\maps\MapFragment.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\MapView.html">
+      <Link>docs\reference\com\google\android\gms\maps\MapView.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\MapsInitializer.html">
+      <Link>docs\reference\com\google\android\gms\maps\MapsInitializer.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\Projection.html">
+      <Link>docs\reference\com\google\android\gms\maps\Projection.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\SupportMapFragment.html">
+      <Link>docs\reference\com\google\android\gms\maps\SupportMapFragment.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\UiSettings.html">
+      <Link>docs\reference\com\google\android\gms\maps\UiSettings.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\maps\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\BitmapDescriptor.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\BitmapDescriptor.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\BitmapDescriptorFactory.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\BitmapDescriptorFactory.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\CameraPosition.Builder.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\CameraPosition.Builder.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\CameraPosition.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\CameraPosition.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\Circle.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\Circle.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\CircleOptions.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\CircleOptions.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\GroundOverlay.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\GroundOverlay.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\GroundOverlayOptions.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\GroundOverlayOptions.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\LatLng.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\LatLng.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\LatLngBounds.Builder.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\LatLngBounds.Builder.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\LatLngBounds.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\LatLngBounds.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\Marker.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\Marker.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\MarkerOptions.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\MarkerOptions.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\Polygon.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\Polygon.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\PolygonOptions.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\PolygonOptions.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\Polyline.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\Polyline.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\PolylineOptions.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\PolylineOptions.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\RuntimeRemoteException.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\RuntimeRemoteException.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\Tile.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\Tile.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\TileOverlay.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\TileOverlay.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\TileOverlayOptions.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\TileOverlayOptions.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\TileProvider.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\TileProvider.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\UrlTileProvider.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\UrlTileProvider.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\VisibleRegion.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\VisibleRegion.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\maps\model\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\maps\model\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\panorama\PanoramaClient.OnPanoramaInfoLoadedListener.html">
+      <Link>docs\reference\com\google\android\gms\panorama\PanoramaClient.OnPanoramaInfoLoadedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\panorama\PanoramaClient.html">
+      <Link>docs\reference\com\google\android\gms\panorama\PanoramaClient.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\panorama\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\panorama\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\PlusClient.Builder.html">
+      <Link>docs\reference\com\google\android\gms\plus\PlusClient.Builder.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\PlusClient.OnAccessRevokedListener.html">
+      <Link>docs\reference\com\google\android\gms\plus\PlusClient.OnAccessRevokedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\PlusClient.OnMomentsLoadedListener.html">
+      <Link>docs\reference\com\google\android\gms\plus\PlusClient.OnMomentsLoadedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\PlusClient.OnPeopleLoadedListener.html">
+      <Link>docs\reference\com\google\android\gms\plus\PlusClient.OnPeopleLoadedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\PlusClient.OnPersonLoadedListener.html">
+      <Link>docs\reference\com\google\android\gms\plus\PlusClient.OnPersonLoadedListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\PlusClient.OrderBy.html">
+      <Link>docs\reference\com\google\android\gms\plus\PlusClient.OrderBy.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\PlusClient.html">
+      <Link>docs\reference\com\google\android\gms\plus\PlusClient.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\PlusOneButton.OnPlusOneClickListener.html">
+      <Link>docs\reference\com\google\android\gms\plus\PlusOneButton.OnPlusOneClickListener.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\PlusOneButton.html">
+      <Link>docs\reference\com\google\android\gms\plus\PlusOneButton.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\PlusShare.Builder.html">
+      <Link>docs\reference\com\google\android\gms\plus\PlusShare.Builder.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\PlusShare.html">
+      <Link>docs\reference\com\google\android\gms\plus\PlusShare.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\plus\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\moments\ItemScope.Builder.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\moments\ItemScope.Builder.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\moments\ItemScope.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\moments\ItemScope.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\moments\Moment.Builder.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\moments\Moment.Builder.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\moments\Moment.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\moments\Moment.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\moments\MomentBuffer.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\moments\MomentBuffer.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\moments\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\moments\package-summary.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.AgeRange.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.AgeRange.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.Collection.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.Collection.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.Cover.CoverInfo.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.Cover.CoverInfo.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.Cover.CoverPhoto.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.Cover.CoverPhoto.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.Cover.Layout.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.Cover.Layout.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.Cover.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.Cover.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.Emails.Type.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.Emails.Type.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.Emails.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.Emails.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.Gender.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.Gender.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.Image.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.Image.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.Name.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.Name.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.ObjectType.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.ObjectType.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.OrderBy.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.OrderBy.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.Organizations.Type.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.Organizations.Type.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.Organizations.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.Organizations.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.PlacesLived.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.PlacesLived.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.RelationshipStatus.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.RelationshipStatus.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.Urls.Type.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.Urls.Type.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.Urls.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.Urls.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\Person.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\Person.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\PersonBuffer.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\PersonBuffer.html</Link>
+    </None>
+    <None Include="..\google_play_services\docs\reference\com\google\android\gms\plus\model\people\package-summary.html">
+      <Link>docs\reference\com\google\android\gms\plus\model\people\package-summary.html</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <TransformFile Include="Transforms\EnumFields.xml" />
@@ -50,12 +1176,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Xamarin.Android.Bindings.targets" />
   <ItemGroup>
-    <LibraryProjectProperties Include="..\google-play-services_lib\project.properties">
+    <LibraryProjectProperties Include="..\google_play_services\libproject\google-play-services_lib\project.properties">
       <Link>project.properties</Link>
     </LibraryProjectProperties>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Jars\" />
-    <Folder Include="Additions\" />
+    <Folder Include="docs\" />
   </ItemGroup>
 </Project>

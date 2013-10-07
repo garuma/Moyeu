@@ -46,10 +46,11 @@ namespace Moyeu
 		HttpClient Client {
 			get {
 				if (client == null) {
+					ServicePointManager.ServerCertificateValidationCallback = (a, b, c, d) => true;
 					client = new HttpClient (new HttpClientHandler {
 						AllowAutoRedirect = false,
 						CookieContainer = cookies,
-						UseCookies = true
+						UseCookies = true,
 					});
 				}
 				return client;

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<moyeu.InfoPane xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/infoPane"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_gravity="bottom"
+    android:paddingTop="4dp">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="68dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/info_pane_header_bg"
+        android:id="@+id/PaneHeaderView">
+        <ImageButton
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:padding="20dp"
+            android:scaleType="fitXY"
+            android:id="@+id/StarButton"
+            android:background="@drawable/info_pane_btn_bg"
+            android:layout_gravity="center" />
+        <View
+            android:background="#eeeeee"
+            android:layout_height="match_parent"
+            android:layout_width="1dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="12dp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/InfoViewName"
+                android:text="Union Square"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#333333"
+                android:layout_marginBottom="2dp"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/InfoViewSecondName"
+                android:text="Somerville"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#666666"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:textSize="16sp" />
+        </LinearLayout>
+        <View
+            android:background="#eeeeee"
+            android:layout_height="match_parent"
+            android:layout_width="1dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="12dp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_width="52dp">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout2"
+                android:layout_gravity="center">
+                <TextView
+                    android:text="8"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/InfoViewBikeNumber"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:textColor="#ff333333"
+                    android:textSize="21sp"
+                    android:layout_marginRight="2dp" />
+                <ImageView
+                    android:src="@android:drawable/ic_menu_gallery"
+                    android:layout_width="18dp"
+                    android:layout_height="13dp"
+                    android:id="@+id/bikeImageView"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="1dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout3"
+                android:layout_gravity="center">
+                <TextView
+                    android:text="6"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/InfoViewSlotNumber"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:textColor="#ff333333"
+                    android:textSize="21sp"
+                    android:layout_marginRight="2dp" />
+                <ImageView
+                    android:src="@android:drawable/ic_menu_gallery"
+                    android:layout_width="18dp"
+                    android:layout_height="13dp"
+                    android:id="@+id/lockImageView"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="1dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:background="#ffffff">
+        <FrameLayout
+            android:paddingBottom="4dp"
+            android:background="@drawable/background"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp">
+            <ProgressBar
+                android:id="@+id/streetViewSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="?android:attr/progressBarStyleLarge" />
+            <ImageView
+                android:id="@+id/streetViewImg"
+                android:visibility="invisible"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop" />
+        </FrameLayout>
+        <Button
+            android:id="@+id/gmapsBtn"
+            android:background="@drawable/pane_item_bg"
+            android:text="Open location"
+            android:textColor="#333333"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:minWidth="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="48dp" />
+    </LinearLayout>
+</moyeu.InfoPane>
