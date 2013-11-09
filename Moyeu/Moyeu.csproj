@@ -83,24 +83,15 @@
     <AndroidResource Include="Resources\drawable\ic_action_refresh.png" />
     <AndroidResource Include="Resources\drawable\ic_action_search.png" />
     <AndroidResource Include="Resources\drawable\ic_action_star.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_locate.png" />
     <AndroidResource Include="Resources\drawable\flash_bar_background.xml" />
     <AndroidResource Include="Resources\drawable-xhdpi\Icon.png" />
     <AndroidResource Include="Resources\xml\searchable.xml" />
     <AndroidResource Include="Resources\layout\FavoriteItem.axml" />
     <AndroidResource Include="Resources\drawable\map_placeholder.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\map_placeholder.png" />
     <AndroidResource Include="Resources\drawable-hdpi\Icon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\ic_action_locate.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\map_placeholder.png" />
     <AndroidResource Include="Resources\drawable-mdpi\Icon.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\ic_action_locate.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\map_placeholder.png" />
     <AndroidResource Include="Resources\layout\RentalItem.axml" />
     <AndroidResource Include="Resources\drawable\ic_action_rentals.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_refresh.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_refresh.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_refresh.png" />
     <AndroidResource Include="Resources\menu\rentals_menu.xml" />
     <AndroidResource Include="Resources\drawable-nodpi\background.9.png" />
     <AndroidResource Include="Resources\layout\LoginDialogLayout.axml" />
@@ -131,9 +122,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_drawer_map.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_drawer_rentals.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_drawer_star.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_search.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_search.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_search.png" />
     <AndroidResource Include="Resources\layout\DrawerHeader.axml" />
     <AndroidResource Include="Resources\layout\DrawerAroundItem.axml" />
     <AndroidResource Include="Resources\raw\star_depressed.svg" />
@@ -145,9 +133,24 @@
     <AndroidResource Include="Resources\drawable-nodpi\pane_item_bg_selected.9.png" />
     <AndroidResource Include="Resources\drawable-nodpi\pane_item_bg.xml" />
     <AndroidResource Include="Resources\raw\map.svg" />
-    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_mylocation.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_mylocation.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_mylocation.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_mylocation.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_refresh.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_search.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\drawer_shadow.9.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_mylocation.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_refresh.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_search.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_drawer_map.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_drawer_rentals.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_drawer_star.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_drawer.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_mylocation.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_refresh.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_search.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_mylocation.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_refresh.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_search.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
@@ -175,5 +178,6 @@
     <Folder Include="Resources\drawable-nodpi\" />
     <Folder Include="Resources\raw\" />
     <Folder Include="Resources\animator\" />
+    <Folder Include="Resources\drawable-xxhdpi\" />
   </ItemGroup>
 </Project>
