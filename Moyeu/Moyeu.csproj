@@ -77,21 +77,14 @@
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
     <AndroidResource Include="Resources\values\Strings.xml" />
-    <AndroidResource Include="Resources\drawable\Icon.png" />
     <AndroidResource Include="Resources\menu\map_menu.xml" />
-    <AndroidResource Include="Resources\drawable\ic_action_locate.png" />
-    <AndroidResource Include="Resources\drawable\ic_action_refresh.png" />
-    <AndroidResource Include="Resources\drawable\ic_action_search.png" />
-    <AndroidResource Include="Resources\drawable\ic_action_star.png" />
     <AndroidResource Include="Resources\drawable\flash_bar_background.xml" />
     <AndroidResource Include="Resources\drawable-xhdpi\Icon.png" />
     <AndroidResource Include="Resources\xml\searchable.xml" />
     <AndroidResource Include="Resources\layout\FavoriteItem.axml" />
-    <AndroidResource Include="Resources\drawable\map_placeholder.png" />
     <AndroidResource Include="Resources\drawable-hdpi\Icon.png" />
     <AndroidResource Include="Resources\drawable-mdpi\Icon.png" />
     <AndroidResource Include="Resources\layout\RentalItem.axml" />
-    <AndroidResource Include="Resources\drawable\ic_action_rentals.png" />
     <AndroidResource Include="Resources\menu\rentals_menu.xml" />
     <AndroidResource Include="Resources\drawable-nodpi\background.9.png" />
     <AndroidResource Include="Resources\layout\LoginDialogLayout.axml" />
@@ -151,6 +144,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_mylocation.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_refresh.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_search.png" />
+    <AndroidResource Include="Resources\raw\map_placeholder.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>

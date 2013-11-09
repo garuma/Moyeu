@@ -5,12 +5,12 @@
     android:layout_height="wrap_content"
     android:padding="8dp">
     <ImageView
-        android:src="@drawable/map_placeholder"
+        android:src="@android:color/transparent"
         android:layout_width="65dp"
         android:layout_height="42dp"
         android:id="@+id/StationMap"
         android:layout_gravity="center"
-        android:scaleType="center" />
+        android:scaleType="fitXY" />
     <LinearLayout
         android:orientation="vertical"
         android:minWidth="25px"

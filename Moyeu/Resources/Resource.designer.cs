@@ -241,61 +241,49 @@ namespace Moyeu
 			public const int flash_bar_background = 2130837530;
 			
 			// aapt resource value: 0x7f02001b
-			public const int ic_action_locate = 2130837531;
+			public const int ic_action_mylocation = 2130837531;
 			
 			// aapt resource value: 0x7f02001c
-			public const int ic_action_mylocation = 2130837532;
+			public const int ic_action_refresh = 2130837532;
 			
 			// aapt resource value: 0x7f02001d
-			public const int ic_action_refresh = 2130837533;
+			public const int ic_action_search = 2130837533;
 			
 			// aapt resource value: 0x7f02001e
-			public const int ic_action_rentals = 2130837534;
+			public const int ic_drawer = 2130837534;
 			
 			// aapt resource value: 0x7f02001f
-			public const int ic_action_search = 2130837535;
+			public const int ic_drawer_map = 2130837535;
 			
 			// aapt resource value: 0x7f020020
-			public const int ic_action_star = 2130837536;
+			public const int ic_drawer_rentals = 2130837536;
 			
 			// aapt resource value: 0x7f020021
-			public const int ic_drawer = 2130837537;
+			public const int ic_drawer_star = 2130837537;
 			
 			// aapt resource value: 0x7f020022
-			public const int ic_drawer_map = 2130837538;
+			public const int Icon = 2130837538;
 			
 			// aapt resource value: 0x7f020023
-			public const int ic_drawer_rentals = 2130837539;
+			public const int info_pane_btn_bg = 2130837539;
 			
 			// aapt resource value: 0x7f020024
-			public const int ic_drawer_star = 2130837540;
+			public const int info_pane_header_bg = 2130837540;
 			
 			// aapt resource value: 0x7f020025
-			public const int Icon = 2130837541;
+			public const int pane_item_bg = 2130837541;
 			
 			// aapt resource value: 0x7f020026
-			public const int info_pane_btn_bg = 2130837542;
+			public const int pane_item_bg_normal = 2130837542;
 			
 			// aapt resource value: 0x7f020027
-			public const int info_pane_header_bg = 2130837543;
+			public const int pane_item_bg_selected = 2130837543;
 			
 			// aapt resource value: 0x7f020028
-			public const int map_placeholder = 2130837544;
+			public const int pattern = 2130837544;
 			
 			// aapt resource value: 0x7f020029
-			public const int pane_item_bg = 2130837545;
-			
-			// aapt resource value: 0x7f02002a
-			public const int pane_item_bg_normal = 2130837546;
-			
-			// aapt resource value: 0x7f02002b
-			public const int pane_item_bg_selected = 2130837547;
-			
-			// aapt resource value: 0x7f02002c
-			public const int pattern = 2130837548;
-			
-			// aapt resource value: 0x7f02002d
-			public const int texture_pattern = 2130837549;
+			public const int texture_pattern = 2130837545;
 			
 			static Drawable()
 			{
@@ -581,16 +569,19 @@ namespace Moyeu
 			public const int map = 2131099651;
 			
 			// aapt resource value: 0x7f060004
-			public const int pin = 2131099652;
+			public const int map_placeholder = 2131099652;
 			
 			// aapt resource value: 0x7f060005
-			public const int star_depressed = 2131099653;
+			public const int pin = 2131099653;
 			
 			// aapt resource value: 0x7f060006
-			public const int star_off = 2131099654;
+			public const int star_depressed = 2131099654;
 			
 			// aapt resource value: 0x7f060007
-			public const int star_on = 2131099655;
+			public const int star_off = 2131099655;
+			
+			// aapt resource value: 0x7f060008
+			public const int star_on = 2131099656;
 			
 			static Raw()
 			{

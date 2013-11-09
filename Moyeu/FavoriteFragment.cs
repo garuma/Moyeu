@@ -65,6 +65,7 @@ namespace Moyeu
 		List<Station> stations;
 		Context context;
 		XamSvg.PictureBitmapDrawable bikePicture;
+		XamSvg.PictureBitmapDrawable mapPlaceholder;
 
 		public FavoriteAdapter (Context context)
 		{
@@ -112,6 +113,9 @@ namespace Moyeu
 			if (bikePicture == null)
 				bikePicture = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.bike);
 			bikeImage.SetImageDrawable (bikePicture);
+			if (mapPlaceholder == null)
+				mapPlaceholder = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.map_placeholder);
+			mapView.SetImageDrawable (mapPlaceholder);
 
 			var station = stations [position];
 			view.Station = station;

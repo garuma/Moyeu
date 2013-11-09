@@ -10,7 +10,7 @@
         android:id="@+id/icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:src="@drawable/ic_action_rentals"
+        android:src="@android:color/transparent"
         android:layout_gravity="center" />
     <TextView
         android:id="@+id/text"
