@@ -73,7 +73,9 @@ namespace Moyeu
 				});
 
 				minutes -= 60;
-				color = Color.Rgb (color.R + 10, color.G + 10, color.B + 10);
+				color = Color.Rgb ((byte)Math.Max (0, color.R - 30),
+				                   (byte)Math.Max (0, color.G - 30),
+				                   (byte)Math.Max (0, color.B - 30));
 			}
 
 			// Draw chrome

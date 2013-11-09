@@ -226,7 +226,9 @@ namespace Moyeu
 			Context context;
 
 			Color basePriceColor = Color.Rgb (0x99, 0xcc, 0x00);
+			Color startPriceColor = Color.Rgb (0xb8, 0x9d, 0x2b);
 			Color endPriceColor = Color.Rgb (0xff, 0x44, 0x44);
+			const int MaxPriceForEnd = 30;
 
 			PictureBitmapDrawable bikeSeparatorDrawable;
 
@@ -315,7 +317,12 @@ namespace Moyeu
 						timePrimary.Text = rental.Duration.Minutes.ToString ("D2") + " min";
 						timeSecondary.Text = rental.Duration.Seconds.ToString ("D2") + " sec";
 					}
-					priceText.SetTextColor (InterpolateColor (rental.Price / 100, basePriceColor, endPriceColor));
+					var color = basePriceColor;
+					if (rental.Price > 0)
+						color = InterpolateColor (Math.Min (MaxPriceForEnd, rental.Price) / MaxPriceForEnd,
+						                          startPriceColor,
+						                          endPriceColor);
+					priceText.SetTextColor (color);
 					priceText.Text = rental.Price.ToString ("F2");
 					chronometer.Time = rental.Duration;
 
