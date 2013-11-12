@@ -92,7 +92,13 @@ namespace Moyeu
 					Visibility = ViewStates.Invisible;
 			} else {
 				isAnimating = true;
-				Animate ()
+				var duration = Context.Resources.GetInteger (Android.Resource.Integer.ConfigMediumAnimTime);
+				this.TranslationYAnimate (OffsetForState (newState), duration, interpolator, () => {
+					isAnimating = false;
+					if (state == State.Closed)
+						Visibility = ViewStates.Invisible;
+				});
+				/*Animate ()
 				.TranslationY (OffsetForState (newState))
 				.SetDuration (Context.Resources.GetInteger (Android.Resource.Integer.ConfigMediumAnimTime))
 				.SetInterpolator (interpolator)
@@ -101,7 +107,7 @@ namespace Moyeu
 					if (state == State.Closed)
 						Visibility = ViewStates.Invisible;
 				}))
-				.Start ();
+				.Start ();*/
 			}
 			if (StateChanged != null)
 				StateChanged (newState);

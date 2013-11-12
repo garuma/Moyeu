@@ -136,7 +136,7 @@ namespace Moyeu
 			starBtn.Click += HandleStarButtonChecked;
 			var mapBtn = pane.FindViewById<Button> (Resource.Id.gmapsBtn);
 			mapDrawable.SetBounds (0, 0, 32.ToPixels (), 32.ToPixels ());
-			mapBtn.SetCompoundDrawablesRelative (mapDrawable, null, null, null);
+			mapBtn.SetCompoundDrawables (mapDrawable, null, null, null);
 			mapBtn.CompoundDrawablePadding = 6.ToPixels ();
 			mapBtn.Click += HandleMapButtonClick;
 		}
