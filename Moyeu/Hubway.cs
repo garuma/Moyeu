@@ -45,8 +45,7 @@ namespace Moyeu
 		public string GeoUrl {
 			get {
 				var pos = Location.Lat + "," + Location.Lon;
-				var location = "geo:" + pos + "?q=" + pos;
-				// + "(" + Name.Replace (' ', '+') + ")";
+				var location = "geo:" + pos + "?q=" + pos + "(" + Name.Replace (' ', '+') + ")";
 				return location;
 			}
 		}
