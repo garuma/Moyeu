@@ -281,7 +281,7 @@ namespace Moyeu
 				return;
 			loading = true;
 			if (pane != null && pane.Opened)
-				pane.SetState (InfoPane.State.Closed);
+				pane.SetState (InfoPane.State.Closed, animated: false);
 			flashBar.ShowLoading ();
 
 			try {
