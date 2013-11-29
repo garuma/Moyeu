@@ -1,3 +1,6 @@
 [submodule "xamsvg"]
 	path = xamsvg
 	url = git://github.com/garuma/xamsvg.git
+[submodule "MobileHtmlAgilityPack"]
+	path = MobileHtmlAgilityPack
+	url = http://github.com/garuma/MobileHtmlAgilityPack.git
