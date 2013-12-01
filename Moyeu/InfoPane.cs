@@ -32,6 +32,7 @@ namespace Moyeu
 		ITimeInterpolator smoothInterpolator = new SmoothInterpolator ();
 		ITimeInterpolator overInterpolator = new Android.Views.Animations.OvershootInterpolator ();
 		VelocityTracker velocityTracker;
+		GestureDetector paneGestureDetector;
 		State stateBeforeTracking;
 		bool isTracking;
 		bool preTracking;
@@ -77,6 +78,12 @@ namespace Moyeu
 		public bool Opened {
 			get {
 				return state == State.Opened || state == State.FullyOpened;
+			}
+		}
+
+		public bool FullyOpened {
+			get {
+				return state == State.FullyOpened;
 			}
 		}
 
@@ -148,6 +155,12 @@ namespace Moyeu
 
 		public override bool OnTouchEvent (MotionEvent e)
 		{
+			if (paneGestureDetector == null) {
+				var l = new DoubleTapListener (() => SetState (Opened && FullyOpened ? State.Opened : State.FullyOpened));
+				paneGestureDetector = new GestureDetector (Context, l);
+			}
+			paneGestureDetector.OnTouchEvent (e);
+
 			e.OffsetLocation (0, TranslationY);
 			if (e.Action == MotionEventActions.Down) {
 				CaptureMovementCheck (e);
@@ -260,6 +273,22 @@ namespace Moyeu
 			public float GetInterpolation (float input)
 			{
 				return (float)Math.Pow (input - 1, 5) + 1;
+			}
+		}
+
+		class DoubleTapListener : GestureDetector.SimpleOnGestureListener
+		{
+			Action callback;
+
+			public DoubleTapListener (Action callback)
+			{
+				this.callback = callback;
+			}
+
+			public override bool OnDoubleTap (MotionEvent e)
+			{
+				callback ();
+				return true;
 			}
 		}
 	}
