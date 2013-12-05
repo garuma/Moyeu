@@ -124,7 +124,7 @@
             </LinearLayout>
         </LinearLayout>
         <ImageView
-            android:src="@drawable/station_lock"
+            android:src="@android:color/transparent"
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:id="@+id/stationLock"
