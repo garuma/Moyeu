@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moyeu", "Moyeu\Moyeu.csproj", "{12143BA7-FFC5-4E11-8B31-89A96247F504}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileHtmlAgilityPack", "MobileHtmlAgilityPack\MobileHtmlAgilityPack.csproj", "{87DC26FB-DB8B-4FC0-BE60-EFC12A8B935F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooglePlayServices", "GooglePlayServices\GooglePlayServices.csproj", "{2DDFEFA4-4944-42A7-971E-A2F751BA6036}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileHtmlAgilityPack", "MobileHtmlAgilityPack\MobileHtmlAgilityPack.csproj", "{D91DC8A9-454E-4CB9-96BE-19652A67D0A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamSvg", "xamsvg\XamSvg.csproj", "{B70EDB4C-A85E-45BE-A180-5B0462020C6F}"
 EndProject
@@ -19,18 +17,14 @@ Global
 		{12143BA7-FFC5-4E11-8B31-89A96247F504}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12143BA7-FFC5-4E11-8B31-89A96247F504}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12143BA7-FFC5-4E11-8B31-89A96247F504}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DDFEFA4-4944-42A7-971E-A2F751BA6036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DDFEFA4-4944-42A7-971E-A2F751BA6036}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DDFEFA4-4944-42A7-971E-A2F751BA6036}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DDFEFA4-4944-42A7-971E-A2F751BA6036}.Release|Any CPU.Build.0 = Release|Any CPU
-		{87DC26FB-DB8B-4FC0-BE60-EFC12A8B935F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{87DC26FB-DB8B-4FC0-BE60-EFC12A8B935F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{87DC26FB-DB8B-4FC0-BE60-EFC12A8B935F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{87DC26FB-DB8B-4FC0-BE60-EFC12A8B935F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B70EDB4C-A85E-45BE-A180-5B0462020C6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B70EDB4C-A85E-45BE-A180-5B0462020C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B70EDB4C-A85E-45BE-A180-5B0462020C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B70EDB4C-A85E-45BE-A180-5B0462020C6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D91DC8A9-454E-4CB9-96BE-19652A67D0A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D91DC8A9-454E-4CB9-96BE-19652A67D0A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D91DC8A9-454E-4CB9-96BE-19652A67D0A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D91DC8A9-454E-4CB9-96BE-19652A67D0A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Moyeu\Moyeu.csproj

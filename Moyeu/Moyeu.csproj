@@ -17,6 +17,7 @@
     <AssemblyName>Moyeu</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,7 +44,12 @@
     <Reference Include="Mono.Android" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="Mono.Android.Support.v4" />
+    <Reference Include="GooglePlayServicesLib">
+      <HintPath>..\Components\googleplayservices-13.0\lib\android\GooglePlayServicesLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v4">
+      <HintPath>..\Components\xamandroidsupportv4-18-4.18.1\lib\android\Xamarin.Android.Support.v4.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -155,12 +161,8 @@
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\MobileHtmlAgilityPack\MobileHtmlAgilityPack.csproj">
-      <Project>{87DC26FB-DB8B-4FC0-BE60-EFC12A8B935F}</Project>
+      <Project>{D91DC8A9-454E-4CB9-96BE-19652A67D0A4}</Project>
       <Name>MobileHtmlAgilityPack</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GooglePlayServices\GooglePlayServices.csproj">
-      <Project>{2DDFEFA4-4944-42A7-971E-A2F751BA6036}</Project>
-      <Name>GooglePlayServices</Name>
     </ProjectReference>
     <ProjectReference Include="..\xamsvg\XamSvg.csproj">
       <Project>{B70EDB4C-A85E-45BE-A180-5B0462020C6F}</Project>
@@ -179,5 +181,17 @@
     <Folder Include="Resources\raw\" />
     <Folder Include="Resources\animator\" />
     <Folder Include="Resources\drawable-xxhdpi\" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="googleplayservices">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>13.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="xamandroidsupportv4-18">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>4.18.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
   </ItemGroup>
 </Project>

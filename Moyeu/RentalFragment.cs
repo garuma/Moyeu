@@ -37,7 +37,7 @@ namespace Moyeu
 
 		public RentalFragment (Context context)
 		{
-			SetHasOptionsMenu (true);
+			HasOptionsMenu = true;
 		}
 
 		public string Name {

@@ -243,76 +243,70 @@ namespace Moyeu
 			public const int drawer_shadow = 2130837529;
 			
 			// aapt resource value: 0x7f02001a
-			public const int fire = 2130837530;
+			public const int flash_bar_background = 2130837530;
 			
 			// aapt resource value: 0x7f02001b
-			public const int flash_bar_background = 2130837531;
+			public const int ic_action_mylocation = 2130837531;
 			
 			// aapt resource value: 0x7f02001c
-			public const int ic_action_mylocation = 2130837532;
+			public const int ic_action_refresh = 2130837532;
 			
 			// aapt resource value: 0x7f02001d
-			public const int ic_action_refresh = 2130837533;
+			public const int ic_action_search = 2130837533;
 			
 			// aapt resource value: 0x7f02001e
-			public const int ic_action_search = 2130837534;
+			public const int ic_drawer = 2130837534;
 			
 			// aapt resource value: 0x7f02001f
-			public const int ic_drawer = 2130837535;
+			public const int ic_drawer_map = 2130837535;
 			
 			// aapt resource value: 0x7f020020
-			public const int ic_drawer_map = 2130837536;
+			public const int ic_drawer_rentals = 2130837536;
 			
 			// aapt resource value: 0x7f020021
-			public const int ic_drawer_rentals = 2130837537;
+			public const int ic_drawer_star = 2130837537;
 			
 			// aapt resource value: 0x7f020022
-			public const int ic_drawer_star = 2130837538;
+			public const int ic_plusone_medium_off_client = 2130837538;
 			
 			// aapt resource value: 0x7f020023
-			public const int ic_plusone_medium_off_client = 2130837539;
+			public const int ic_plusone_small_off_client = 2130837539;
 			
 			// aapt resource value: 0x7f020024
-			public const int ic_plusone_small_off_client = 2130837540;
+			public const int ic_plusone_standard_off_client = 2130837540;
 			
 			// aapt resource value: 0x7f020025
-			public const int ic_plusone_standard_off_client = 2130837541;
+			public const int ic_plusone_tall_off_client = 2130837541;
 			
 			// aapt resource value: 0x7f020026
-			public const int ic_plusone_tall_off_client = 2130837542;
+			public const int Icon = 2130837542;
 			
 			// aapt resource value: 0x7f020027
-			public const int Icon = 2130837543;
+			public const int info_pane_btn_bg = 2130837543;
 			
 			// aapt resource value: 0x7f020028
-			public const int info_pane_btn_bg = 2130837544;
+			public const int info_pane_header_bg = 2130837544;
 			
 			// aapt resource value: 0x7f020029
-			public const int info_pane_header_bg = 2130837545;
+			public const int info_pane_underline = 2130837545;
 			
 			// aapt resource value: 0x7f02002a
-			public const int info_pane_underline = 2130837546;
+			public const int pane_item_bg = 2130837546;
 			
 			// aapt resource value: 0x7f02002b
-			public const int pane_item_bg = 2130837547;
+			public const int pane_item_bg_normal = 2130837547;
 			
 			// aapt resource value: 0x7f02002c
-			public const int pane_item_bg_normal = 2130837548;
+			public const int pane_item_bg_selected = 2130837548;
 			
 			// aapt resource value: 0x7f02002d
-			public const int pane_item_bg_selected = 2130837549;
+			public const int pattern = 2130837549;
 			
 			// aapt resource value: 0x7f02002e
-			public const int pattern = 2130837550;
+			public const int texture_pattern = 2130837550;
 			
 			// aapt resource value: 0x7f02002f
-			public const int station_lock = 2130837551;
-			
-			// aapt resource value: 0x7f020030
-			public const int texture_pattern = 2130837552;
-			
-			// aapt resource value: 0x7f020031
-			public const int time_cell_bg = 2130837553;
+			public const int time_cell_bg = 2130837551;
 			
 			static Drawable()
 			{
@@ -480,14 +474,14 @@ namespace Moyeu
 			// aapt resource value: 0x7f08003f
 			public const int map = 2131230783;
 			
-			// aapt resource value: 0x7f080057
-			public const int menu_mylocation = 2131230807;
+			// aapt resource value: 0x7f08004b
+			public const int menu_mylocation = 2131230795;
 			
-			// aapt resource value: 0x7f080059
-			public const int menu_refresh = 2131230809;
+			// aapt resource value: 0x7f08004d
+			public const int menu_refresh = 2131230797;
 			
-			// aapt resource value: 0x7f080058
-			public const int menu_search = 2131230808;
+			// aapt resource value: 0x7f08004c
+			public const int menu_search = 2131230796;
 			
 			// aapt resource value: 0x7f080000
 			public const int none = 2131230720;
@@ -519,27 +513,6 @@ namespace Moyeu
 			// aapt resource value: 0x7f080002
 			public const int satellite = 2131230722;
 			
-			// aapt resource value: 0x7f08004d
-			public const int space1 = 2131230797;
-			
-			// aapt resource value: 0x7f08004f
-			public const int space2 = 2131230799;
-			
-			// aapt resource value: 0x7f080051
-			public const int space3 = 2131230801;
-			
-			// aapt resource value: 0x7f080053
-			public const int space4 = 2131230803;
-			
-			// aapt resource value: 0x7f08004b
-			public const int space5 = 2131230795;
-			
-			// aapt resource value: 0x7f080055
-			public const int space6 = 2131230805;
-			
-			// aapt resource value: 0x7f080056
-			public const int space7 = 2131230806;
-			
 			// aapt resource value: 0x7f080023
 			public const int stationLock = 2131230755;
 			
@@ -561,15 +534,6 @@ namespace Moyeu
 			// aapt resource value: 0x7f080024
 			public const int textView1 = 2131230756;
 			
-			// aapt resource value: 0x7f080050
-			public const int textView10 = 2131230800;
-			
-			// aapt resource value: 0x7f080052
-			public const int textView11 = 2131230802;
-			
-			// aapt resource value: 0x7f080054
-			public const int textView12 = 2131230804;
-			
 			// aapt resource value: 0x7f080017
 			public const int textView2 = 2131230743;
 			
@@ -581,12 +545,6 @@ namespace Moyeu
 			
 			// aapt resource value: 0x7f080035
 			public const int textView7 = 2131230773;
-			
-			// aapt resource value: 0x7f08004c
-			public const int textView8 = 2131230796;
-			
-			// aapt resource value: 0x7f08004e
-			public const int textView9 = 2131230798;
 			
 			// aapt resource value: 0x7f08000f
 			public const int titleText = 2131230735;
@@ -652,9 +610,6 @@ namespace Moyeu
 			
 			// aapt resource value: 0x7f030008
 			public const int RentalItem = 2130903048;
-			
-			// aapt resource value: 0x7f030009
-			public const int TestLayout = 2130903049;
 			
 			static Layout()
 			{

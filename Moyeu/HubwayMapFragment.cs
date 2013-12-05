@@ -25,7 +25,7 @@ using XamSvg;
 
 namespace Moyeu
 {
-	public class HubwayMapFragment : Android.Support.V4.App.Fragment, ViewTreeObserver.IOnGlobalLayoutListener, IMoyeuSection
+	public class HubwayMapFragment: Android.Support.V4.App.Fragment, ViewTreeObserver.IOnGlobalLayoutListener, IMoyeuSection
 	{
 		Dictionary<int, Marker> existingMarkers = new Dictionary<int, Marker> ();
 		Marker locationPin;
@@ -53,7 +53,7 @@ namespace Moyeu
 			MapsInitializer.Initialize (context);
 			this.pinFactory = new PinFactory (context);
 			this.favManager = FavoriteManager.Obtain (context);
-			SetHasOptionsMenu (true);
+			HasOptionsMenu = true;
 		}
 
 		public string Name {
@@ -107,11 +107,16 @@ namespace Moyeu
 			mapFragment = view.FindViewById<MapView> (Resource.Id.map);
 			mapFragment.OnCreate (savedInstanceState);
 			lastUpdateText = view.FindViewById<TextView> (Resource.Id.UpdateTimeText);
+			SetupInfoPane (view);
+			flashBar = new FlashBarController (view);
+			return view;
+		}
+
+		void SetupInfoPane (View view)
+		{
 			pane = view.FindViewById<InfoPane> (Resource.Id.infoPane);
 			pane.StateChanged += HandlePaneStateChanged;
 			view.ViewTreeObserver.AddOnGlobalLayoutListener (this);
-			flashBar = new FlashBarController (view);
-			return view;
 		}
 
 		public override void OnViewCreated (View view, Bundle savedInstanceState)

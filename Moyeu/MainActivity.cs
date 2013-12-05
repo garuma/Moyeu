@@ -68,13 +68,13 @@ namespace Moyeu
 			                                              Resource.String.close_drawer) {
 				OpenCallback = () => {
 					ActionBar.Title = Title;
-					currentFragment.SetHasOptionsMenu (false);
+					currentFragment.HasOptionsMenu = false;
 					InvalidateOptionsMenu ();
 				},
 				CloseCallback = () => {
 					if (currentFragment != null) {
 						ActionBar.Title = ((IMoyeuSection)currentFragment).Title;
-						currentFragment.SetHasOptionsMenu (true);
+						currentFragment.HasOptionsMenu = true;
 					}
 					InvalidateOptionsMenu ();
 				},
