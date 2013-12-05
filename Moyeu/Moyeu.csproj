@@ -145,7 +145,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_refresh.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_search.png" />
     <AndroidResource Include="Resources\raw\map_placeholder.svg" />
-    <AndroidResource Include="Resources\layout\TestLayout.axml" />
     <AndroidResource Include="Resources\drawable\info_pane_underline.xml" />
     <AndroidResource Include="Resources\raw\station_lock.svg" />
     <AndroidResource Include="Resources\raw\pin_locked.svg" />
