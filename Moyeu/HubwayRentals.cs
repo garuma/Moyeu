@@ -82,7 +82,7 @@ namespace Moyeu
 
 					var doc = new HtmlDocument ();
 					doc.LoadHtml (answer);
-					var div = doc.GetElementbyId ("content");
+					var div = doc.GetElementById ("content");
 					var table = div.Element ("table");
 					return table.Element ("tbody").Elements ("tr").Select (row => {
 						var items = row.Elements ("td").ToArray ();
