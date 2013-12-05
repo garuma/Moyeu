@@ -53,8 +53,8 @@ namespace Moyeu
 		async Task<Bitmap> LoadInternal (string url, BitmapCache cache)
 		{
 			try {
-				var data = await client.GetByteArrayAsync (url);
-				var bmp = await BitmapFactory.DecodeByteArrayAsync (data, 0, data.Length);
+				var data = await client.GetByteArrayAsync (url).ConfigureAwait (false);
+				var bmp = BitmapFactory.DecodeByteArray (data, 0, data.Length);
 				cache.AddOrUpdate (url, bmp, TimeSpan.FromDays (90));
 				return bmp;
 			} catch (Exception e) {
