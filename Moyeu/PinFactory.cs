@@ -14,6 +14,7 @@ namespace Moyeu
 	public class PinFactory
 	{
 		Dictionary<int, Bitmap> pinCache = new Dictionary<int, Bitmap> ();
+		Bitmap closedPin;
 
 		readonly Color baseLightGreenColor = Color.Rgb (0x99, 0xcc, 0x00);
 		readonly Color baseLightRedColor = Color.Rgb (0xff, 0x44, 0x44);
@@ -63,6 +64,11 @@ namespace Moyeu
 
 			pinCache [key] = bmp;
 			return bmp;
+		}
+
+		public Bitmap GetClosedPin (int width, int height)
+		{
+			return closedPin ?? (closedPin = SvgFactory.GetBitmap (context.Resources, Resource.Raw.pin_locked, width, height));
 		}
 
 		Color ColorReplacer (Color inColor, float variant, float alpha)

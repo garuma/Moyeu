@@ -70,6 +70,7 @@
     <Compile Include="GoogleApis.cs" />
     <Compile Include="IMoyeuSection.cs" />
     <Compile Include="AndroidExtensions.cs" />
+    <Compile Include="HubwayHistory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -125,7 +126,6 @@
     <AndroidResource Include="Resources\drawable-nodpi\pane_item_bg_normal.9.png" />
     <AndroidResource Include="Resources\drawable-nodpi\pane_item_bg_selected.9.png" />
     <AndroidResource Include="Resources\drawable-nodpi\pane_item_bg.xml" />
-    <AndroidResource Include="Resources\raw\map.svg" />
     <AndroidResource Include="Resources\drawable-xxhdpi\Icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_action_mylocation.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_action_refresh.png" />
@@ -145,6 +145,13 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_refresh.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_search.png" />
     <AndroidResource Include="Resources\raw\map_placeholder.svg" />
+    <AndroidResource Include="Resources\layout\TestLayout.axml" />
+    <AndroidResource Include="Resources\drawable\info_pane_underline.xml" />
+    <AndroidResource Include="Resources\raw\station_lock.svg" />
+    <AndroidResource Include="Resources\raw\pin_locked.svg" />
+    <AndroidResource Include="Resources\drawable\time_cell_bg.xml" />
+    <AndroidResource Include="Resources\raw\bike_number.svg" />
+    <AndroidResource Include="Resources\raw\clock.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>

@@ -31,6 +31,7 @@ namespace Moyeu
 		Marker locationPin;
 		MapView mapFragment;
 		Hubway hubway = Hubway.Instance;
+		HubwayHistory hubwayHistory = new HubwayHistory ();
 
 		bool loading;
 		bool showedStale;
@@ -127,17 +128,19 @@ namespace Moyeu
 			// Setup info pane
 			var bikeDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.bike);
 			var lockDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.ic_lock);
-			var mapDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.map);
+			var stationLockDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.station_lock);
+			var bikeNumberDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.bike_number);
+			var clockDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.clock);
 			starOnDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.star_on);
 			starOffDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.star_off);
 			pane.FindViewById<ImageView> (Resource.Id.bikeImageView).SetImageDrawable (bikeDrawable);
 			pane.FindViewById<ImageView> (Resource.Id.lockImageView).SetImageDrawable (lockDrawable);
+			pane.FindViewById<ImageView> (Resource.Id.stationLock).SetImageDrawable (stationLockDrawable);
+			pane.FindViewById<ImageView> (Resource.Id.bikeNumberImg).SetImageDrawable (bikeNumberDrawable);
+			pane.FindViewById<ImageView> (Resource.Id.clockImg).SetImageDrawable (clockDrawable);
 			var starBtn = pane.FindViewById<ImageButton> (Resource.Id.StarButton);
 			starBtn.Click += HandleStarButtonChecked;
-			var mapBtn = pane.FindViewById<Button> (Resource.Id.gmapsBtn);
-			mapDrawable.SetBounds (0, 0, 32.ToPixels (), 32.ToPixels ());
-			mapBtn.SetCompoundDrawables (mapDrawable, null, null, null);
-			mapBtn.CompoundDrawablePadding = 6.ToPixels ();
+			var mapBtn = pane.FindViewById (Resource.Id.gmapsBtn);
 			mapBtn.Click += HandleMapButtonClick;
 		}
 
@@ -311,10 +314,14 @@ namespace Moyeu
 			}).ToArray ();
 
 			var pins = await Task.Run (() => stationsToUpdate.ToDictionary (station => station.Id, station => {
+				var w = 24.ToPixels ();
+				var h = 40.ToPixels ();
+				if (station.Locked)
+					return pinFactory.GetClosedPin (w, h);
 				var ratio = (float)TruncateDigit (station.BikeCount / ((float)station.Capacity), 2);
 				return pinFactory.GetPin (ratio,
 				                          station.BikeCount,
-				                          24.ToPixels (), 40.ToPixels (),
+				                          w, h,
 				                          alpha: alpha);
 			}));
 
@@ -323,7 +330,7 @@ namespace Moyeu
 
 				var markerOptions = new MarkerOptions ()
 					.SetTitle (station.Id + "|" + station.Name)
-					.SetSnippet (station.BikeCount + "|" + station.EmptySlotCount)
+					.SetSnippet (station.Locked ? string.Empty : station.BikeCount + "|" + station.EmptySlotCount)
 					.SetPosition (new Android.Gms.Maps.Model.LatLng (station.Location.Lat, station.Location.Lon))
 					.InvokeIcon (BitmapDescriptorFactory.FromBitmap (pin));
 				existingMarkers [station.Id] = mapFragment.Map.AddMarker (markerOptions);
@@ -369,9 +376,14 @@ namespace Moyeu
 			currentShownID = int.Parse (splitTitle [0]);
 			currentShownMarker = marker;
 
-			var splitNumbers = marker.Snippet.Split ('|');
-			bikes.Text = splitNumbers [0];
-			slots.Text = splitNumbers [1];
+			var isLocked = string.IsNullOrEmpty (marker.Snippet);
+			pane.FindViewById (Resource.Id.stationStats).Visibility = isLocked ? ViewStates.Gone : ViewStates.Visible;
+			pane.FindViewById (Resource.Id.stationLock).Visibility = isLocked ? ViewStates.Visible : ViewStates.Gone;
+			if (!isLocked) {
+				var splitNumbers = marker.Snippet.Split ('|');
+				bikes.Text = splitNumbers [0];
+				slots.Text = splitNumbers [1];
+			}
 
 			var favs = favManager.LastFavorites ?? favManager.GetFavoriteStationIds ();
 			bool activated = favs.Contains (currentShownID);
@@ -393,7 +405,63 @@ namespace Moyeu
 				api.LoadStreetView (marker.Position, this, currentShownID, svSpinner, svImg);
 			}
 
+			LoadStationHistory (currentShownID);
+
 			pane.SetState (InfoPane.State.Opened);
+		}
+
+		async void LoadStationHistory (int stationID)
+		{
+			const char DownArrow = '↘';
+			const char UpArrow = '↗';
+
+			var historyTimes = new int[] {
+				Resource.Id.historyTime1,
+				Resource.Id.historyTime2,
+				Resource.Id.historyTime3,
+				Resource.Id.historyTime4,
+				Resource.Id.historyTime5
+			};
+			var historyValues = new int[] {
+				Resource.Id.historyValue1,
+				Resource.Id.historyValue2,
+				Resource.Id.historyValue3,
+				Resource.Id.historyValue4,
+				Resource.Id.historyValue5
+			};
+
+			foreach (var ht in historyTimes)
+				pane.FindViewById<TextView> (ht).Text = "-:-";
+			foreach (var hv in historyValues) {
+				var v = pane.FindViewById<TextView> (hv);
+				v.Text = "-";
+				v.SetTextColor (Color.Rgb (0x90, 0x90, 0x90));
+			}
+			var history = (await hubwayHistory.GetStationHistory (stationID)).ToArray ();
+			if (stationID != currentShownID || history.Length == 0)
+				return;
+
+			var previousValue = history [0].Value;
+			for (int i = 0; i < Math.Min (historyTimes.Length, history.Length - 1); i++) {
+				var h = history [i + 1];
+
+				var timeText = pane.FindViewById<TextView> (historyTimes [i]);
+				var is24 = Android.Text.Format.DateFormat.Is24HourFormat (Activity);
+				timeText.Text = h.Key.ToLocalTime ().ToString ((is24 ? "HH" : "hh") + ":mm");
+
+				var valueText = pane.FindViewById<TextView> (historyValues [i]);
+				var comparison = h.Value.CompareTo (previousValue);
+				if (comparison == 0) {
+					valueText.Text = "=";
+				} else if (comparison > 0) {
+					valueText.Text = (h.Value - previousValue).ToString () + UpArrow;
+					valueText.SetTextColor (Color.Rgb (0x66, 0x99, 0x00));
+				} else {
+					valueText.Text = (previousValue - h.Value).ToString () + DownArrow;
+					valueText.SetTextColor (Color.Rgb (0xcc, 00, 00));
+				}
+				previousValue = h.Value;
+			}
 		}
 
 		public void CenterMapOnLocation (LatLng latLng)
