@@ -2,11 +2,11 @@
 
 Moyeu is an Android application built with [Xamarin.Android](http://xamarin.com/monoforandroid) to visualize Boston's [Hubway](http://thehubway.com/) bike sharing system.
 
-## Building
+## Building/Running
 
-To build Moyeu you need to follow the instruction on how to setup [Google Play Services](https://github.com/xamarin/monodroid-samples/tree/master/GooglePlayServices) (used for the Google Maps v2 API).
+Every dependency is part of the project either as a submodule or a component.
 
-Since you are going to use Google API, you also need to [setup an API key](https://developers.google.com/maps/documentation/android/start#the_google_maps_api_key) with them.
+Still, since some Google API are used, to properly run the code you need to [setup an API key](https://developers.google.com/maps/documentation/android/start#the_google_maps_api_key) with them.
 
 ## License
 
