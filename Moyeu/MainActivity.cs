@@ -43,7 +43,6 @@ namespace Moyeu
 		HubwayMapFragment mapFragment;
 		FavoriteFragment favoriteFragment;
 		RentalFragment rentalFragment;
-		Android.Support.V4.App.Fragment currentFragment;
 
 		DrawerLayout drawer;
 		ActionBarDrawerToggle drawerToggle;
@@ -52,6 +51,16 @@ namespace Moyeu
 
 		DrawerAroundAdapter aroundAdapter;
 		LocationClient locationClient;
+
+		Android.Support.V4.App.Fragment CurrentFragment {
+			get {
+				return new Android.Support.V4.App.Fragment[] {
+					mapFragment,
+					favoriteFragment,
+					rentalFragment
+				}.FirstOrDefault (f => f != null && f.IsAdded && f.IsVisible);
+			}
+		}
 
 		protected override void OnCreate (Bundle bundle)
 		{
@@ -68,10 +77,11 @@ namespace Moyeu
 			                                              Resource.String.close_drawer) {
 				OpenCallback = () => {
 					ActionBar.Title = Title;
-					currentFragment.HasOptionsMenu = false;
+					CurrentFragment.HasOptionsMenu = false;
 					InvalidateOptionsMenu ();
 				},
 				CloseCallback = () => {
+					var currentFragment = CurrentFragment;
 					if (currentFragment != null) {
 						ActionBar.Title = ((IMoyeuSection)currentFragment).Title;
 						currentFragment.HasOptionsMenu = true;
@@ -108,7 +118,6 @@ namespace Moyeu
 				ActionBar.Title = ((IMoyeuSection)mapFragment).Title;
 			}
 		}
-
 
 		void HandleAroundItemClick (object sender, AdapterView.ItemClickEventArgs e)
 		{
@@ -160,9 +169,9 @@ namespace Moyeu
 				return;
 			var name = section.Name;
 			var t = SupportFragmentManager.BeginTransaction ();
+			var currentFragment = CurrentFragment;
 			if (currentFragment == null) {
 				t.Add (Resource.Id.content_frame, fragment, name);
-				currentFragment = fragment;
 			} else {
 				t.SetCustomAnimations (Resource.Animator.frag_slide_in,
 				                       Resource.Animator.frag_slide_out);
@@ -170,17 +179,14 @@ namespace Moyeu
 				if (existingFragment != null)
 					existingFragment.View.BringToFront ();
 				currentFragment.View.BringToFront ();
-				t.Hide (currentFragment);
+				t.Hide (CurrentFragment);
 				if (existingFragment != null) {
 					t.Show (existingFragment);
-					currentFragment = existingFragment;
 				} else {
 					t.Add (Resource.Id.content_frame, fragment, name);
-					currentFragment = fragment;
 				}
 				section.RefreshData ();
 			}
-			t.AddToBackStack (null);
 			t.Commit ();
 		}
 
