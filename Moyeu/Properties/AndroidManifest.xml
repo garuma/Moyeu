@@ -5,6 +5,7 @@
 	<permission android:name="org.neteril.Moyeu.permission.MAPS_RECEIVE" android:protectionLevel="signature" />
 	<application android:label="Moyeu" android:icon="@drawable/icon">
 		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="..." />
+		<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 	</application>
 	<uses-permission android:name="org.neteril.Moyeu.permission.MAPS_RECEIVE" />
 	<uses-permission android:name="android.permission.INTERNET" />
