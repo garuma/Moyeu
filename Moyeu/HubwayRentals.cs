@@ -30,8 +30,8 @@ namespace Moyeu
 
 	public class HubwayRentals
 	{
-		const string HubwayLoginUrl = "https://thehubway.com/login";
-		const string HubwayRentalsUrl = "https://thehubway.com/member/rentals";
+		const string HubwayLoginUrl = "https://www.thehubway.com/login";
+		const string HubwayRentalsUrl = "https://www.thehubway.com/member/rentals";
 
 		CookieContainer cookies;
 		RentalCrendentials credentials;
