@@ -193,9 +193,11 @@ namespace Moyeu
 		public static string CutStationName (string rawStationName, out string secondPart)
 		{
 			secondPart = string.Empty;
-			var nameParts = rawStationName.Split (new string[] { "-", " at " }, StringSplitOptions.RemoveEmptyEntries);
+			var nameParts = rawStationName.Split (new string[] { "-", " at " , "/ ", " / " }, StringSplitOptions.RemoveEmptyEntries);
 			if (nameParts.Length > 1)
 				secondPart = string.Join (", ", nameParts.Skip (1)).Trim ();
+			else
+				secondPart = nameParts [0].Trim ();
 			return nameParts [0].Trim ();
 		}
 
