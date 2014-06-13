@@ -11,6 +11,9 @@
         android:layout_height="68dp"
         android:layout_width="match_parent"
         android:background="@drawable/info_pane_header_bg"
+        android:divider="@drawable/info_pane_vert_divider"
+        android:showDividers="middle"
+        android:dividerPadding="6dp"
         android:id="@+id/PaneHeaderView">
         <ImageButton
             android:layout_width="68dp"
@@ -20,18 +23,13 @@
             android:id="@+id/StarButton"
             android:background="@drawable/info_pane_btn_bg"
             android:layout_gravity="center" />
-        <View
-            android:background="#eeeeee"
-            android:layout_height="match_parent"
-            android:layout_width="1dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginRight="12dp" />
         <LinearLayout
             android:orientation="vertical"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_weight="1">
             <TextView
                 android:id="@+id/InfoViewName"
@@ -53,13 +51,6 @@
                 android:ellipsize="marquee"
                 android:textSize="16sp" />
         </LinearLayout>
-        <View
-            android:background="#eeeeee"
-            android:layout_height="match_parent"
-            android:layout_width="1dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="12dp" />
         <LinearLayout
             android:orientation="vertical"
             android:layout_marginRight="8dp"
@@ -72,7 +63,6 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/linearLayout2"
                 android:layout_gravity="center">
                 <TextView
                     android:text="8"
@@ -99,7 +89,6 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/linearLayout3"
                 android:layout_gravity="center">
                 <TextView
                     android:text="6"
@@ -144,31 +133,22 @@
             android:text="Activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView1"
-            android:textAllCaps="true"
-            android:textSize="10sp"
-            android:textColor="#ff656565"
-            android:layout_marginLeft="8dp"
-            android:background="@drawable/info_pane_underline"
-            android:layout_marginRight="8dp"
-            android:paddingBottom="2dp"
-            android:layout_marginTop="8dp" />
+            style="@style/info_pane_section" />
         <LinearLayout
             android:orientation="vertical"
             android:minHeight="25px"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout4"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp">
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="4dp">
             <LinearLayout
                 android:orientation="horizontal"
                 android:minWidth="25px"
                 android:minHeight="25px"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/linearLayout5"
                 android:background="@drawable/time_cell_bg"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp">
@@ -181,50 +161,20 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="8dp" />
                 <TextView
-                    android:text="-:-"
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
                     android:id="@+id/historyTime1"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="10sp" />
+                    style="@style/activity_time_entry" />
                 <TextView
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
                     android:id="@+id/historyTime2"
-                    android:text="-:-"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="10sp" />
+                    style="@style/activity_time_entry" />
                 <TextView
-                    android:text="-:-"
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
                     android:id="@+id/historyTime3"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="10sp"
-                    android:gravity="center" />
+                    style="@style/activity_time_entry" />
                 <TextView
-                    android:text="-:-"
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
                     android:id="@+id/historyTime4"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="10sp" />
+                    style="@style/activity_time_entry" />
                 <TextView
-                    android:text="-:-"
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
                     android:id="@+id/historyTime5"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="10sp" />
+                    style="@style/activity_time_entry" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -233,8 +183,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:id="@+id/linearLayout5">
+                android:paddingRight="4dp">
                 <ImageView
                     android:src="@android:drawable/ic_menu_gallery"
                     android:layout_width="24dp"
@@ -244,66 +193,27 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="8dp" />
                 <TextView
-                    android:text="-"
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
                     android:id="@+id/historyValue1"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="14sp" />
+                    style="@style/activity_number_entry" />
                 <TextView
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
                     android:id="@+id/historyValue2"
-                    android:text="-"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="14sp" />
+                    style="@style/activity_number_entry" />
                 <TextView
-                    android:text="-"
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
                     android:id="@+id/historyValue3"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:textSize="14sp" />
+                    style="@style/activity_number_entry" />
                 <TextView
-                    android:text="-"
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
                     android:id="@+id/historyValue4"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="14sp" />
+                    style="@style/activity_number_entry" />
                 <TextView
-                    android:text="-"
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
                     android:id="@+id/historyValue5"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="14sp" />
+                    style="@style/activity_number_entry" />
             </LinearLayout>
         </LinearLayout>
         <TextView
             android:text="Location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView1"
-            android:textAllCaps="true"
-            android:textSize="10sp"
-            android:textColor="#ff656565"
-            android:drawablePadding="12dp"
-            android:layout_marginLeft="8dp"
-            android:background="@drawable/info_pane_underline"
-            android:layout_marginRight="8dp"
-            android:paddingBottom="2dp"
-            android:layout_marginTop="8dp" />
+            style="@style/info_pane_section" />
         <FrameLayout
             android:paddingBottom="4dp"
             android:id="@+id/gmapsBtn"
@@ -337,6 +247,6 @@
             android:gravity="center"
             android:textColor="#666666"
             android:textSize="10sp"
-            android:layout_marginBottom="32dp" />
+            android:layout_marginBottom="24dp" />
     </LinearLayout>
 </moyeu.InfoPane>

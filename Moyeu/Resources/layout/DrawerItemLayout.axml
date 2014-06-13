@@ -1,26 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@android:color/transparent"
-        android:layout_gravity="center" />
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Map"
-        android:layout_marginLeft="12dp"
-        android:textSize="20sp"
-        android:ellipsize="marquee"
-        android:textColor="#ffffffff"
-        style="@style/drawer_item_shadow" />
-</LinearLayout>
+    android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:fontFamily="sans-serif-light"
+    android:text="Map"
+    android:textSize="22sp"
+    android:textColor="@android:color/white"
+    android:drawablePadding="12dp"
+    style="@style/drawer_item_shadow" />

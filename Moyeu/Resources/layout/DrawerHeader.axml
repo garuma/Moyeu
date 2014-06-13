@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:text="Around you"
+    android:background="@drawable/drawer_header_underline"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:fontFamily="sans-serif-condensed"
+    android:id="@+id/titleText"
+    android:textAllCaps="true"
+    android:textColor="@android:color/white"
+    android:textStyle="bold"
+    android:textSize="11sp"
+    android:layout_marginRight="8dp"
+    android:layout_marginLeft="4dp"
     android:paddingLeft="4dp"
-    android:paddingRight="4dp">
-    <TextView
-        android:text="Sections"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/titleText"
-        android:textAllCaps="true"
-        android:textColor="#ffffffff"
-        android:textStyle="bold"
-        android:textSize="11sp"
-        android:layout_marginBottom="2dp" />
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:id="@+id/view1"
-        android:background="#ffffffff" />
-</LinearLayout>
+    android:paddingBottom="2dp"
+    android:layout_marginBottom="4dp" />

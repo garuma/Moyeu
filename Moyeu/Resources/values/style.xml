@@ -6,5 +6,43 @@
         <item name="android:shadowDy">-1</item>
         <item name="android:shadowRadius">0.1</item>
     </style>
+
 	<color name="pane_btn_bg_selected">#9099cc00</color>
+	<color name="swipe_refresh_color_main">#00C81C</color>
+	<color name="swipe_refresh_color_shade1">#00AE18</color>
+	<color name="swipe_refresh_color_shade2">#00D51E</color>
+	<color name="swipe_refresh_color_shade3">#008813</color>
+
+	<style name="info_pane_section">
+		<item name="android:fontFamily">sans-serif-condensed</item>
+		<item name="android:textAllCaps">true</item>
+		<item name="android:textSize">9sp</item>
+		<item name="android:textColor">#666666</item>
+		<item name="android:layout_marginLeft">8dp</item>
+		<item name="android:background">@drawable/info_pane_underline</item>
+		<item name="android:layout_marginRight">12dp</item>
+		<item name="android:paddingBottom">2dp</item>
+		<item name="android:paddingLeft">4dp</item>
+		<item name="android:layout_marginTop">8dp</item>
+	</style>
+
+	<style name="activity_time_entry">
+		<item name="android:text">-:-</item>
+		<item name="android:layout_width">0px</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:gravity">center</item>
+		<item name="android:layout_gravity">center_vertical</item>
+		<item name="android:textSize">10sp</item>
+	</style>
+
+	<style name="activity_number_entry">
+		<item name="android:text">-</item>
+		<item name="android:layout_width">0px</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:gravity">center</item>
+		<item name="android:layout_gravity">center_vertical</item>
+		<item name="android:textSize">14sp</item>
+	</style>
 </resources>

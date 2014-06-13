@@ -3,24 +3,18 @@
     android:orientation="vertical"
     android:layout_width="240dp"
     android:layout_height="fill_parent"
-    android:background="@drawable/texture_pattern"
-    android:minWidth="25px"
-    android:minHeight="25px">
+    android:paddingRight="8dp"
+    android:paddingLeft="8dp">
     <LinearLayout
         android:orientation="horizontal"
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout1"
-        android:padding="4dp">
+        android:layout_height="wrap_content">
         <LinearLayout
             android:orientation="vertical"
-            android:minWidth="25px"
-            android:minHeight="25px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout2"
             android:layout_gravity="center"
             android:layout_weight="1">
             <TextView
@@ -43,11 +37,8 @@
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
-            android:minWidth="25px"
-            android:minHeight="25px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout3"
             android:layout_gravity="center"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp">
@@ -63,6 +54,7 @@
                 android:textStyle="bold" />
             <TextView
                 android:text="bikes"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView4"
@@ -73,11 +65,8 @@
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
-            android:minWidth="25px"
-            android:minHeight="25px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout4"
             android:layout_gravity="center"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp">
@@ -93,6 +82,7 @@
                 android:textStyle="bold" />
             <TextView
                 android:text="racks"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView4"
@@ -107,7 +97,6 @@
             android:layout_height="12dp"
             android:id="@+id/aroundStar"
             android:alpha="0.2"
-            android:scaleType="fitXY"
-            android:layout_marginLeft="4dp" />
+            android:scaleType="fitXY" />
     </LinearLayout>
 </LinearLayout>

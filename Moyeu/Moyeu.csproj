@@ -94,7 +94,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\Icon.png" />
     <AndroidResource Include="Resources\drawable-mdpi\Icon.png" />
     <AndroidResource Include="Resources\layout\RentalItem.axml" />
-    <AndroidResource Include="Resources\menu\rentals_menu.xml" />
     <AndroidResource Include="Resources\drawable-nodpi\background.9.png" />
     <AndroidResource Include="Resources\layout\LoginDialogLayout.axml" />
     <AndroidResource Include="Resources\raw\bike_separator.svg" />
@@ -124,7 +123,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_drawer_map.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_drawer_rentals.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_drawer_star.png" />
-    <AndroidResource Include="Resources\layout\DrawerHeader.axml" />
     <AndroidResource Include="Resources\layout\DrawerAroundItem.axml" />
     <AndroidResource Include="Resources\raw\star_depressed.svg" />
     <AndroidResource Include="Resources\values\style.xml" />
@@ -160,6 +158,9 @@
     <AndroidResource Include="Resources\raw\bike_number.svg" />
     <AndroidResource Include="Resources\raw\clock.svg" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\layout\DrawerHeader.axml" />
+    <AndroidResource Include="Resources\drawable\info_pane_vert_divider.xml" />
+    <AndroidResource Include="Resources\drawable\drawer_header_underline.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>

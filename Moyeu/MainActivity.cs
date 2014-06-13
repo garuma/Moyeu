@@ -98,16 +98,11 @@ namespace Moyeu
 			FavoriteManager.FavoritesChanged += (sender, e) => aroundAdapter.Refresh ();
 
 			drawerMenu = FindViewById<ListView> (Resource.Id.left_drawer);
-			var header = LayoutInflater.Inflate (Resource.Layout.DrawerHeader, drawerMenu, false);
-			header.FindViewById<TextView> (Resource.Id.titleText).Text = "Sections";
-			drawerMenu.AddHeaderView (header, null, false);
+			drawerMenu.AddFooterView (new Space (this));
 			drawerMenu.ItemClick += HandleSectionItemClick;
 			drawerMenu.Adapter = new DrawerMenuAdapter (this);
 
 			drawerAround = FindViewById<ListView> (Resource.Id.left_drawer_around);
-			header = LayoutInflater.Inflate (Resource.Layout.DrawerHeader, drawerAround, false);
-			header.FindViewById<TextView> (Resource.Id.titleText).Text = "Around You";
-			drawerAround.AddHeaderView (header, null, false);
 			drawerAround.ItemClick += HandleAroundItemClick;
 			drawerAround.Adapter = aroundAdapter = new DrawerAroundAdapter (this);
 
@@ -131,13 +126,13 @@ namespace Moyeu
 
 		void HandleSectionItemClick (object sender, AdapterView.ItemClickEventArgs e)
 		{
-			switch (e.Position - 1) {
-			case 1:
+			switch (e.Position) {
+			case 0:
 				if (mapFragment == null)
 					mapFragment = new HubwayMapFragment (this);
 				SwitchTo (mapFragment);
 				break;
-			case 2:
+			case 1:
 				if (favoriteFragment == null) {
 					favoriteFragment = new FavoriteFragment (this, id => {
 						SwitchTo (mapFragment);
@@ -148,7 +143,7 @@ namespace Moyeu
 				}
 				SwitchTo (favoriteFragment);
 				break;
-			case 3:
+			case 2:
 				if (rentalFragment == null)
 					rentalFragment = new RentalFragment (this);
 				SwitchTo (rentalFragment);
@@ -156,6 +151,7 @@ namespace Moyeu
 			default:
 				return;
 			}
+			SetSelectedMenuIndex (e.Position);
 			drawerMenu.SetItemChecked (e.Position, true);
 			drawer.CloseDrawers ();
 		}
@@ -188,6 +184,15 @@ namespace Moyeu
 				section.RefreshData ();
 			}
 			t.Commit ();
+		}
+
+		void SetSelectedMenuIndex (int pos)
+		{
+			for (int i = 0; i < 3; i++) {
+				var text = (TextView)drawerMenu.GetChildAt (i);
+				var tf = text.Typeface;
+				text.SetTypeface (tf, i == pos ? TypefaceStyle.Bold : TypefaceStyle.Normal);
+			}
 		}
 
 		protected override void OnPostCreate (Bundle savedInstanceState)
@@ -334,39 +339,23 @@ namespace Moyeu
 
 		public override View GetView (int position, View convertView, ViewGroup parent)
 		{
-			if (position == 0 || position > sections.Length) {
-				var space = new Space (context);
-				space.SetMinimumHeight ((Math.Min (3, position + 1) * 8).ToPixels ());
-				return space;
-			}
-			var view = convertView;
-			if (view == null) {
+			var text = convertView as TextView;
+			if (text == null) {
 				var inflater = context.GetSystemService (Context.LayoutInflaterService).JavaCast<LayoutInflater> ();
-				view = inflater.Inflate (Resource.Layout.DrawerItemLayout, parent, false);
+				text = (TextView)inflater.Inflate (Resource.Layout.DrawerItemLayout, parent, false);
 			}
-			var icon = view.FindViewById<ImageView> (Resource.Id.icon);
-			var text = view.FindViewById<TextView> (Resource.Id.text);
+			// Initial menu initialization, put the first item as selected
+			if (position == 0 && convertView == null)
+				text.SetTypeface (text.Typeface, TypefaceStyle.Bold);
+			text.Text = sections [position].Item2;
+			text.SetCompoundDrawablesWithIntrinsicBounds (sections [position].Item1, 0, 0, 0);
 
-			icon.SetImageResource (sections [position - 1].Item1);
-			text.Text = sections [position - 1].Item2;
-
-			return view;
+			return text;
 		}
 
 		public override int Count {
 			get {
-				return sections.Length + 2;
-			}
-		}
-
-		public override int GetItemViewType (int position)
-		{
-			return position == 0 || position > sections.Length ? 1 : 0;
-		}
-
-		public override int ViewTypeCount {
-			get {
-				return 2;
+				return sections.Length;
 			}
 		}
 

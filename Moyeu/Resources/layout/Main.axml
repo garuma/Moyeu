@@ -12,21 +12,30 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:background="@drawable/texture_pattern"
-        android:layout_gravity="start"
-        android:paddingTop="8dp">
+        android:layout_gravity="start">
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer"
             android:choiceMode="singleChoice"
             android:listSelector="#20000000"
-            android:headerDividersEnabled="false" />
+            android:headerDividersEnabled="false"
+            android:divider="#0b000000"
+            android:dividerHeight="1dp" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1" />
+        <include
+            layout="@layout/DrawerHeader" />
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:id="@+id/left_drawer_around"
-            android:layout_weight="1"
             android:choiceMode="singleChoice"
-            android:headerDividersEnabled="false" />
+            android:headerDividersEnabled="false"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="12dp" />
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>
