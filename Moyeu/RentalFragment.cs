@@ -18,6 +18,8 @@ using Android.Graphics;
 using XamSvg;
 using Android.Util;
 using Android.Graphics.Drawables;
+using SwipeRefreshLayout = Android.Support.V4.Widget.SwipeRefreshLayout;
+using Android.Support.V4.View;
 
 namespace Moyeu
 {
@@ -34,6 +36,7 @@ namespace Moyeu
 		bool loading;
 
 		DateTime lastLoadingTime = DateTime.Now;
+		ListFragmentSwipeRefreshLayout refreshLayout;
 
 		public RentalFragment (Context context)
 		{
@@ -55,7 +58,7 @@ namespace Moyeu
 		public void RefreshData ()
 		{
 			if ((DateTime.Now - lastLoadingTime) > TimeSpan.FromMinutes (5))
-				Refresh ();
+				Refresh (reset: false);
 		}
 
 		public override void OnStart ()
@@ -66,6 +69,57 @@ namespace Moyeu
 			if (!listInitialized) {
 				ListView.Scroll += HandleScroll;
 				listInitialized = true;
+			}
+		}
+
+		public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+		{
+			var ctx = inflater.Context;
+			var baseView = base.OnCreateView (inflater, container, savedInstanceState);
+			refreshLayout = new ListFragmentSwipeRefreshLayout (ctx, this);
+			refreshLayout.AddView (baseView, ViewGroup.LayoutParams.FillParent, ViewGroup.LayoutParams.FillParent);
+			refreshLayout.LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.FillParent,
+			                                                             ViewGroup.LayoutParams.FillParent);
+			refreshLayout.SetColorScheme (Resource.Color.swipe_refresh_color_main,
+			                              Resource.Color.swipe_refresh_color_shade1,
+			                              Resource.Color.swipe_refresh_color_shade2,
+			                              Resource.Color.swipe_refresh_color_shade3);
+			refreshLayout.SetDistanceToTrigger (TypedValue.ApplyDimension (ComplexUnitType.Dip, 64, ctx.Resources.DisplayMetrics));
+			refreshLayout.Refresh += (sender, e) => Refresh (reset: false);
+
+
+			return refreshLayout;
+		}
+
+		class ListFragmentSwipeRefreshLayout : Android.Support.V4.Widget.SwipeRefreshLayout
+		{
+			Android.Support.V4.App.ListFragment listFragment;
+
+			public ListFragmentSwipeRefreshLayout (Context context, Android.Support.V4.App.ListFragment listFragment)
+				: base (context)
+			{
+				this.listFragment = listFragment;
+			}
+
+			public override bool CanChildScrollUp ()
+			{
+				var listView = listFragment.ListView;
+				if (listView != null && listView.Visibility == ViewStates.Visible)
+					return ViewCompat.CanScrollVertically (listView, -1);
+				return false;
+			}
+
+			public bool SetDistanceToTrigger (float distance)
+			{
+				try {
+					var distanceToTrigger = Class.Superclass.GetDeclaredField ("mDistanceToTriggerSync");
+					distanceToTrigger.Accessible = true;
+					distanceToTrigger.SetFloat (this, distance);
+				} catch {
+					return false;
+				}
+
+				return true;
 			}
 		}
 
@@ -91,7 +145,7 @@ namespace Moyeu
 			ListAdapter = new ArrayAdapter (Activity, Android.Resource.Layout.SimpleListItem1);
 			EventHandler handler = null;
 			handler = (e, s) => {
-				Refresh ();
+				Refresh (reset: true);
 				View.Click -= handler;
 			};
 			View.Click += handler;
@@ -126,6 +180,8 @@ namespace Moyeu
 			} while (hadError);
 			if (dialog != null)
 				dialog.Dismiss ();
+			if (refreshLayout != null && refreshLayout.Refreshing)
+				refreshLayout.Refreshing = false;
 		}
 
 		public override void OnPause ()
@@ -143,25 +199,15 @@ namespace Moyeu
 			editor.Commit ();
 		}
 
-		public override void OnCreateOptionsMenu (IMenu menu, MenuInflater inflater)
-		{
-			inflater.Inflate (Resource.Menu.rentals_menu, menu);
-		}
-
-		public override bool OnOptionsItemSelected (IMenuItem item)
-		{
-			if (item.ItemId == Resource.Id.menu_refresh) {
-				Refresh ();
-				return true;
-			} else
-				return base.OnOptionsItemSelected (item);
-		}
-
-		void Refresh ()
+		void Refresh (bool reset = true)
 		{
 			currentPageId = 0;
-			SetListShownNoAnimation (false);
-			ListAdapter = null;
+			if (reset || ListAdapter == null) {
+				SetListShownNoAnimation (false);
+				ListAdapter = null;
+			} else if (!refreshLayout.Refreshing) {
+				refreshLayout.Refreshing = true;
+			}
 			DoFetch (forceRefresh: true);
 		}
 
