@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer"
             android:choiceMode="singleChoice"
-            android:listSelector="#20000000"
+            android:listSelector="@drawable/list_selector_bg"
             android:headerDividersEnabled="false"
             android:divider="#0b000000"
             android:dividerHeight="1dp" />
@@ -33,9 +33,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:id="@+id/left_drawer_around"
-            android:choiceMode="singleChoice"
             android:headerDividersEnabled="false"
+            android:choiceMode="singleChoice"
             android:divider="@android:color/transparent"
-            android:dividerHeight="12dp" />
+            android:listSelector="@drawable/list_selector_bg"
+            android:dividerHeight="8dp" />
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

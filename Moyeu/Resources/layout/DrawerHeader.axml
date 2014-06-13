@@ -9,7 +9,7 @@
     android:textAllCaps="true"
     android:textColor="@android:color/white"
     android:textStyle="bold"
-    android:textSize="11sp"
+    android:textSize="10sp"
     android:layout_marginRight="8dp"
     android:layout_marginLeft="4dp"
     android:paddingLeft="4dp"

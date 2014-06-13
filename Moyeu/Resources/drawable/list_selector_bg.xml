@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:state_pressed="true" android:drawable="@color/list_selector_bg_main" />
+	<item android:state_hovered="true" android:drawable="@color/list_selector_bg_main" />
+	<item android:drawable="@android:color/transparent" />
+</selector>

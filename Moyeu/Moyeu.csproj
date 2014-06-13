@@ -161,6 +161,7 @@
     <AndroidResource Include="Resources\layout\DrawerHeader.axml" />
     <AndroidResource Include="Resources\drawable\info_pane_vert_divider.xml" />
     <AndroidResource Include="Resources\drawable\drawer_header_underline.xml" />
+    <AndroidResource Include="Resources\drawable\list_selector_bg.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
