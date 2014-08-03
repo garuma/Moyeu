@@ -33,24 +33,11 @@ namespace Moyeu
 					// remove from list & dictionary
 					this.list.RemoveLast();
 					this.lookup.Remove(this.openNode.Value.ItemKey);
-					ClearValue (this.openNode.Value.ItemValue);
 				} else {
 					// still filling the cache, create a new open node for the next time
 					this.openNode = new LinkedListNode<ListValueEntry<TKey, TValue>>(new ListValueEntry<TKey, TValue>(default(TKey), default(TValue)));
 				}
 			}
-		}
-
-		void ClearValue (TValue value)
-		{
-			var bmp = value as Android.Graphics.Bitmap;
-			if (bmp != null) {
-				bmp.Recycle ();
-				return;
-			}
-			var disposable = this.openNode.Value.ItemValue as IDisposable;
-			if (disposable != null)
-				disposable.Dispose ();
 		}
 
 		public TValue Get (TKey key)
