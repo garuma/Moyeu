@@ -264,7 +264,7 @@ namespace Moyeu
 		void HandleMarkerClick (object sender, GoogleMap.MarkerClickEventArgs e)
 		{
 			e.Handled = true;
-			OpenStationWithMarker (e.P0);
+			OpenStationWithMarker (e.Marker);
 		}
 
 		void HandleStarButtonChecked (object sender, EventArgs e)

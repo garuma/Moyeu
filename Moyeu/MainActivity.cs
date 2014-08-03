@@ -19,8 +19,9 @@ using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
 using Android.Gms.Location;
 using Android.Gms.Common;
-using ConnectionCallbacks = Android.Gms.Common.IGooglePlayServicesClientConnectionCallbacks;
-using ConnectionFailedListener = Android.Gms.Common.IGooglePlayServicesClientOnConnectionFailedListener;
+using Android.Gms.Common.Apis;
+using ConnectionCallbacks = Android.Gms.Common.Apis.IGoogleApiClientConnectionCallbacks;
+using ConnectionFailedListener = Android.Gms.Common.Apis.IGoogleApiClientOnConnectionFailedListener;
 
 using Android.Support.V4.App;
 using Android.Support.V4.Widget;
@@ -50,7 +51,7 @@ namespace Moyeu
 		ListView drawerAround;
 
 		DrawerAroundAdapter aroundAdapter;
-		LocationClient locationClient;
+		IGoogleApiClient client;
 
 		Android.Support.V4.App.Fragment CurrentFragment {
 			get {
@@ -108,10 +109,17 @@ namespace Moyeu
 
 			drawerMenu.SetItemChecked (0, true);
 			if (CheckGooglePlayServices ()) {
-				locationClient = new LocationClient (this, this, this);
+				client = CreateApiClient ();
 				SwitchTo (mapFragment = new HubwayMapFragment (this));
 				ActionBar.Title = ((IMoyeuSection)mapFragment).Title;
 			}
+		}
+
+		IGoogleApiClient CreateApiClient ()
+		{
+			return new GoogleApiClientBuilder (this, this, this)
+				.AddApi (LocationServices.Api)
+				.Build ();
 		}
 
 		void HandleAroundItemClick (object sender, AdapterView.ItemClickEventArgs e)
@@ -223,15 +231,15 @@ namespace Moyeu
 
 		protected override void OnStart ()
 		{
-			if (locationClient != null)
-				locationClient.Connect ();
+			if (client != null)
+				client.Connect ();
 			base.OnStart ();
 		}
 
 		protected override void OnStop ()
 		{
-			if (locationClient != null)
-				locationClient.Disconnect ();
+			if (client != null)
+				client.Disconnect ();
 			base.OnStop ();
 		}
 
@@ -239,9 +247,9 @@ namespace Moyeu
 		{
 			if (requestCode == ConnectionFailureResolutionRequest) {
 				if (resultCode == Result.Ok && CheckGooglePlayServices ()) {
-					if (locationClient == null) {
-						locationClient = new LocationClient (this, this, this);
-						locationClient.Connect ();
+					if (client == null) {
+						client = CreateApiClient ();
+						client.Connect ();
 					}
 					SwitchTo (mapFragment = new HubwayMapFragment (this));
 				} else
@@ -281,9 +289,9 @@ namespace Moyeu
 
 		public void OnNext (Station[] value)
 		{
-			if (locationClient == null || !locationClient.IsConnected)
+			if (client == null || !client.IsConnected)
 				return;
-			var location = locationClient.LastLocation;
+			var location = LocationServices.FusedLocationApi.GetLastLocation (client);
 			if (location == null)
 				return;
 			var stations = Hubway.GetStationsAround (value,
@@ -309,6 +317,11 @@ namespace Moyeu
 		public void OnConnectionFailed (Android.Gms.Common.ConnectionResult p0)
 		{
 			
+		}
+
+		public void OnConnectionSuspended (int reason)
+		{
+
 		}
 	}
 
