@@ -13,6 +13,7 @@
 	<color name="swipe_refresh_color_shade2">#00D51E</color>
 	<color name="swipe_refresh_color_shade3">#008813</color>
 	<color name="list_selector_bg_main">#20000000</color>
+	<string name="menu_item_fontFamily">sans-serif-light</string>
 
 	<style name="info_pane_section">
 		<item name="android:fontFamily">sans-serif-condensed</item>

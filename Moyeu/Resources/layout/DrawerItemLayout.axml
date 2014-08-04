@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    android:fontFamily="sans-serif-light"
+    android:fontFamily="@string/menu_item_fontFamily"
     android:text="Map"
     android:textSize="22sp"
     android:textColor="@android:color/white"

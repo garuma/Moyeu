@@ -53,6 +53,8 @@ namespace Moyeu
 		DrawerAroundAdapter aroundAdapter;
 		IGoogleApiClient client;
 
+		Typeface menuNormalTf, menuHighlightTf;
+
 		Android.Support.V4.App.Fragment CurrentFragment {
 			get {
 				return new Android.Support.V4.App.Fragment[] {
@@ -101,6 +103,10 @@ namespace Moyeu
 			drawerMenu = FindViewById<ListView> (Resource.Id.left_drawer);
 			drawerMenu.AddFooterView (new Space (this));
 			drawerMenu.ItemClick += HandleSectionItemClick;
+			menuNormalTf = Typeface.Create (Resources.GetString (Resource.String.menu_item_fontFamily),
+			                                TypefaceStyle.Normal);
+			menuHighlightTf = Typeface.Create (Resources.GetString (Resource.String.menu_item_fontFamily),
+			                                   TypefaceStyle.Bold);
 			drawerMenu.Adapter = new DrawerMenuAdapter (this);
 
 			drawerAround = FindViewById<ListView> (Resource.Id.left_drawer_around);
@@ -198,8 +204,7 @@ namespace Moyeu
 		{
 			for (int i = 0; i < 3; i++) {
 				var text = (TextView)drawerMenu.GetChildAt (i);
-				var tf = text.Typeface;
-				text.SetTypeface (tf, i == pos ? TypefaceStyle.Bold : TypefaceStyle.Normal);
+				text.Typeface = i == pos ? menuHighlightTf : menuNormalTf;
 			}
 		}
 
