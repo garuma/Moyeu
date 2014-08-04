@@ -214,39 +214,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/info_pane_section" />
-        <FrameLayout
+        <com.google.android.gms.maps.StreetViewPanoramaView
             android:paddingBottom="4dp"
-            android:id="@+id/gmapsBtn"
-            android:background="@drawable/pane_item_bg"
+            android:id="@+id/streetViewPanorama"
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="4dp">
-            <ProgressBar
-                android:id="@+id/streetViewSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                style="?android:attr/progressBarStyleLarge" />
-            <ImageView
-                android:id="@+id/streetViewImg"
-                android:visibility="invisible"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:scaleType="centerCrop" />
-        </FrameLayout>
-        <TextView
-            android:text="Tap to Open Location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView7"
-            android:gravity="center"
-            android:textColor="#666666"
-            android:textSize="10sp"
-            android:layout_marginBottom="24dp" />
+            android:layout_margin="8dp" />
     </LinearLayout>
 </moyeu.InfoPane>

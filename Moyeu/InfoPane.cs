@@ -105,16 +105,6 @@ namespace Moyeu
 					if (state == State.Closed)
 						Visibility = ViewStates.Invisible;
 				});
-				/*Animate ()
-				.TranslationY (OffsetForState (newState))
-				.SetDuration (Context.Resources.GetInteger (Android.Resource.Integer.ConfigMediumAnimTime))
-				.SetInterpolator (interpolator)
-				.WithEndAction (new Runnable (() => {
-					isAnimating = false;
-					if (state == State.Closed)
-						Visibility = ViewStates.Invisible;
-				}))
-				.Start ();*/
 			}
 			if (StateChanged != null)
 				StateChanged (newState);

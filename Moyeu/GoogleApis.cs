@@ -22,7 +22,6 @@ namespace Moyeu
 		Context context;
 		HttpClient client = new HttpClient ();
 		BitmapCache mapCache;
-		BitmapCache streetViewCache;
 
 		public static GoogleApis Obtain (Context context)
 		{
@@ -40,13 +39,6 @@ namespace Moyeu
 			get {
 				return mapCache
 					?? (mapCache = BitmapCache.CreateCache (context, "MapsPictures"));
-			}
-		}
-
-		public BitmapCache StreetViewCache {
-			get {
-				return streetViewCache
-					?? (streetViewCache = BitmapCache.CreateCache (context, "StreetViewPictures"));
 			}
 		}
 
@@ -73,32 +65,6 @@ namespace Moyeu
 					mapView.AlphaAnimate (1, duration: 250);
 				});
 			}
-		}
-
-		internal async void LoadStreetView (LatLng location, HubwayMapFragment frag, long stationID, ProgressBar spinner, ImageView img)
-		{
-			var url = MakeStreetViewUrl (img, location);
-			var bmp = await LoadInternal (url, StreetViewCache);
-			if (bmp != null && frag.CurrentShownId == stationID) {
-				img.SetImageDrawable (new RoundCornerDrawable (bmp, cornerRadius: 3));
-				img.Visibility = Android.Views.ViewStates.Visible;
-				spinner.AlphaAnimate (0, duration: 250);
-				img.AlphaAnimate (1, duration: 250);
-			}
-		}
-
-		public static string MakeStreetViewUrl (ImageView view, LatLng position)
-		{
-			var parameters = new Dictionary<string, string> {
-				{ "key", ApiKey },
-				{ "sensor", "false" },
-				{ "size", Math.Min (view.Width, MaxStreetViewSize) + "x" + Math.Min (view.Height, MaxStreetViewSize) },
-				{ "location", position.Latitude.ToString () + "," + position.Longitude.ToString () },
-				{ "pitch", "-10" },
-			};
-
-			return BuildUrl ("https://maps.googleapis.com/maps/api/streetview?",
-			                 parameters);
 		}
 
 		public static string MakeMapUrl (GeoPoint location)

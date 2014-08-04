@@ -30,6 +30,7 @@ namespace Moyeu
 		Dictionary<int, Marker> existingMarkers = new Dictionary<int, Marker> ();
 		Marker locationPin;
 		MapView mapFragment;
+		StreetViewPanoramaView streetViewFragment;
 		Hubway hubway = Hubway.Instance;
 		HubwayHistory hubwayHistory = new HubwayHistory ();
 
@@ -87,17 +88,7 @@ namespace Moyeu
 
 		public void OnGlobalLayout ()
 		{
-			Activity.RunOnUiThread (() => {
-				var svImgContainer = (FrameLayout)pane.FindViewById<ImageView> (Resource.Id.streetViewImg).Parent;
-				if (svImgContainer.Height > GoogleApis.MaxStreetViewSize
-				    || svImgContainer.Width > GoogleApis.MaxStreetViewSize) {
-					var param = svImgContainer.LayoutParameters;
-					param.Height = Math.Min (GoogleApis.MaxStreetViewSize, svImgContainer.Height);
-					param.Width = Math.Min (GoogleApis.MaxStreetViewSize, svImgContainer.Width);
-					svImgContainer.LayoutParameters = param;
-				}
-				pane.SetState (InfoPane.State.Closed, animated: false);
-			});
+			Activity.RunOnUiThread (() => pane.SetState (InfoPane.State.Closed, animated: false));
 			View.ViewTreeObserver.RemoveGlobalOnLayoutListener (this);
 		}
 
@@ -109,6 +100,9 @@ namespace Moyeu
 			lastUpdateText = view.FindViewById<TextView> (Resource.Id.UpdateTimeText);
 			SetupInfoPane (view);
 			flashBar = new FlashBarController (view);
+			streetViewFragment = pane.FindViewById<StreetViewPanoramaView> (Resource.Id.streetViewPanorama);
+			streetViewFragment.OnCreate (savedInstanceState);
+
 			return view;
 		}
 
@@ -145,8 +139,9 @@ namespace Moyeu
 			pane.FindViewById<ImageView> (Resource.Id.clockImg).SetImageDrawable (clockDrawable);
 			var starBtn = pane.FindViewById<ImageButton> (Resource.Id.StarButton);
 			starBtn.Click += HandleStarButtonChecked;
-			var mapBtn = pane.FindViewById (Resource.Id.gmapsBtn);
-			mapBtn.Click += HandleMapButtonClick;
+			streetViewFragment.StreetViewPanorama.UserNavigationEnabled = false;
+			streetViewFragment.StreetViewPanorama.StreetNamesEnabled = false;
+			streetViewFragment.StreetViewPanorama.StreetViewPanoramaClick += HandleMapButtonClick;
 		}
 
 		void HandlePaneStateChanged (InfoPane.State state)
@@ -168,7 +163,7 @@ namespace Moyeu
 			}
 		}
 
-		void HandleMapButtonClick (object sender, EventArgs e)
+		void HandleMapButtonClick (object sender, StreetViewPanorama.StreetViewPanoramaClickEventArgs e)
 		{
 			var stations = hubway.LastStations;
 			if (stations == null || currentShownID == -1)
@@ -227,12 +222,14 @@ namespace Moyeu
 		{
 			base.OnResume ();
 			mapFragment.OnResume ();
+			streetViewFragment.OnResume ();
 		}
 
 		public override void OnLowMemory ()
 		{
 			base.OnLowMemory ();
 			mapFragment.OnLowMemory ();
+			streetViewFragment.OnLowMemory ();
 		}
 
 		public override void OnPause ()
@@ -240,18 +237,21 @@ namespace Moyeu
 			base.OnPause ();
 			mapFragment.OnPause ();
 			PreviousCameraPosition = mapFragment.Map.CameraPosition;
+			streetViewFragment.OnPause ();
 		}
 
 		public override void OnDestroy ()
 		{
 			base.OnDestroy ();
 			mapFragment.OnDestroy ();
+			streetViewFragment.OnDestroy ();
 		}
 
 		public override void OnSaveInstanceState (Bundle outState)
 		{
 			base.OnSaveInstanceState (outState);
 			mapFragment.OnSaveInstanceState (outState);
+			streetViewFragment.OnSaveInstanceState (outState);
 		}
 
 		void HandleMapClick (object sender, GoogleMap.MapClickEventArgs e)
@@ -369,8 +369,6 @@ namespace Moyeu
 			var bikes = pane.FindViewById<TextView> (Resource.Id.InfoViewBikeNumber);
 			var slots = pane.FindViewById<TextView> (Resource.Id.InfoViewSlotNumber);
 			var starButton = pane.FindViewById<ImageButton> (Resource.Id.StarButton);
-			var svSpinner = pane.FindViewById<ProgressBar> (Resource.Id.streetViewSpinner);
-			var svImg = pane.FindViewById<ImageView> (Resource.Id.streetViewImg);
 
 			var splitTitle = marker.Title.Split ('|');
 			string displayNameSecond;
@@ -394,21 +392,8 @@ namespace Moyeu
 			bool activated = favs.Contains (currentShownID);
 			starButton.SetImageDrawable (activated ? starOnDrawable : starOffDrawable);
 
-			var api = GoogleApis.Obtain (Activity);
-			string mapUrl = GoogleApis.MakeStreetViewUrl (svImg, marker.Position);
-			Bitmap mapBmp = null;
-			if (api.StreetViewCache.TryGet (mapUrl, out mapBmp)) {
-				svImg.Alpha = 1;
-				svImg.Visibility = ViewStates.Visible;
-				svSpinner.Visibility = ViewStates.Gone;
-				svImg.SetImageDrawable (new RoundCornerDrawable (mapBmp));
-			} else {
-				svImg.Alpha = 0;
-				svImg.Visibility = ViewStates.Invisible;
-				svSpinner.Visibility = ViewStates.Visible;
-				svSpinner.Alpha = 1;
-				api.LoadStreetView (marker.Position, this, currentShownID, svSpinner, svImg);
-			}
+			var streetView = streetViewFragment.StreetViewPanorama;
+			streetView.SetPosition (marker.Position);
 
 			LoadStationHistory (currentShownID);
 
