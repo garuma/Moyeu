@@ -7,50 +7,6 @@ using System.Net.Http;
 
 namespace Moyeu
 {
-	public struct GeoPoint
-	{
-		public double Lat { get; set; }
-		public double Lon { get; set; }
-	}
-
-	public struct Station
-	{
-		public int Id { get; set; }
-		public string Name { get; set; }
-		public GeoPoint Location { get; set; }
-		public bool Installed { get; set; }
-		public bool Locked { get; set; }
-		public bool Temporary { get; set; }
-		public bool Public { get; set; }
-		public int BikeCount { get; set; }
-		public int EmptySlotCount { get; set; }
-		public int Capacity { get { return BikeCount + EmptySlotCount; } }
-		//public DateTime LastUpdateTime { get; set; }
-
-		public override bool Equals (object obj)
-		{
-			return obj is Station && Equals ((Station)obj);
-		}
-
-		public bool Equals (Station other)
-		{
-			return other.Id == Id;
-		}
-
-		public override int GetHashCode ()
-		{
-			return Id;
-		}
-
-		public string GeoUrl {
-			get {
-				var pos = Location.Lat + "," + Location.Lon;
-				var location = "geo:" + pos + "?q=" + pos + "(" + Name.Replace (' ', '+') + ")";
-				return location;
-			}
-		}
-	}
-
 	public class Hubway : IObservable<Station[]>
 	{
 		const string HubwayApiEndpoint = "http://thehubway.com/data/stations/bikeStations.xml";
@@ -182,23 +138,6 @@ namespace Moyeu
 		DateTime FromUnixTime (long secs)
 		{
 			return (new DateTime (1970, 1, 1, 0, 0, 1, DateTimeKind.Utc) + TimeSpan.FromSeconds (secs / 1000.0)).ToLocalTime ();
-		}
-
-		public static string CutStationName (string rawStationName)
-		{
-			string dummy;
-			return CutStationName (rawStationName, out dummy);
-		}
-
-		public static string CutStationName (string rawStationName, out string secondPart)
-		{
-			secondPart = string.Empty;
-			var nameParts = rawStationName.Split (new string[] { "-", " at " , "/ ", " / " }, StringSplitOptions.RemoveEmptyEntries);
-			if (nameParts.Length > 1)
-				secondPart = string.Join (", ", nameParts.Skip (1)).Trim ();
-			else
-				secondPart = nameParts [0].Trim ();
-			return nameParts [0].Trim ();
 		}
 
 		public IDisposable Subscribe (IObserver<Station[]> observer)

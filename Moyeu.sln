@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileHtmlAgilityPack", "Mo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamSvg", "xamsvg\XamSvg.csproj", "{B70EDB4C-A85E-45BE-A180-5B0462020C6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoyeuWear", "MoyeuWear\MoyeuWear.csproj", "{3B2CA08D-AF1C-4427-BB29-A6E0A5ECB064}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{12143BA7-FFC5-4E11-8B31-89A96247F504}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12143BA7-FFC5-4E11-8B31-89A96247F504}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12143BA7-FFC5-4E11-8B31-89A96247F504}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B2CA08D-AF1C-4427-BB29-A6E0A5ECB064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B2CA08D-AF1C-4427-BB29-A6E0A5ECB064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B2CA08D-AF1C-4427-BB29-A6E0A5ECB064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B2CA08D-AF1C-4427-BB29-A6E0A5ECB064}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B70EDB4C-A85E-45BE-A180-5B0462020C6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B70EDB4C-A85E-45BE-A180-5B0462020C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B70EDB4C-A85E-45BE-A180-5B0462020C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU

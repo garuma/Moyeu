@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <android.support.wearable.view.GridViewPager
+        android:id="@+id/pager"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+    <TextView
+        android:id="@+id/loading"
+        android:text="Loading..."
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:padding="12dp"
+        android:gravity="center"
+        android:lineSpacingExtra="-2sp"
+        style="@style/TextView.Large.Light" />
+</FrameLayout>

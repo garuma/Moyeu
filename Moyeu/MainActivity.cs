@@ -455,7 +455,7 @@ namespace Moyeu
 			star.SetImageDrawable (starDrawable);
 			star.Visibility = favorites.Contains (station.Id) ? ViewStates.Visible : ViewStates.Invisible;
 			string secondPart;
-			stationName.Text = Hubway.CutStationName (station.Name, out secondPart);
+			stationName.Text = StationUtils.CutStationName (station.Name, out secondPart);
 			stationNameSecond.Text = secondPart;
 			bikes.Text = station.BikeCount.ToString ();
 			racks.Text = station.EmptySlotCount.ToString ();

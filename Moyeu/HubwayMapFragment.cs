@@ -116,8 +116,20 @@ namespace Moyeu
 		public override void OnViewCreated (View view, Bundle savedInstanceState)
 		{
 			base.OnViewCreated (view, savedInstanceState);
+
+			// Default map initialization
 			mapFragment.Map.MyLocationEnabled = true;
+			mapFragment.Map.MapType = GoogleMap.MapTypeNormal;
 			mapFragment.Map.UiSettings.MyLocationButtonEnabled = false;
+			mapFragment.Map.UiSettings.ZoomControlsEnabled = false;
+			mapFragment.Map.UiSettings.CompassEnabled = false;
+			mapFragment.Map.UiSettings.RotateGesturesEnabled = false;
+			mapFragment.Map.UiSettings.TiltGesturesEnabled = false;
+			mapFragment.Map.MoveCamera (CameraUpdateFactory.NewLatLngZoom (
+				new LatLng (42.366031, -71.071405),
+				13
+			));
+
 			mapFragment.Map.MarkerClick += HandleMarkerClick;
 			mapFragment.Map.MapClick += HandleMapClick;
 			var oldPosition = PreviousCameraPosition;
@@ -372,7 +384,7 @@ namespace Moyeu
 
 			var splitTitle = marker.Title.Split ('|');
 			string displayNameSecond;
-			var displayName = Hubway.CutStationName (splitTitle [1], out displayNameSecond);
+			var displayName = StationUtils.CutStationName (splitTitle [1], out displayNameSecond);
 			name.Text = displayName;
 			name2.Text = displayNameSecond;
 
@@ -543,7 +555,7 @@ namespace Moyeu
 			new Handler (Activity.MainLooper).PostDelayed (() => {
 				var opts = new MarkerOptions ()
 					.SetPosition (startLatLng)
-						.InvokeIcon (BitmapDescriptorFactory.DefaultMarker (BitmapDescriptorFactory.HueViolet));
+					.InvokeIcon (BitmapDescriptorFactory.DefaultMarker (BitmapDescriptorFactory.HueViolet));
 				var marker = mapFragment.Map.AddMarker (opts);
 				var animator = ObjectAnimator.OfObject (marker, "position", new LatLngEvaluator (), startLatLng, finalLatLng);
 				animator.SetDuration (1000);

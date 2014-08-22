@@ -354,8 +354,8 @@ namespace Moyeu
 					var timeSecondary = view.FindViewById<TextView> (Resource.Id.rentalTimeSecondary);
 
 					var rental = r.Value;
-					stationFromText.Text = Hubway.CutStationName (rental.FromStationName);
-					stationToText.Text = Hubway.CutStationName (rental.ToStationName);
+					stationFromText.Text = StationUtils.CutStationName (rental.FromStationName);
+					stationToText.Text = StationUtils.CutStationName (rental.ToStationName);
 					if (rental.Duration > TimeSpan.FromHours (1)) {
 						timePrimary.Text = rental.Duration.Hours.ToString ("D2") + " hrs";
 						timeSecondary.Text = rental.Duration.Minutes.ToString ("D2") + " min";

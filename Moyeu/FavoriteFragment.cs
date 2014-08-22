@@ -121,7 +121,7 @@ namespace Moyeu
 			view.Station = station;
 
 			string secondPart;
-			stationName.Text = Hubway.CutStationName (station.Name, out secondPart);
+			stationName.Text = StationUtils.CutStationName (station.Name, out secondPart);
 			secondStationName.Text = secondPart;
 			bikeNumber.Text = station.BikeCount.ToString ();
 			slotNumber.Text = station.Capacity.ToString ();

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 namespace Moyeu
 {
@@ -16,6 +17,24 @@ namespace Moyeu
 		static double DegToRad (double deg)
 		{
 			return deg * Math.PI / 180;
+		}
+
+		public static void DumpLocation (GeoPoint p, Stream stream)
+		{
+			using (var writer = new BinaryWriter (stream, System.Text.Encoding.UTF8, true)) {
+				writer.Write (p.Lat);
+				writer.Write (p.Lon);
+			}
+		}
+
+		public static GeoPoint ParseFromStream (Stream stream)
+		{
+			using (var reader = new BinaryReader (stream, System.Text.Encoding.UTF8, true)) {
+				return new GeoPoint {
+					Lat = reader.ReadDouble (),
+					Lon = reader.ReadDouble ()
+				};
+			}
 		}
 	}
 }

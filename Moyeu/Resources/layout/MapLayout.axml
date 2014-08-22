@@ -2,18 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
+    <com.google.android.gms.maps.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        map:mapType="normal"
-        map:cameraTargetLat="42.381487"
-        map:cameraTargetLng="-71.099185"
-        map:cameraZoom="13"
-        map:uiZoomControls="false"
-        map:uiCompass="false"
-        map:uiRotateGestures="false"
-        map:uiTiltGestures="false" />
+        android:layout_height="match_parent" />
     <FrameLayout
         android:background="@drawable/flash_bar_background"
         android:layout_width="wrap_content"
