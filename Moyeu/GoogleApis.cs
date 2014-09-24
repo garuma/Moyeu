@@ -67,6 +67,19 @@ namespace Moyeu
 			}
 		}
 
+		public static string MakeStreetViewUrl (GeoPoint position, int width, int height)
+		{
+			var parameters = new Dictionary<string, string> {
+				{ "key", ApiKey },
+				{ "sensor", "false" },
+				{ "size", Math.Min (width, MaxStreetViewSize) + "x" + Math.Min (height, MaxStreetViewSize) },
+				{ "location", position.Lat.ToString () + "," + position.Lon.ToString () },
+				{ "pitch", "-10" },
+			};
+
+			return BuildUrl ("https://maps.googleapis.com/maps/api/streetview?", parameters);
+		}
+
 		public static string MakeMapUrl (GeoPoint location)
 		{
 			const int Width = 65;

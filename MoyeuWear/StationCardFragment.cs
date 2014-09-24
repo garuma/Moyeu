@@ -23,8 +23,7 @@ namespace Moyeu
 {
 	public class StationCardFragment : CardFragment
 	{
-		Station station;
-		GeoPoint currentLocation;
+		SimpleStation station;
 		BikeActionStatus status;
 
 		public override void OnCreate (Bundle savedInstanceState)
@@ -41,35 +40,44 @@ namespace Moyeu
 
 		public override void OnViewCreated (View view, Bundle savedInstanceState)
 		{
-			var count = status == BikeActionStatus.Stop ? station.BikeCount : station.EmptySlotCount;
-			var ratio = ((float)count) / station.Capacity;
+			SetCountText (view);
+
+			view.FindViewById<TextView> (Resource.Id.stationPrimary).Text = station.Primary;
+			view.FindViewById<TextView> (Resource.Id.stationSecondary).Text = station.Secondary;
+
+			// station.Distance is km, we just convert to miles to not disturb our American imperialist friends
+			var distance = station.Distance * 0.62137;
+			var distanceText = view.FindViewById<TextView> (Resource.Id.distance);
+			if (distance < 0.1875)
+				distanceText.Text = (distance * 5280).ToString ("N0") + " feet";
+			else
+				distanceText.Text = distance.ToString ("N1") + " mi";
+		}
+
+		public void SwitchCount ()
+		{
+			status = status == BikeActionStatus.Stop ? BikeActionStatus.Start : BikeActionStatus.Stop;
+			if (View != null)
+				SetCountText (View);
+		}
+
+		void SetCountText (View view)
+		{
+			var count = status == BikeActionStatus.Start ? station.Bikes : station.Racks;
+			var ratio = ((float)count) / (station.Racks + station.Bikes);
 			var color = InterpolateColor (Color.Rgb (0xff, 0x44, 0x44),
 			                              Color.Rgb (0x99, 0xcc, 0x00),
 			                              ratio);
 			var bg = new RoundRectDrawable (color, TypedValue.ApplyDimension (ComplexUnitType.Dip, 2, view.Resources.DisplayMetrics));
-
-			var countText = view.FindViewById<TextView> (Resource.Id.count);
+			var countText = View.FindViewById<TextView> (Resource.Id.count);
 			countText.Text = count.ToString ();
-			countText.SetBackgroundDrawable (bg);
-
-			string secondary;
-			var primary = StationUtils.CutStationName (station.Name, out secondary);
-			view.FindViewById<TextView> (Resource.Id.stationPrimary).Text = primary;
-			view.FindViewById<TextView> (Resource.Id.stationSecondary).Text = secondary;
-
-			var distance = GeoUtils.Distance (currentLocation, station.Location);
-			var distanceText = view.FindViewById<TextView> (Resource.Id.distance);
-			if (distance < 1)
-				distanceText.Text = (distance * 1000).ToString ("N0") + " meters";
-			else
-				distanceText.Text = distance.ToString ("N1") + " km";
+			((View)countText.Parent).SetBackgroundDrawable (bg);
 		}
 
-		public static StationCardFragment WithStation (Station station, GeoPoint currentLocation, BikeActionStatus status)
+		public static StationCardFragment WithStation (SimpleStation station, BikeActionStatus status)
 		{
 			var r = new StationCardFragment ();
 			r.station = station;
-			r.currentLocation = currentLocation;
 			r.status = status;
 			return r;
 		}

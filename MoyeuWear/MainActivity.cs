@@ -1,0 +1,233 @@
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Android.App;
+using Android.Content;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+using Android.OS;
+
+using Android.Support.Wearable;
+using Android.Support.Wearable.Activity;
+using Android.Support.Wearable.Views;
+
+using Android.Gms.Common.Apis;
+using Android.Gms.Wearable;
+
+using MoyeuWear;
+using Android.Graphics;
+
+namespace Moyeu
+{
+	public enum BikeActionStatus {
+		Start,
+		Stop
+	}
+
+	[Activity (Label = "Moyeu",
+	           MainLauncher = true,
+	           Icon = "@drawable/icon",
+	           Theme = "@android:style/Theme.DeviceDefault.Light",
+	           NoHistory = true,
+	           StateNotNeeded = true)]
+	[IntentFilter (new[] { "vnd.google.fitness.TRACK" },
+	               DataMimeType = "vnd.google.fitness.activity/biking",
+	               Categories = new string[] { "android.intent.category.DEFAULT" })]
+	public class MainActivity : Activity,
+	IDataApiDataListener, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, IResultCallback, IMoyeuActions
+	{
+		const string SearchStationPath = "/moyeu/SearchNearestStations";
+		const string StationBackgroundsPath = "/moyeu/StationBackgrounds";
+		const string BackgroundImageKey = "background-";
+
+		IGoogleApiClient client;
+		INode phoneNode;
+
+		GridViewPager pager;
+		ProgressBar loading;
+		Switch countSwitch;
+
+		StationGridAdapter adapter;
+		Handler handler;
+
+		protected override void OnCreate (Bundle savedInstanceState)
+		{
+			base.OnCreate (savedInstanceState);
+			handler = new Handler ();
+			client = new GoogleApiClientBuilder (this, this, this)
+				.AddApi (WearableClass.Api)
+				.Build ();
+
+			SetContentView (Resource.Layout.Main);
+			pager = FindViewById<GridViewPager> (Resource.Id.pager);
+			loading = FindViewById<ProgressBar> (Resource.Id.loading);
+			countSwitch = FindViewById<Switch> (Resource.Id.metricSwitch);
+
+			countSwitch.Checked = ActionStatus == BikeActionStatus.Stop;
+			countSwitch.CheckedChange += HandleCheckedChange;
+			pager.PageScrolled += HandlePageScrolled;
+		}
+
+		BikeActionStatus ActionStatus {
+			get {
+				return Intent.GetStringExtra ("actionStatus") == "CompletedActionStatus" ?
+					BikeActionStatus.Stop : BikeActionStatus.Start;
+			}
+		}
+
+		void HandleCheckedChange (object sender, CompoundButton.CheckedChangeEventArgs e)
+		{
+			if (adapter == null)
+				return;
+			adapter.SwitchCount ();
+		}
+
+		void HandlePageScrolled (object sender, GridViewPager.PageScrolledEventArgs e)
+		{
+			var col = e.P1;
+
+			if (col == 0) {
+				var offset = e.P3;
+				var w = pager.Width;
+				countSwitch.TranslationX = -(w * offset);
+			}
+		}
+
+		protected override void OnStart ()
+		{
+			base.OnStart ();
+			client.Connect ();
+		}
+
+		public void OnDataChanged (DataEventBuffer dataEvents)
+		{
+			var dataEvent = Enumerable.Range (0, dataEvents.Count)
+				.Select (i => dataEvents.Get (i).JavaCast<IDataEvent> ())
+				.FirstOrDefault (de => de.Type == DataEvent.TypeChanged && de.DataItem.Uri.Path == SearchStationPath + "/Answer");
+			if (dataEvent == null)
+				return;
+			var dataMapItem = DataMapItem.FromDataItem (dataEvent.DataItem);
+			var map = dataMapItem.DataMap;
+
+			var stations = new List<SimpleStation> ();
+			var data = map.GetDataMapArrayList ("Stations");
+			foreach (var d in data) {
+				stations.Add (new SimpleStation {
+					Id = d.GetInt ("Id", 0),
+					Primary = d.GetString ("Primary", "<no name>"),
+					Secondary = d.GetString ("Secondary", "<no name>"),
+					Background = GetBitmapForAsset (d.GetAsset ("Background")),
+					Bikes = d.GetInt ("Bikes", 0),
+					Racks = d.GetInt ("Racks", 0),
+					Distance = d.GetDouble ("Distance", 0),
+					IsFavorite = d.GetBoolean ("IsFavorite", false),
+				});
+			}
+
+			if (stations.Any ()) {
+				handler.Post (() => {
+					adapter = new StationGridAdapter (FragmentManager,
+					                                  stations,
+					                                  this);
+					pager.Adapter = adapter;
+					pager.OffscreenPageCount = 5;
+					loading.Visibility = ViewStates.Invisible;
+					pager.Visibility = ViewStates.Visible;
+					countSwitch.Visibility = ViewStates.Visible;
+				});
+			}
+		}
+
+		Bitmap GetBitmapForAsset (Asset asset)
+		{
+			var result = WearableClass.DataApi.GetFdForAsset (client, asset)
+				.Await ()
+				.JavaCast<IDataApiGetFdForAssetResult> ();
+			var stream = result.InputStream;
+			return BitmapFactory.DecodeStream (stream);
+		}
+
+		public void OnConnected (Bundle p0)
+		{
+			WearableClass.DataApi.AddListener (client, this);
+			GetStations ();
+		}
+
+		void DisplayError ()
+		{
+			Finish ();
+			var intent = new Intent (this, typeof(ConfirmationActivity));
+			intent.PutExtra (ConfirmationActivity.ExtraAnimationType, ConfirmationActivity.FailureAnimation);
+			intent.PutExtra (ConfirmationActivity.ExtraMessage, "Can't find phone");
+			StartActivity (intent);
+		}
+
+		protected override void OnStop ()
+		{
+			base.OnStop ();
+			client.Disconnect ();
+		}
+
+		public void OnConnectionSuspended (int reason)
+		{
+			Android.Util.Log.Error ("GMS", "Connection suspended " + reason);
+			WearableClass.DataApi.RemoveListener (client, this);
+		}
+
+		public void OnConnectionFailed (Android.Gms.Common.ConnectionResult result)
+		{
+			Android.Util.Log.Error ("GMS", "Connection failed " + result.ErrorCode);
+		}
+
+		void GetStations ()
+		{
+			WearableClass.NodeApi.GetConnectedNodes (client)
+				.SetResultCallback (this);
+		}
+
+		public void OnResult (Java.Lang.Object result)
+		{
+			var apiResult = result.JavaCast<INodeApiGetConnectedNodesResult> ();
+			var nodes = apiResult.Nodes;
+			phoneNode = nodes.FirstOrDefault ();
+			if (phoneNode == null) {
+				DisplayError ();
+				return;
+			}
+
+			WearableClass.MessageApi.SendMessage (client, phoneNode.Id,
+			                                      SearchStationPath + ActionStatus.ToString (),
+			                                      new byte[0]);
+		}
+
+		public void NavigateToStation (int stationId)
+		{
+			var path = "/moyeu/Action/Navigate/" + stationId;
+			SendMessage (path);
+			Finish ();
+		}
+
+		public void ToggleFavoriteStation (int stationId, bool cked)
+		{
+			var path = "/moyeu/Action/Favorite/" + stationId + "?" + (cked ? "add" : "remove");
+			SendMessage (path);
+		}
+
+		public BikeActionStatus CurrentStatus {
+			get {
+				return countSwitch == null ? ActionStatus :
+					countSwitch.Checked ? BikeActionStatus.Stop : BikeActionStatus.Start;
+			}
+		}
+
+		void SendMessage (string path)
+		{
+			WearableClass.MessageApi.SendMessage (client, phoneNode.Id, path, new byte[0]);
+		}
+	}
+}
+
+

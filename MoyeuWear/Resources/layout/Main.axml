@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#fafafa"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <android.support.wearable.view.GridViewPager
@@ -7,18 +8,30 @@
         android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
-    <TextView
-        android:id="@+id/loading"
-        android:text="Loading..."
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
+    <ProgressBar
+        android:layout_height="96dp"
+        android:layout_width="96dp"
         android:layout_marginBottom="32dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="32dp"
+        android:indeterminate="true"
+        android:id="@+id/loading"
+        android:indeterminateDrawable="@drawable/hubway_loading"
+        android:layout_gravity="center" />
+    <Switch
+        android:visibility="invisible"
         android:layout_width="wrap_content"
-        android:padding="12dp"
-        android:gravity="center"
-        android:lineSpacingExtra="-2sp"
-        style="@style/TextView.Large.Light" />
+        android:layout_height="wrap_content"
+        android:id="@+id/metricSwitch"
+        android:layout_gravity="top|center_horizontal"
+        android:textOn=""
+        android:textOff=""
+        android:track="@drawable/switch_track"
+        android:thumb="@drawable/switch_thumb"
+        android:switchMinWidth="64dp"
+        android:thumbTextPadding="16dp"
+        android:switchPadding="0px"
+        android:layout_marginTop="16dp"
+        android:checked="true" />
 </FrameLayout>

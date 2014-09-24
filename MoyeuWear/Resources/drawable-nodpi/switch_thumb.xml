@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:state_checked="true">
+    	<layer-list>
+    		<item android:top="2dp" android:left="2dp" android:right="2dp" android:bottom="2dp">
+    			<shape android:shape="oval">
+    				<solid android:color="#00C81C" />
+    			</shape>
+    		</item>
+			<item>
+    			<bitmap android:src="@drawable/ic_bg_lock" android:gravity="center" />
+    		</item>
+    	</layer-list>
+    </item>
+    <item android:state_pressed="true" android:state_checked="false">
+    	<layer-list>
+    		<item android:top="2dp" android:left="2dp" android:right="2dp" android:bottom="2dp">
+    			<shape android:shape="oval">
+    				<solid android:color="#00C81C" />
+    			</shape>
+    		</item>
+			<item>
+    			<bitmap android:src="@drawable/ic_bg_bike" android:gravity="center" />
+    		</item>
+    	</layer-list>
+    </item>
+    <item android:state_checked="true">
+    	<layer-list>
+    		<item android:top="2dp" android:left="2dp" android:right="2dp" android:bottom="2dp">
+    			<shape android:shape="oval">
+    				<solid android:color="#999999" />
+    			</shape>
+    		</item>
+    		<item>
+    			<bitmap android:src="@drawable/ic_bg_lock" android:gravity="center" />
+    		</item>
+    	</layer-list>
+    </item>
+    <item>
+    	<layer-list>
+    		<item android:top="2dp" android:left="2dp" android:right="2dp" android:bottom="2dp">
+    			<shape android:shape="oval">
+    				<solid android:color="#999999" />
+    			</shape>
+    		</item>
+    		<item>
+    			<bitmap android:src="@drawable/ic_bg_bike" android:gravity="center" />
+    		</item>
+    	</layer-list>
+    </item>
+</selector>

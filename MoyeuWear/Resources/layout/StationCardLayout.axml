@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:id="@+id/stationContentContainer">
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -16,17 +17,21 @@
             android:layout_weight="1"
             android:id="@+id/stationPrimary"
             android:lines="1"
-            android:ellipsize="marquee" />
-        <TextView
-            style="@style/TextView.Small.Light"
-            android:text="4"
+            android:ellipsize="end" />
+        <FrameLayout
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:id="@+id/count"
             android:layout_gravity="right|center_vertical"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:layout_marginLeft="4dp" />
+            android:layout_marginLeft="4dp">
+            <TextView
+                style="@style/TextView.Small.Light"
+                android:text="4"
+                android:layout_gravity="center"
+                android:id="@+id/count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white" />
+        </FrameLayout>
     </LinearLayout>
     <TextView
         style="@style/TextView.Small.Light"

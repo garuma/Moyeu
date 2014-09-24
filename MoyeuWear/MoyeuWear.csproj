@@ -43,29 +43,25 @@
   <ItemGroup>
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
-    <Reference Include="Xamarin.Android.Support.v13">
-      <HintPath>..\packages\Xamarin.Android.Support.v13.20.0.0.3\lib\MonoAndroid10\Xamarin.Android.Support.v13.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Wearable">
       <HintPath>..\packages\Xamarin.Android.Wear.1.0.0-preview7\lib\MonoAndroid10\Xamarin.Android.Wearable.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
+    <Reference Include="Xamarin.Android.Support.v13">
+      <HintPath>..\packages\Xamarin.Android.Support.v13.20.0.0.4\lib\MonoAndroid32\Xamarin.Android.Support.v13.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FindNearestHubway.cs" />
-    <Compile Include="..\Moyeu\DataObjects.cs">
-      <Link>DataObjects.cs</Link>
-    </Compile>
     <Compile Include="StationGridAdapter.cs" />
     <Compile Include="ActionButtonFragment.cs" />
     <Compile Include="StationCardFragment.cs" />
     <Compile Include="RoundRectDrawable.cs" />
-    <Compile Include="..\Moyeu\GeoUtils.cs">
-      <Link>GeoUtils.cs</Link>
-    </Compile>
+    <Compile Include="MainActivity.cs" />
+    <Compile Include="SimpleStation.cs" />
+    <Compile Include="IMoyeuActions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -94,6 +90,21 @@
     <AndroidResource Include="Resources\drawable-mdpi\Icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\Icon.png" />
     <AndroidResource Include="Resources\drawable-nodpi\pager_background2.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_full_remove_favorite.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_full_remove_favorite.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_full_remove_favorite.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_bg_bike.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_bg_bike.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_bg_bike.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_bg_lock.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_bg_lock.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_bg_lock.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_hubway_loading.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_hubway_loading.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_hubway_loading.png" />
+    <AndroidResource Include="Resources\drawable\hubway_loading.xml" />
+    <AndroidResource Include="Resources\drawable-nodpi\switch_thumb.xml" />
+    <AndroidResource Include="Resources\drawable-nodpi\switch_track.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>

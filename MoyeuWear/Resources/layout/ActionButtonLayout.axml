@@ -14,6 +14,14 @@
         android:layout_height="104dp"
         android:id="@+id/actionButton"
         android:layout_gravity="center" />
+    <ToggleButton
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        android:id="@+id/toggleActionButton"
+        android:textOff=""
+        android:textOn=""
+        android:layout_gravity="center"
+        android:background="@android:color/transparent" />
     <TextView
         style="@style/TextView.Medium.Light"
         android:text="Text"

@@ -9,6 +9,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Android.Graphics;
 
 using Android.Support.Wearable;
 using Android.Support.Wearable.Activity;
@@ -20,21 +21,30 @@ namespace Moyeu
 {
 	public class StationGridAdapter : FragmentGridPagerAdapter
 	{
-		IList<Station> stations;
-		GeoPoint currentLocation;
-		BikeActionStatus status;
+		IList<SimpleStation> stations;
+		IMoyeuActions actions;
+		StationCardFragment[] stationFragments;
 
 		// We alternate between two version of the same background so that the parallax doesn't get confused
 		ImageReference background, background2;
 
-		public StationGridAdapter (FragmentManager manager, IList<Station> stations, GeoPoint currentLocation, BikeActionStatus status)
+		public StationGridAdapter (FragmentManager manager,
+		                           IList<SimpleStation> stations,
+		                           IMoyeuActions actions)
 			: base (manager)
 		{
 			this.stations = stations;
-			this.currentLocation = currentLocation;
-			this.status = status;
+			this.actions = actions;
+			this.stationFragments = new StationCardFragment[stations.Count];
 			this.background = ImageReference.ForDrawable (Resource.Drawable.pager_background);
 			this.background2 = ImageReference.ForDrawable (Resource.Drawable.pager_background2);
+		}
+
+		public void SwitchCount ()
+		{
+			foreach (var frag in stationFragments)
+				if (frag != null)
+					frag.SwitchCount ();
 		}
 
 		public override int RowCount {
@@ -45,7 +55,9 @@ namespace Moyeu
 
 		public override ImageReference GetBackground (int row, int column)
 		{
-			return (row % 2) == 0 ? background : background2;
+			var station = stations [row];
+			return station.Background != null ? ImageReference.ForBitmap (station.Background)
+				: (row % 2) == 0 ? background : background2;
 		}
 
 		public override int GetColumnCount (int p0)
@@ -56,12 +68,20 @@ namespace Moyeu
 
 		public override Fragment GetFragment (int row, int column)
 		{
-			if (column == 1)
-				return ActionButtonFragment.WithAction ("Navigate", Resource.Drawable.navigate_button);
-			if (column == 2)
-				return ActionButtonFragment.WithAction ("Add to Favorite", Resource.Drawable.favorite_button);
+			var station = stations [row];
+			var id = station.Id;
 
-			return StationCardFragment.WithStation (stations [row], currentLocation, status);
+			if (column == 1)
+				return ActionButtonFragment.WithAction ("Navigate", Resource.Drawable.navigate_button,
+				                                        () => actions.NavigateToStation (id));
+			if (column == 2)
+				return ActionButtonFragment.WithToggleAction (Tuple.Create ("Favorite", "Unfavorite"),
+				                                              Resource.Drawable.favorite_button,
+				                                              station.IsFavorite,
+				                                              cked => actions.ToggleFavoriteStation (id, cked));
+
+			return stationFragments [row] ??
+				(stationFragments [row] = StationCardFragment.WithStation (station, actions.CurrentStatus));
 		}
 	}
 }
