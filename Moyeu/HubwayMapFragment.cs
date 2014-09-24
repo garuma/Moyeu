@@ -376,6 +376,9 @@ namespace Moyeu
 
 		public void OpenStationWithMarker (Marker marker)
 		{
+			if (string.IsNullOrEmpty (marker.Title) || string.IsNullOrEmpty (marker.Snippet))
+				return;
+
 			var name = pane.FindViewById<TextView> (Resource.Id.InfoViewName);
 			var name2 = pane.FindViewById<TextView> (Resource.Id.InfoViewSecondName);
 			var bikes = pane.FindViewById<TextView> (Resource.Id.InfoViewBikeNumber);
