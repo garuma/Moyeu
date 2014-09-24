@@ -11,32 +11,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="64dp"
         android:alpha="0"
         android:visibility="gone"
         android:id="@+id/FlashBarLayout"
-        android:padding="4dp">
-        <LinearLayout
-            android:orientation="horizontal"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+        <TextView
+            android:text="Loading"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ProgressBar
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/FlashBarProgress"
-                android:layout_gravity="center" />
-            <TextView
-                android:text="Loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#fff2f2f2"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_gravity="center"
-                android:id="@+id/FlashBarText"
-                android:textSize="14sp" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:textColor="#fff2f2f2"
+            android:layout_gravity="center"
+            android:id="@+id/FlashBarText"
+            android:textSize="14sp" />
     </FrameLayout>
     <TextView
         android:id="@+id/UpdateTimeText"
