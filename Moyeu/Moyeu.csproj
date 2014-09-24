@@ -199,4 +199,7 @@
     <Folder Include="Resources\drawable-xxhdpi\" />
     <Folder Include="Resources\drawable-xxxhdpi\" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidEnvironment Include="environment.txt" />
+  </ItemGroup>
 </Project>
