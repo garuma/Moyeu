@@ -157,7 +157,7 @@ namespace Moyeu
 			var cacheDir = CacheDir.AbsolutePath;
 			var file = Path.Combine (cacheDir, "StationBackgrounds", station.Id.ToString ());
 			byte[] content = null;
-			var url = GoogleApis.MakeStreetViewUrl (station.Location, 640, 406);
+			var url = GoogleApis.MakeStreetViewUrl (station.Location, 640, 400);
 
 			try {
 				if (!File.Exists (file)) {
