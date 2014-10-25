@@ -77,16 +77,14 @@ namespace Moyeu
 			var ctx = inflater.Context;
 			var baseView = base.OnCreateView (inflater, container, savedInstanceState);
 			refreshLayout = new ListFragmentSwipeRefreshLayout (ctx, this);
-			refreshLayout.AddView (baseView, ViewGroup.LayoutParams.FillParent, ViewGroup.LayoutParams.FillParent);
-			refreshLayout.LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.FillParent,
-			                                                             ViewGroup.LayoutParams.FillParent);
+			refreshLayout.AddView (baseView, ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
+			refreshLayout.LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.MatchParent,
+			                                                             ViewGroup.LayoutParams.MatchParent);
 			refreshLayout.SetColorScheme (Resource.Color.swipe_refresh_color_main,
 			                              Resource.Color.swipe_refresh_color_shade1,
 			                              Resource.Color.swipe_refresh_color_shade2,
 			                              Resource.Color.swipe_refresh_color_shade3);
-			refreshLayout.SetDistanceToTrigger (TypedValue.ApplyDimension (ComplexUnitType.Dip, 64, ctx.Resources.DisplayMetrics));
 			refreshLayout.Refresh += (sender, e) => Refresh (reset: false);
-
 
 			return refreshLayout;
 		}
@@ -107,19 +105,6 @@ namespace Moyeu
 				if (listView != null && listView.Visibility == ViewStates.Visible)
 					return ViewCompat.CanScrollVertically (listView, -1);
 				return false;
-			}
-
-			public bool SetDistanceToTrigger (float distance)
-			{
-				try {
-					var distanceToTrigger = Class.Superclass.GetDeclaredField ("mDistanceToTriggerSync");
-					distanceToTrigger.Accessible = true;
-					distanceToTrigger.SetFloat (this, distance);
-				} catch {
-					return false;
-				}
-
-				return true;
 			}
 		}
 
