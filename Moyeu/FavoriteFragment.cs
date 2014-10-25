@@ -17,6 +17,8 @@ using Android.Animation;
 using Android.Graphics.Drawables;
 using Android.Util;
 
+using Rdio.TangoAndCache.Android.UI.Drawables;
+
 namespace Moyeu
 {
 	public class FavoriteFragment : Android.Support.V4.App.ListFragment, IMoyeuSection
@@ -129,9 +131,9 @@ namespace Moyeu
 
 			var api = GoogleApis.Obtain (context);
 			string mapUrl = GoogleApis.MakeMapUrl (station.Location);
-			Bitmap mapBmp = null;
-			if (api.MapCache.TryGet (mapUrl, out mapBmp))
-				mapView.SetImageDrawable (new RoundCornerDrawable (mapBmp));
+			SelfDisposingBitmapDrawable mapDrawable;
+			if (api.MapCache.TryGet (mapUrl, out mapDrawable))
+				mapView.SetImageDrawable (mapDrawable);
 			else
 				api.LoadMap (station.Location, view, mapView, version);
 

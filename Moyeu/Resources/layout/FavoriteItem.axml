@@ -4,8 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:padding="8dp">
-    <ImageView
-        android:src="@android:color/transparent"
+    <rdio.tangoandcache.android.widget.ManagedImageView
         android:layout_width="65dp"
         android:layout_height="42dp"
         android:id="@+id/StationMap"

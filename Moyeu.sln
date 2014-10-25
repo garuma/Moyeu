@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamSvg", "xamsvg\XamSvg.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoyeuWear", "MoyeuWear\MoyeuWear.csproj", "{3B2CA08D-AF1C-4427-BB29-A6E0A5ECB064}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TangoAndCache", "tangoandcache\TangoAndCache\TangoAndCache\TangoAndCache.csproj", "{FB43CF84-E9A5-44EB-AF90-3C3544E1A251}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,8 +33,9 @@ Global
 		{D91DC8A9-454E-4CB9-96BE-19652A67D0A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D91DC8A9-454E-4CB9-96BE-19652A67D0A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D91DC8A9-454E-4CB9-96BE-19652A67D0A4}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Moyeu\Moyeu.csproj
+		{FB43CF84-E9A5-44EB-AF90-3C3544E1A251}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB43CF84-E9A5-44EB-AF90-3C3544E1A251}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB43CF84-E9A5-44EB-AF90-3C3544E1A251}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB43CF84-E9A5-44EB-AF90-3C3544E1A251}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

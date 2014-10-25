@@ -2,10 +2,13 @@ using System;
 
 using Android.Graphics;
 using Android.Graphics.Drawables;
+using Android.Content.Res;
+
+using Rdio.TangoAndCache.Android.UI.Drawables;
 
 namespace Moyeu
 {
-	public class RoundCornerDrawable : Drawable
+	public class RoundCornerDrawable : SelfDisposingBitmapDrawable
 	{
 		float mCornerRadius;
 		RectF mRect = new RectF ();
@@ -14,7 +17,8 @@ namespace Moyeu
 		Paint strokePaint;
 		int margin;
 
-		public RoundCornerDrawable (Bitmap bitmap, float cornerRadius = 5, int margin = 3)
+		public RoundCornerDrawable (Resources res, Bitmap bitmap, float cornerRadius = 5, int margin = 3)
+			: base (res, bitmap)
 		{
 			mCornerRadius = cornerRadius;
 

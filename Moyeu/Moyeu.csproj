@@ -15,7 +15,7 @@
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AssemblyName>Moyeu</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v5.5.0</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
     <AndroidSdkBuildToolsVersion>19.0.0</AndroidSdkBuildToolsVersion>
@@ -76,7 +76,6 @@
     <Compile Include="FavoriteManager.cs" />
     <Compile Include="Storage\BitmapCache.cs" />
     <Compile Include="Storage\DiskCache.cs" />
-    <Compile Include="Storage\LruCache.cs" />
     <Compile Include="RoundCornerDrawable.cs" />
     <Compile Include="HubwayRentals.cs" />
     <Compile Include="ChronometerView.cs" />
@@ -190,6 +189,10 @@
     <ProjectReference Include="..\xamsvg\XamSvg.csproj">
       <Project>{B70EDB4C-A85E-45BE-A180-5B0462020C6F}</Project>
       <Name>XamSvg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\tangoandcache\TangoAndCache\TangoAndCache\TangoAndCache.csproj">
+      <Project>{FB43CF84-E9A5-44EB-AF90-3C3544E1A251}</Project>
+      <Name>TangoAndCache</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Android.Widget;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Content;
 
 using LatLng = Android.Gms.Maps.Model.LatLng;
@@ -37,18 +38,16 @@ namespace Moyeu
 
 		public BitmapCache MapCache {
 			get {
-				return mapCache
-					?? (mapCache = BitmapCache.CreateCache (context, "MapsPictures"));
+				return mapCache ?? (mapCache = BitmapCache.CreateCache (context, "MapsPictures"));
 			}
 		}
 
-		async Task<Bitmap> LoadInternal (string url, BitmapCache cache)
+		async Task<Drawable> LoadInternal (string url, BitmapCache cache)
 		{
 			try {
 				var data = await client.GetByteArrayAsync (url).ConfigureAwait (false);
 				var bmp = BitmapFactory.DecodeByteArray (data, 0, data.Length);
-				cache.AddOrUpdate (url, bmp, TimeSpan.FromDays (90));
-				return bmp;
+				return cache.AddOrUpdate (url, bmp, TimeSpan.FromDays (90));
 			} catch (Exception e) {
 				e.Data ["Url"] = url;
 				AnalyticsHelper.LogException ("GoogleApiDownloader", e);
@@ -60,10 +59,10 @@ namespace Moyeu
 		internal async void LoadMap (GeoPoint point, FavoriteView view, ImageView mapView, long version)
 		{
 			var url = MakeMapUrl (point);
-			var bmp = await LoadInternal (url, MapCache);
-			if (bmp != null && view.VersionNumber == version) {
+			var drawable = await LoadInternal (url, MapCache);
+			if (drawable != null && view.VersionNumber == version) {
 				mapView.AlphaAnimate (0, duration: 150, endAction: () => {
-					mapView.SetImageDrawable (new RoundCornerDrawable (bmp));
+					mapView.SetImageDrawable (drawable);
 					mapView.AlphaAnimate (1, duration: 250);
 				});
 			}

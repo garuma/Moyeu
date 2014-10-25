@@ -4,3 +4,6 @@
 [submodule "MobileHtmlAgilityPack"]
 	path = MobileHtmlAgilityPack
 	url = http://github.com/garuma/MobileHtmlAgilityPack.git
+[submodule "tangoandcache"]
+	path = tangoandcache
+	url = https://github.com/rdio/tangoandcache.git
