@@ -18,6 +18,7 @@ using Android.Graphics.Drawables;
 using Android.Util;
 
 using Rdio.TangoAndCache.Android.UI.Drawables;
+using Rdio.TangoAndCache.Android.Widget;
 
 namespace Moyeu
 {
@@ -107,7 +108,7 @@ namespace Moyeu
 			var view = EnsureView (convertView);
 			var version = Interlocked.Increment (ref view.VersionNumber);
 
-			var mapView = view.FindViewById<ImageView> (Resource.Id.StationMap);
+			var mapView = view.FindViewById<ManagedImageView> (Resource.Id.StationMap);
 			var stationName = view.FindViewById<TextView> (Resource.Id.MainStationName);
 			var secondStationName = view.FindViewById<TextView> (Resource.Id.SecondStationName);
 			var bikeNumber = view.FindViewById<TextView> (Resource.Id.BikeNumber);
