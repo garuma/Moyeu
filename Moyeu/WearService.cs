@@ -80,7 +80,7 @@ namespace Moyeu
 							Lat = lastLocation.Latitude,
 							Lon = lastLocation.Longitude
 						};
-						var nearestStations = Hubway.GetStationsAround (stations, currentPoint, maxItems: 3);
+						var nearestStations = Hubway.GetStationsAround (stations, currentPoint, maxItems: 6);
 						var favManager = FavoriteManager.Obtain (this);
 						var favorites = await favManager.GetFavoriteStationIdsAsync ();
 
