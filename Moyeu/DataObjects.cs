@@ -109,6 +109,25 @@ namespace Moyeu
 				return stations;
 			}
 		}
+
+		public static void DumpFavorites (HashSet<int> favorites, Stream stream)
+		{
+			using (var writer = new BinaryWriter (stream, System.Text.Encoding.UTF8, true)) {
+				writer.Write (favorites.Count);
+				foreach (var fav in favorites)
+					writer.Write (fav);
+			}
+		}
+
+		public static HashSet<int> ParseFavorites (Stream stream)
+		{
+			using (var reader = new BinaryReader (stream, System.Text.Encoding.UTF8, true)) {
+				var count = reader.ReadInt32 ();
+				return new HashSet<int> (
+					Enumerable.Range (0, count).Select (i => reader.ReadInt32 ())
+				);
+			}
+		}
 	}
 }
 
