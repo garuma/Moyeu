@@ -46,6 +46,7 @@ namespace Moyeu
 			                                              UpperRightLat,
 			                                              UpperRightLon);
 			} catch (Exception e) {
+				AnalyticsHelper.LogException ("SuggestionsFetcher", e);
 				Android.Util.Log.Warn ("SuggestionsFetcher", e.ToString ());
 				addresses = new Address[0];
 			}

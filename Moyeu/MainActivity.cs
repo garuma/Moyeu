@@ -70,6 +70,7 @@ namespace Moyeu
 			base.OnCreate (bundle);
 
 			AndroidExtensions.Initialize (this);
+			AnalyticsHelper.Initialize (ApplicationContext);
 			SetContentView (Resource.Layout.Main);
 
 			this.drawer = FindViewById<DrawerLayout> (Resource.Id.drawer_layout);

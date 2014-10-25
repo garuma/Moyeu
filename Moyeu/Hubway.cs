@@ -89,6 +89,7 @@ namespace Moyeu
 					try {
 						data = await client.GetStringAsync (HubwayApiEndpoint).ConfigureAwait (false);
 					} catch (Exception e) {
+						AnalyticsHelper.LogException ("HubwayDownloader", e);
 						Android.Util.Log.Error ("HubwayDownloader", e.ToString ());
 					}
 					if (data == null)

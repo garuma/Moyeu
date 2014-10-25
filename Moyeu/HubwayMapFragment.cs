@@ -309,6 +309,7 @@ namespace Moyeu
 				await SetMapStationPins (stations);
 				lastUpdateText.Text = "Last refreshed: " + DateTime.Now.ToShortTimeString ();
 			} catch (Exception e) {
+				AnalyticsHelper.LogException ("DataFetcher", e);
 				Android.Util.Log.Debug ("DataFetcher", e.ToString ());
 			}
 

@@ -82,6 +82,7 @@ namespace Moyeu
 						.OrderBy (s => s.Name)
 						.ToList ();
 				} catch (Exception e) {
+					AnalyticsHelper.LogException ("Favorite", e);
 					Android.Util.Log.Error ("Favorites", e.ToString ());
 				}
 				NotifyDataSetChanged ();

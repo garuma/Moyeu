@@ -61,6 +61,9 @@
     <Reference Include="Xamarin.Android.Support.v4">
       <HintPath>..\packages\Xamarin.Android.Support.v4.20.0.0.4\lib\MonoAndroid32\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Insights">
+      <HintPath>..\packages\Xamarin.Insights.1.7.2.97\lib\MonoAndroid10\Xamarin.Insights.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -88,6 +91,7 @@
     <Compile Include="IMoyeuSection.cs" />
     <Compile Include="AndroidExtensions.cs" />
     <Compile Include="HubwayHistory.cs" />
+    <Compile Include="AnalyticsHelper.cs" />
     <Compile Include="WearService.cs" />
     <Compile Include="DataObjects.cs" />
   </ItemGroup>

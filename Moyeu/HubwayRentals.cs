@@ -104,6 +104,7 @@ namespace Moyeu
 						needsAuth = htmlException.Message.Contains ("302");
 					continue;
 				} catch (Exception e) {
+					AnalyticsHelper.LogException ("RentalsGenericError", e);
 					Log.Error ("RentalsGenericError", e.ToString ());
 					break;
 				}

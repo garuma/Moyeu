@@ -50,6 +50,8 @@ namespace Moyeu
 				cache.AddOrUpdate (url, bmp, TimeSpan.FromDays (90));
 				return bmp;
 			} catch (Exception e) {
+				e.Data ["Url"] = url;
+				AnalyticsHelper.LogException ("GoogleApiDownloader", e);
 				Android.Util.Log.Error ("GoogleApiDownloader", "For URL " + url + ". Exception: " + e.ToString ());
 			}
 			return null;

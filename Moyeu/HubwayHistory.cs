@@ -66,6 +66,7 @@ namespace Moyeu
 					}
 					lastFetch = DateTime.UtcNow;
 				} catch (Exception e) {
+					AnalyticsHelper.LogException ("HistoryDownloader", e);
 					Android.Util.Log.Error ("HistoryDownloader", e.ToString ());
 				}
 			}
