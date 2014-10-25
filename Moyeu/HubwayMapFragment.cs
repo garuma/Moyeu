@@ -45,6 +45,7 @@ namespace Moyeu
 		PictureBitmapDrawable starOnDrawable;
 		PictureBitmapDrawable starOffDrawable;
 
+		const string SearchPinId = "SEARCH_PIN";
 		int currentShownID = -1;
 		Marker currentShownMarker;
 		CameraPosition oldPosition;
@@ -377,7 +378,7 @@ namespace Moyeu
 
 		public void OpenStationWithMarker (Marker marker)
 		{
-			if (string.IsNullOrEmpty (marker.Title) || string.IsNullOrEmpty (marker.Snippet))
+			if (string.IsNullOrEmpty (marker.Title) || marker.Title == SearchPinId)
 				return;
 
 			var name = pane.FindViewById<TextView> (Resource.Id.InfoViewName);
@@ -559,6 +560,7 @@ namespace Moyeu
 			new Handler (Activity.MainLooper).PostDelayed (() => {
 				var opts = new MarkerOptions ()
 					.SetPosition (startLatLng)
+					.SetTitle (SearchPinId)
 					.InvokeIcon (BitmapDescriptorFactory.DefaultMarker (BitmapDescriptorFactory.HueViolet));
 				var marker = mapFragment.Map.AddMarker (opts);
 				var animator = ObjectAnimator.OfObject (marker, "position", new LatLngEvaluator (), startLatLng, finalLatLng);
