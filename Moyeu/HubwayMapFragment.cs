@@ -50,11 +50,8 @@ namespace Moyeu
 		Marker currentShownMarker;
 		CameraPosition oldPosition;
 
-		public HubwayMapFragment (Context context)
+		public HubwayMapFragment ()
 		{
-			MapsInitializer.Initialize (context);
-			this.pinFactory = new PinFactory (context);
-			this.favManager = FavoriteManager.Obtain (context);
 			HasOptionsMenu = true;
 		}
 
@@ -79,6 +76,15 @@ namespace Moyeu
 		public void RefreshData ()
 		{
 			FillUpMap (forceRefresh: false);
+		}
+
+		public override void OnActivityCreated (Bundle savedInstanceState)
+		{
+			base.OnActivityCreated (savedInstanceState);
+
+			var context = Activity;
+			this.pinFactory = new PinFactory (context);
+			this.favManager = FavoriteManager.Obtain (context);
 		}
 
 		public override void OnStart ()

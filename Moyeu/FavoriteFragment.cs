@@ -26,13 +26,23 @@ namespace Moyeu
 	{
 		FavoriteManager favManager;
 		FavoriteAdapter adapter;
-		Action<long> stationShower;
+		bool refreshRequested;
 
-		public FavoriteFragment (Context context, Action<long> stationShower)
+		public FavoriteFragment ()
 		{
-			this.stationShower = stationShower;
-			this.favManager = FavoriteManager.Obtain (context);
-			ListAdapter = this.adapter = new FavoriteAdapter (context);
+			HasOptionsMenu = false;
+		}
+
+		public override void OnActivityCreated (Bundle savedInstanceState)
+		{
+			base.OnActivityCreated (savedInstanceState);
+			this.favManager = FavoriteManager.Obtain (Activity);
+			ListAdapter = this.adapter = new FavoriteAdapter (Activity);
+
+			if (refreshRequested) {
+				refreshRequested = false;
+				RefreshData ();
+			}
 		}
 
 		public string Name {
@@ -49,6 +59,11 @@ namespace Moyeu
 
 		public async void RefreshData ()
 		{
+			if (favManager == null) {
+				refreshRequested = true;
+				return;
+			}
+
 			var favs = favManager.LastFavorites
 			           ?? (await favManager.GetFavoriteStationIdsAsync ());
 			adapter.SetStationIds (favs);
@@ -59,7 +74,14 @@ namespace Moyeu
 			base.OnViewCreated (view, savedInstanceState);
 			view.SetBackgroundDrawable (AndroidExtensions.DefaultBackground);
 			SetEmptyText ("You have no favorites yet");
-			ListView.ItemClick += (sender, e) => stationShower (e.Id);
+			ListView.ItemClick += (sender, e) => StationShower (e.Id);
+		}
+
+		void StationShower (long id)
+		{
+			var navigator = Activity as MainActivity;
+			if (navigator != null)
+				navigator.SwitchToMapAndShowStationWithId (id);
 		}
 	}
 

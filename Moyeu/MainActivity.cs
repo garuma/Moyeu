@@ -115,11 +115,8 @@ namespace Moyeu
 			drawerAround.Adapter = aroundAdapter = new DrawerAroundAdapter (this);
 
 			drawerMenu.SetItemChecked (0, true);
-			if (CheckGooglePlayServices ()) {
-				client = CreateApiClient ();
-				SwitchTo (mapFragment = new HubwayMapFragment (this));
-				ActionBar.Title = ((IMoyeuSection)mapFragment).Title;
-			}
+			if (CheckGooglePlayServices ())
+				PostCheckGooglePlayServices ();
 		}
 
 		IGoogleApiClient CreateApiClient ()
@@ -131,43 +128,37 @@ namespace Moyeu
 
 		void HandleAroundItemClick (object sender, AdapterView.ItemClickEventArgs e)
 		{
-			if (mapFragment != null) {
-				drawer.CloseDrawers ();
-				mapFragment.CenterAndOpenStationOnMap (e.Id,
-				                                       zoom: 17,
-				                                       animDurationID: Android.Resource.Integer.ConfigLongAnimTime);
-			}
+			SwitchToMapAndShowStationWithId (e.Id);
 		}
 
 		void HandleSectionItemClick (object sender, AdapterView.ItemClickEventArgs e)
 		{
-			switch (e.Position) {
+			SwitchToSectionPosition (e.Position);
+		}
+
+		void SwitchToSectionPosition (int position)
+		{
+			switch (position) {
 			case 0:
 				if (mapFragment == null)
-					mapFragment = new HubwayMapFragment (this);
+					mapFragment = new HubwayMapFragment ();
 				SwitchTo (mapFragment);
 				break;
 			case 1:
-				if (favoriteFragment == null) {
-					favoriteFragment = new FavoriteFragment (this, id => {
-						SwitchTo (mapFragment);
-						mapFragment.CenterAndOpenStationOnMap (id,
-						                                       zoom: 17,
-						                                       animDurationID: Android.Resource.Integer.ConfigLongAnimTime);
-					});
-				}
+				if (favoriteFragment == null)
+					favoriteFragment = new FavoriteFragment ();
 				SwitchTo (favoriteFragment);
 				break;
 			case 2:
 				if (rentalFragment == null)
-					rentalFragment = new RentalFragment (this);
+					rentalFragment = new RentalFragment ();
 				SwitchTo (rentalFragment);
 				break;
 			default:
 				return;
 			}
-			SetSelectedMenuIndex (e.Position);
-			drawerMenu.SetItemChecked (e.Position, true);
+			SetSelectedMenuIndex (position);
+			drawerMenu.SetItemChecked (position, true);
 			drawer.CloseDrawers ();
 		}
 
@@ -199,6 +190,14 @@ namespace Moyeu
 				section.RefreshData ();
 			}
 			t.Commit ();
+		}
+
+		internal void SwitchToMapAndShowStationWithId (long id)
+		{
+			SwitchToSectionPosition (0);
+			ActionBar.Title = mapFragment.Title;
+			var animDuration = Android.Resource.Integer.ConfigLongAnimTime;
+			mapFragment.CenterAndOpenStationOnMap (id, zoom: 17, animDurationID: animDuration);
 		}
 
 		void SetSelectedMenuIndex (int pos)
@@ -253,11 +252,8 @@ namespace Moyeu
 		{
 			if (requestCode == ConnectionFailureResolutionRequest) {
 				if (resultCode == Result.Ok && CheckGooglePlayServices ()) {
-					if (client == null) {
-						client = CreateApiClient ();
-						client.Connect ();
-					}
-					SwitchTo (mapFragment = new HubwayMapFragment (this));
+					PostCheckGooglePlayServices ();
+					client.Connect ();
 				} else
 					Finish ();
 			} else {
@@ -281,6 +277,15 @@ namespace Moyeu
 
 			Finish ();
 			return false;
+		}
+
+		void PostCheckGooglePlayServices ()
+		{
+			MapsInitializer.Initialize (this);
+			if (client == null)
+				client = CreateApiClient ();
+			SwitchTo (mapFragment = new HubwayMapFragment ());
+			ActionBar.Title = ((IMoyeuSection)mapFragment).Title;
 		}
 
 		#region IObserver implementation

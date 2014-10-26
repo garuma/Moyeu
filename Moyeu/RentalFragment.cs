@@ -38,7 +38,7 @@ namespace Moyeu
 		DateTime lastLoadingTime = DateTime.Now;
 		ListFragmentSwipeRefreshLayout refreshLayout;
 
-		public RentalFragment (Context context)
+		public RentalFragment ()
 		{
 			HasOptionsMenu = true;
 		}
