@@ -16,10 +16,10 @@ namespace Moyeu
 		Dictionary<int, Bitmap> pinCache = new Dictionary<int, Bitmap> ();
 		Bitmap closedPin;
 
-		readonly Color baseLightGreenColor = Color.Rgb (0x99, 0xcc, 0x00);
-		readonly Color baseLightRedColor = Color.Rgb (0xff, 0x44, 0x44);
-		readonly Color baseDarkGreenColor = Color.Rgb (0x66, 0x99, 0x00);
-		readonly Color baseDarkRedColor = Color.Rgb (0xcc, 0x00, 0x00);
+		readonly Color baseLightGreenColor;
+		readonly Color baseLightRedColor;
+		readonly Color baseDarkGreenColor;
+		readonly Color baseDarkRedColor;
 
 		readonly Color fillColor = Color.Rgb (0x01, 0x02, 0x03);
 		readonly Color bottomFillColor = Color.Rgb (0xaa, 0xbb, 0xcc);
@@ -38,6 +38,18 @@ namespace Moyeu
 				TextAlign = Paint.Align.Center,
 				Color = Color.White
 			};
+
+			/*if (Android.OS.Build.VERSION.SdkInt == Android.OS.BuildVersionCodes.Lollipop) {
+				baseLightGreenColor = Color.Rgb (0x2b, 0xaf, 0x2b);
+				baseLightRedColor = Color.Rgb (0xe5, 0x1c, 0x23);
+				baseDarkGreenColor = Color.Rgb (0x25, 0x9b, 0x24);
+				baseDarkRedColor = Color.Rgb (0xdd, 0x19, 0x1d);
+			} else {*/
+			baseLightGreenColor = Color.Rgb (0x99, 0xcc, 0x00);
+			baseLightRedColor = Color.Rgb (0xff, 0x44, 0x44);
+			baseDarkGreenColor = Color.Rgb (0x66, 0x99, 0x00);
+			baseDarkRedColor = Color.Rgb (0xcc, 0x00, 0x00);
+			//}
 		}
 
 		public Task<Bitmap> GetPinAsync (float ratio, int number, int width, int height, float alpha = 1)

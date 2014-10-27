@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<dimen name="gmap_preview_width">65dp</dimen>
+	<dimen name="gmap_preview_height">42dp</dimen>
+
+	<style name="MoyeuTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar" />
+
     <style name="drawer_item_shadow">
         <item name="android:shadowColor">#25222222</item>
         <item name="android:shadowDx">0</item>

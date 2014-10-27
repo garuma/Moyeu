@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!---
+	<color name="moyeu_primary">#ff259b24</color>
+	<color name="moyeu_primary_dark">#ff0a7e07</color>
+	<color name="moyeu_accent">#ff64dd17</color>
+	-->
+	<color name="moyeu_primary">#2baf2b</color>
+	<color name="moyeu_primary_dark">#0a8f08</color>
+	<color name="moyeu_accent">#b2ff59 </color>
+	<color name="nav_drawer_background">#333333</color>
+
+	<color name="white_primary">#d6ffffff</color>
+	<color name="white_secondary">#89ffffff</color>
+	<color name="black_primary">#d6000000</color>
+	<color name="black_secondary">#89000000</color>
+
+	<dimen name="gmap_preview_width">288dp</dimen>
+	<dimen name="gmap_preview_height">128dp</dimen>
+
+	<style name="MoyeuTheme" parent="android:Theme.Material.Light.DarkActionBar">
+    	<item name="android:colorPrimary">@color/moyeu_primary</item>
+	    <item name="android:colorPrimaryDark">@color/moyeu_primary_dark</item>
+	    <item name="android:colorAccent">@color/moyeu_accent</item>
+	    <item name="android:actionBarStyle">@style/MoyeuActionBar</item>
+	</style>
+
+	<style name="MoyeuActionBar" parent="android:Widget.Material.Light.ActionBar.Solid">
+		<item name="android:contentInsetStart">72dp</item>
+	</style>
+</resources>

@@ -38,7 +38,8 @@ namespace Moyeu
 
 		public BitmapCache MapCache {
 			get {
-				return mapCache ?? (mapCache = BitmapCache.CreateCache (context, "MapsPictures"));
+				var round = !AndroidExtensions.IsMaterial;
+				return mapCache ?? (mapCache = BitmapCache.CreateCache (context, "MapsPictures", useRoundCorners: round));
 			}
 		}
 
@@ -56,9 +57,9 @@ namespace Moyeu
 			return null;
 		}
 
-		internal async void LoadMap (GeoPoint point, FavoriteView view, ImageView mapView, long version)
+		internal async void LoadMap (GeoPoint point, FavoriteView view, ImageView mapView, long version, int width, int height)
 		{
-			var url = MakeMapUrl (point);
+			var url = MakeMapUrl (point, width, height);
 			var drawable = await LoadInternal (url, MapCache);
 			if (drawable != null && view.VersionNumber == version) {
 				mapView.AlphaAnimate (0, duration: 150, endAction: () => {
@@ -81,18 +82,17 @@ namespace Moyeu
 			return BuildUrl ("https://maps.googleapis.com/maps/api/streetview?", parameters);
 		}
 
-		public static string MakeMapUrl (GeoPoint location)
+		public static string MakeMapUrl (GeoPoint location, int width, int height)
 		{
-			const int Width = 65;
-			const int Height = 42;
-
+			var zoom = AndroidExtensions.IsMaterial ? "17" : "13";
+			var markerSize = AndroidExtensions.IsMaterial ? "size:med" : "size:tiny";
 			var parameters = new Dictionary<string, string> {
 				{ "key", ApiKey },
-				{ "zoom", "13" },
+				{ "zoom", zoom },
 				{ "sensor", "true" },
-				{ "size", Width.ToPixels () + "x" + Height.ToPixels () },
+				{ "size", width + "x" + height },
 				{ "center", location.Lat + "," + location.Lon },
-				{ "markers", "size:tiny|" + location.Lat + "," + location.Lon }
+				{ "markers", markerSize + "|" + location.Lat + "," + location.Lon }
 			};
 
 			return BuildUrl ("https://maps.googleapis.com/maps/api/staticmap?",

@@ -30,7 +30,7 @@ namespace Moyeu
 {
 	[Activity (Label = "Moyeu",
 	           MainLauncher = true,
-	           Theme = "@android:style/Theme.Holo.Light.DarkActionBar",
+	           Theme = "@style/MoyeuTheme",
 	           ScreenOrientation = ScreenOrientation.Portrait,
 	           ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize,
 	           LaunchMode = LaunchMode.SingleTop)]
@@ -47,6 +47,7 @@ namespace Moyeu
 
 		DrawerLayout drawer;
 		ActionBarDrawerToggle drawerToggle;
+		LollipopDrawerToggle lollipopDrawerToggle;
 		ListView drawerMenu;
 		ListView drawerAround;
 
@@ -75,27 +76,36 @@ namespace Moyeu
 			SetContentView (Resource.Layout.Main);
 
 			this.drawer = FindViewById<DrawerLayout> (Resource.Id.drawer_layout);
-			this.drawerToggle = new MoyeuActionBarToggle (this,
-			                                              drawer,
-			                                              Resource.Drawable.ic_drawer,
-			                                              Resource.String.open_drawer,
-			                                              Resource.String.close_drawer) {
-				OpenCallback = () => {
-					ActionBar.Title = Title;
-					CurrentFragment.HasOptionsMenu = false;
-					InvalidateOptionsMenu ();
-				},
-				CloseCallback = () => {
-					var currentFragment = CurrentFragment;
-					if (currentFragment != null) {
-						ActionBar.Title = ((IMoyeuSection)currentFragment).Title;
-						currentFragment.HasOptionsMenu = true;
-					}
-					InvalidateOptionsMenu ();
-				},
-			};
-			drawer.SetDrawerShadow (Resource.Drawable.drawer_shadow, (int)GravityFlags.Left);
-			drawer.SetDrawerListener (drawerToggle);
+			drawer.SetDrawerShadow (Resource.Drawable.drawer_shadow, (int)GravityFlags.Start);
+
+			if (AndroidExtensions.IsMaterial) {
+				this.lollipopDrawerToggle = new LollipopDrawerToggle (this,
+				                                                      drawer,
+				                                                      Resource.String.open_drawer,
+				                                                      Resource.String.close_drawer);
+				drawer.SetDrawerListener (lollipopDrawerToggle);
+			} else {
+				this.drawerToggle = new MoyeuActionBarToggle (this,
+				                                              drawer,
+				                                              Resource.Drawable.ic_drawer,
+				                                              Resource.String.open_drawer,
+				                                              Resource.String.close_drawer) {
+					OpenCallback = () => {
+						ActionBar.Title = Title;
+						CurrentFragment.HasOptionsMenu = false;
+						InvalidateOptionsMenu ();
+					},
+					CloseCallback = () => {
+						var currentFragment = CurrentFragment;
+						if (currentFragment != null) {
+							ActionBar.Title = ((IMoyeuSection)currentFragment).Title;
+							currentFragment.HasOptionsMenu = true;
+						}
+						InvalidateOptionsMenu ();
+					},
+				};
+				drawer.SetDrawerListener (drawerToggle);
+			}
 			ActionBar.SetDisplayHomeAsUpEnabled (true);
 			ActionBar.SetHomeButtonEnabled (true);
 
@@ -103,7 +113,6 @@ namespace Moyeu
 			FavoriteManager.FavoritesChanged += (sender, e) => aroundAdapter.Refresh ();
 
 			drawerMenu = FindViewById<ListView> (Resource.Id.left_drawer);
-			drawerMenu.AddFooterView (new Space (this));
 			drawerMenu.ItemClick += HandleSectionItemClick;
 			menuNormalTf = Typeface.Create (Resources.GetString (Resource.String.menu_item_fontFamily),
 			                                TypefaceStyle.Normal);
@@ -203,6 +212,8 @@ namespace Moyeu
 
 		void SetSelectedMenuIndex (int pos)
 		{
+			if (AndroidExtensions.IsMaterial)
+				return;
 			for (int i = 0; i < 3; i++) {
 				var text = (TextView)drawerMenu.GetChildAt (i);
 				text.Typeface = i == pos ? menuHighlightTf : menuNormalTf;
@@ -212,20 +223,33 @@ namespace Moyeu
 		protected override void OnPostCreate (Bundle savedInstanceState)
 		{
 			base.OnPostCreate (savedInstanceState);
-			drawerToggle.SyncState ();
+			if (lollipopDrawerToggle != null)
+				lollipopDrawerToggle.SyncState ();
+			else
+				drawerToggle.SyncState ();
 		}
 
 		public override void OnConfigurationChanged (Android.Content.Res.Configuration newConfig)
 		{
 			base.OnConfigurationChanged (newConfig);
-			drawerToggle.OnConfigurationChanged (newConfig);
+			if (lollipopDrawerToggle != null)
+				lollipopDrawerToggle.OnConfigurationChanged (newConfig);
+			else
+				drawerToggle.OnConfigurationChanged (newConfig);
 		}
 
 		public override bool OnOptionsItemSelected (IMenuItem item)
 		{
-			if (drawerToggle.OnOptionsItemSelected (item))
+			if (DrawerToggleOnOptionsItemSelected (item))
 				return true;
 			return base.OnOptionsItemSelected (item);
+		}
+
+		bool DrawerToggleOnOptionsItemSelected (IMenuItem item)
+		{
+			if (lollipopDrawerToggle != null)
+				return lollipopDrawerToggle.OnOptionsItemSelected (item);
+			return drawerToggle.OnOptionsItemSelected (item);
 		}
 
 		protected override void OnNewIntent (Intent intent)
@@ -364,16 +388,32 @@ namespace Moyeu
 
 		public override View GetView (int position, View convertView, ViewGroup parent)
 		{
-			var text = convertView as TextView;
+			var text = convertView as CheckedTextView;
 			if (text == null) {
 				var inflater = context.GetSystemService (Context.LayoutInflaterService).JavaCast<LayoutInflater> ();
-				text = (TextView)inflater.Inflate (Resource.Layout.DrawerItemLayout, parent, false);
+				text = (CheckedTextView)inflater.Inflate (Resource.Layout.DrawerItemLayout, parent, false);
 			}
+
+			var menuEntry = sections [position];
+			text.Text = menuEntry.Item2;
+
+			if (AndroidExtensions.IsMaterial) {
+				var colorList = text.Resources.GetColorStateList (Resource.Color.accent_color_list);
+				text.SetTextColor (colorList);
+				var icon = text.Resources.GetDrawable (menuEntry.Item1);
+				icon.SetTintList (colorList);
+				text.SetCompoundDrawablesWithIntrinsicBounds (icon, null, null, null);
+			} else {
+				text.SetCompoundDrawablesRelativeWithIntrinsicBounds (menuEntry.Item1, 0, 0, 0);
+			}
+
 			// Initial menu initialization, put the first item as selected
-			if (position == 0 && convertView == null)
-				text.SetTypeface (text.Typeface, TypefaceStyle.Bold);
-			text.Text = sections [position].Item2;
-			text.SetCompoundDrawablesWithIntrinsicBounds (sections [position].Item1, 0, 0, 0);
+			if (position == 0 && convertView == null) {
+				if (!AndroidExtensions.IsMaterial)
+					text.SetTypeface (text.Typeface, TypefaceStyle.Bold);
+				if (position == 0 && convertView == null)
+					text.Checked = true;
+			}
 
 			return text;
 		}

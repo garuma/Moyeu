@@ -75,6 +75,10 @@ namespace Moyeu
 			view.SetBackgroundDrawable (AndroidExtensions.DefaultBackground);
 			SetEmptyText ("You have no favorites yet");
 			ListView.ItemClick += (sender, e) => StationShower (e.Id);
+			if (AndroidExtensions.IsMaterial) {
+				ListView.DividerHeight = 0;
+				ListView.Divider = null;
+			}
 		}
 
 		void StationShower (long id)
@@ -136,9 +140,11 @@ namespace Moyeu
 			var bikeNumber = view.FindViewById<TextView> (Resource.Id.BikeNumber);
 			var slotNumber = view.FindViewById<TextView> (Resource.Id.SlotNumber);
 			var bikeImage = view.FindViewById<ImageView> (Resource.Id.bikeImageView);
-			if (bikePicture == null)
-				bikePicture = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.bike);
-			bikeImage.SetImageDrawable (bikePicture);
+			if (bikeImage != null) {
+				if (bikePicture == null)
+					bikePicture = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.bike);
+				bikeImage.SetImageDrawable (bikePicture);
+			}
 			if (mapPlaceholder == null)
 				mapPlaceholder = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.map_placeholder);
 			mapView.SetImageDrawable (mapPlaceholder);
@@ -153,12 +159,14 @@ namespace Moyeu
 			slotNumber.Text = station.Capacity.ToString ();
 
 			var api = GoogleApis.Obtain (context);
-			string mapUrl = GoogleApis.MakeMapUrl (station.Location);
+			var mapWidth = (int)view.Resources.GetDimension (Resource.Dimension.gmap_preview_width);
+			var mapHeight = (int)view.Resources.GetDimension (Resource.Dimension.gmap_preview_height);
+			string mapUrl = GoogleApis.MakeMapUrl (station.Location, mapWidth, mapHeight);
 			SelfDisposingBitmapDrawable mapDrawable;
 			if (api.MapCache.TryGet (mapUrl, out mapDrawable))
 				mapView.SetImageDrawable (mapDrawable);
 			else
-				api.LoadMap (station.Location, view, mapView, version);
+				api.LoadMap (station.Location, view, mapView, version, mapWidth, mapHeight);
 
 			return view;
 		}
@@ -189,7 +197,7 @@ namespace Moyeu
 	{
 		public FavoriteView (Context context) : base (context)
 		{
-			var inflater = Context.GetSystemService (Context.LayoutInflaterService).JavaCast<LayoutInflater> ();
+			var inflater = LayoutInflater.From (context);
 			inflater.Inflate (Resource.Layout.FavoriteItem, this, true);
 			var mapView = FindViewById<ImageView> (Resource.Id.StationMap);
 			mapView.Focusable = false;
