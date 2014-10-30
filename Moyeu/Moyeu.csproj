@@ -199,6 +199,7 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi-v21\ic_action_search.png" />
     <AndroidResource Include="Resources\color-v21\accent_color_list.xml" />
     <AndroidResource Include="Resources\layout-v21\FavoriteItem.axml" />
+    <AndroidResource Include="Resources\anim-v21\paper_state_list_anim_material.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
@@ -238,6 +239,7 @@
     <Folder Include="Resources\drawable-xxhdpi-v21\" />
     <Folder Include="Resources\drawable-xxxhdpi-v21\" />
     <Folder Include="Resources\color-v21\" />
+    <Folder Include="Resources\anim-v21\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidEnvironment Include="environment.txt" />

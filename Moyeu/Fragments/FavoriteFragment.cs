@@ -78,6 +78,7 @@ namespace Moyeu
 			if (AndroidExtensions.IsMaterial) {
 				ListView.DividerHeight = 0;
 				ListView.Divider = null;
+				ListView.SetSelector (Android.Resource.Color.Transparent);
 			}
 		}
 
