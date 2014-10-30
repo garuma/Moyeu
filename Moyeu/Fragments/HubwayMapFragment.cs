@@ -36,6 +36,7 @@ namespace Moyeu
 
 		bool loading;
 		bool showedStale;
+		string pendingSearchTerm;
 		FlashBarController flashBar;
 		IMenuItem searchItem;
 		FavoriteManager favManager;
@@ -322,6 +323,10 @@ namespace Moyeu
 
 			flashBar.ShowLoaded ();
 			showedStale = false;
+			if (pendingSearchTerm != null) {
+				OpenStationWithTerm (pendingSearchTerm);
+				pendingSearchTerm = null;
+			}
 			loading = false;
 		}
 
@@ -486,16 +491,94 @@ namespace Moyeu
 
 		public void OnSearchIntent (Intent intent)
 		{
-			searchItem.CollapseActionView ();
-			if (intent.Action != Intent.ActionSearch)
-				return;
-			var serial = (string)intent.Extras.Get (SearchManager.ExtraDataKey);
-			if (serial == null)
-				return;
-			var latlng = serial.Split ('|');
-			var finalLatLng = new LatLng (double.Parse (latlng[0]),
-			                              double.Parse (latlng[1]));
-			CenterMapOnLocation (finalLatLng);
+			if (searchItem != null)
+				searchItem.CollapseActionView ();
+
+			// Either we are getting a lat/lng from an action bar search
+			var serial = (string)intent.GetStringExtra (SearchManager.ExtraDataKey);
+			// Or it comes from a general search
+			var searchTerm = (string)intent.GetStringExtra (SearchManager.Query);
+
+			if (serial != null) {
+				var latlng = serial.Split ('|');
+				var finalLatLng = new LatLng (double.Parse (latlng [0]),
+				                              double.Parse (latlng [1]));
+				CenterMapOnLocation (finalLatLng);
+			} else if (!string.IsNullOrEmpty (searchTerm)) {
+				if (existingMarkers.Count == 0)
+					pendingSearchTerm = searchTerm;
+				else
+					OpenStationWithTerm (searchTerm);
+			}
+		}
+
+		async void OpenStationWithTerm (string term)
+		{
+			try {
+				var stations = await hubway.GetStations ();
+				var bestResult = stations
+					.Select (s => new { Station = s, Score = FuzzyStringMatch (term, s.Name) })
+					.Where (s => s.Score > 0.5f)
+					.OrderByDescending (s => s.Score)
+					.FirstOrDefault ();
+				if (bestResult == null) {
+					Toast.MakeText (Activity, "No station found for '" + term + "'", ToastLength.Short).Show ();
+					return;
+				}
+				CenterAndOpenStationOnMap (bestResult.Station.Id);
+			} catch (Exception e) {
+				e.Data ["Term"] = term;
+				AnalyticsHelper.LogException ("TermStationSearch", e);
+			}
+		}
+
+		float FuzzyStringMatch (string target, string other)
+		{
+			if (other.StartsWith (target, StringComparison.OrdinalIgnoreCase))
+				return 2f;
+			return LevenshteinDistance (target, other);
+		}
+
+		// Taken from Lucene.NET
+		// See https://git-wip-us.apache.org/repos/asf?p=lucenenet.git;a=blob;f=NOTICE.txt
+		public float LevenshteinDistance (string target, string other)
+		{
+			char[] sa;
+			int n;
+			int[] p, d, _d;
+
+			sa = target.ToCharArray();
+			n = sa.Length;
+			p = new int[n + 1];
+			d = new int[n + 1];
+			int m = other.Length;
+
+			if (n == 0 || m == 0)
+				return n == m ? 1 : 0;
+
+			int i;
+			int j;
+			char t_j;
+			int cost;
+
+			for (i = 0; i <= n; i++)
+				p[i] = i;
+
+			for (j = 1; j <= m; j++) {
+				t_j = other[j - 1];
+				d[0] = j;
+
+				for (i = 1; i <= n; i++) {
+					cost = sa[i - 1] == t_j ? 0 : 1;
+					d[i] = Math.Min(Math.Min(d[i - 1] + 1, p[i] + 1), p[i - 1] + cost);
+				}
+
+				_d = p;
+				p = d;
+				d = _d;
+			}
+
+			return 1.0f - ((float)p[n] / Math.Max(other.Length, sa.Length));
 		}
 
 		CameraPosition PreviousCameraPosition {

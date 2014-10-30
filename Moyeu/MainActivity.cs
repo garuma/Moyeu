@@ -34,7 +34,7 @@ namespace Moyeu
 	           ScreenOrientation = ScreenOrientation.Portrait,
 	           ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize,
 	           LaunchMode = LaunchMode.SingleTop)]
-	[IntentFilter (new[] { "android.intent.action.SEARCH" }, Categories = new[] { "android.intent.category.DEFAULT" })]
+	[IntentFilter (new[] { "android.intent.action.SEARCH", "com.google.android.gms.actions.SEARCH_ACTION" }, Categories = new[] { "android.intent.category.DEFAULT" })]
 	[MetaData ("android.app.searchable", Resource = "@xml/searchable")]
 	public class MainActivity
 		: Android.Support.V4.App.FragmentActivity, IObserver<Station[]>, ConnectionCallbacks, ConnectionFailedListener
@@ -231,7 +231,13 @@ namespace Moyeu
 		protected override void OnNewIntent (Intent intent)
 		{
 			base.OnNewIntent (intent);
-			if (mapFragment.IsVisible)
+			CheckForSearchTermInIntent (intent);
+		}
+
+		void CheckForSearchTermInIntent (Intent intent)
+		{
+			if (intent.Action == Intent.ActionSearch
+			    || intent.Action == "com.google.android.gms.actions.SEARCH_ACTION")
 				mapFragment.OnSearchIntent (intent);
 		}
 
@@ -287,6 +293,7 @@ namespace Moyeu
 				client = CreateApiClient ();
 			SwitchTo (mapFragment = new HubwayMapFragment ());
 			ActionBar.Title = ((IMoyeuSection)mapFragment).Title;
+			CheckForSearchTermInIntent (Intent);
 		}
 
 		#region IObserver implementation
