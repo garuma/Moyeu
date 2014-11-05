@@ -15,7 +15,6 @@ namespace Moyeu
 
 		HttpClient client = new HttpClient ();
 		TimeSpan freshnessTimeout;
-		string savedData;
 
 		List<HubwaySubscriber> subscribers = new List<HubwaySubscriber> ();
 
@@ -74,7 +73,7 @@ namespace Moyeu
 
 		public bool HasCachedData {
 			get {
-				return savedData != null && DateTime.Now < (LastUpdateTime + freshnessTimeout);
+				return LastStations != null && DateTime.Now < (LastUpdateTime + freshnessTimeout);
 			}
 		}
 
@@ -83,18 +82,17 @@ namespace Moyeu
 			string data = null;
 
 			if (HasCachedData && !forceRefresh)
-				data = savedData;
-			else {
-				while (data == null) {
-					try {
-						data = await client.GetStringAsync (HubwayApiEndpoint).ConfigureAwait (false);
-					} catch (Exception e) {
-						AnalyticsHelper.LogException ("HubwayDownloader", e);
-						Android.Util.Log.Error ("HubwayDownloader", e.ToString ());
-					}
-					if (data == null)
-						await Task.Delay (500);
+				return LastStations;
+
+			while (data == null) {
+				try {
+					data = await client.GetStringAsync (HubwayApiEndpoint).ConfigureAwait (false);
+				} catch (Exception e) {
+					AnalyticsHelper.LogException ("HubwayDownloader", e);
+					Android.Util.Log.Error ("HubwayDownloader", e.ToString ());
 				}
+				if (data == null)
+					await Task.Delay (500);
 			}
 
 			if (dataCacher != null)
@@ -111,7 +109,6 @@ namespace Moyeu
 		{
 			var doc = XDocument.Parse (data);
 
-			savedData = data;
 			LastUpdateTime = FromUnixTime (long.Parse (((string)doc.Root.Attribute ("lastUpdate"))));
 
 			var stations = doc.Root.Elements ("station")
