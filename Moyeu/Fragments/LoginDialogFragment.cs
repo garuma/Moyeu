@@ -32,12 +32,14 @@ namespace Moyeu
 		public override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
-			SetStyle ((int)DialogFragmentStyle.NoFrame, Android.Resource.Style.ThemeHoloLightDialogNoActionBar);
+			SetStyle ((int)DialogFragmentStyle.NoFrame, Resource.Style.MoyeuDialog);
 		}
 
 		public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			var dialogView = inflater.Inflate (Resource.Layout.LoginDialogLayout, container, false);
+			if (AndroidExtensions.IsMaterial)
+				dialogView.SetBackgroundDrawable (null);
 			loginBtn = dialogView.FindViewById<Button> (Resource.Id.loginBtn);
 			loginBtn.Click += ProcessLoginDetails;
 			statusProgress = dialogView.FindViewById<ProgressBar> (Resource.Id.loginStatusProgress);
@@ -62,7 +64,7 @@ namespace Moyeu
 					statusProgress.AlphaAnimate (1);
 				});
 			} else {
-				statusProgress.Animate ().Alpha (1).Start ();
+				statusProgress.AlphaAnimate (1);
 			}
 
 			newCredentials.SetResult (new RentalCrendentials {

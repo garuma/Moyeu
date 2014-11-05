@@ -36,6 +36,16 @@ namespace Moyeu
 			this.mHomeAsUpIndicator = GetThemeUpIndicator();
 		}
 
+		public Action OpenCallback {
+			get;
+			set;
+		}
+
+		public Action CloseCallback {
+			get;
+			set;
+		}
+
 		public void SyncState ()
 		{
 			mSlider.setPosition(mDrawerLayout.IsDrawerOpen ((int)GravityFlags.Start) ? 1f : 0f);
@@ -120,6 +130,8 @@ namespace Moyeu
 			this.mSlider.setPosition(1.0F);
 			if (this.mDrawerIndicatorEnabled)
 				SetActionBarDescription(this.mCloseDrawerContentDescRes);
+			if (OpenCallback != null)
+				OpenCallback ();
 		}
 
 		public void OnDrawerClosed(View drawerView)
@@ -127,6 +139,8 @@ namespace Moyeu
 			this.mSlider.setPosition(0.0F);
 			if (this.mDrawerIndicatorEnabled)
 				SetActionBarDescription(this.mOpenDrawerContentDescRes);
+			if (CloseCallback != null)
+				CloseCallback ();
 		}
 
 		public void OnDrawerStateChanged(int newState)

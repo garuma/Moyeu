@@ -328,8 +328,9 @@ namespace Moyeu
 					var view = convertView as RentalView;
 					if (view == null) {
 						view = new RentalView (context);
-						view.FindViewById<ImageView> (Resource.Id.bikeImageView)
-							.SetImageDrawable (bikeSeparatorDrawable);
+						var bikeImg = view.FindViewById<ImageView> (Resource.Id.bikeImageView);
+						if (bikeImg != null)
+							bikeImg.SetImageDrawable (bikeSeparatorDrawable);
 					}
 					var stationFromText = view.FindViewById<TextView> (Resource.Id.rentalFromStation);
 					var stationToText = view.FindViewById<TextView> (Resource.Id.rentalToStation);
@@ -342,11 +343,19 @@ namespace Moyeu
 					stationFromText.Text = StationUtils.CutStationName (rental.FromStationName);
 					stationToText.Text = StationUtils.CutStationName (rental.ToStationName);
 					if (rental.Duration > TimeSpan.FromHours (1)) {
-						timePrimary.Text = rental.Duration.Hours.ToString ("D2") + " hrs";
-						timeSecondary.Text = rental.Duration.Minutes.ToString ("D2") + " min";
+						if (timeSecondary != null) {
+							timePrimary.Text = rental.Duration.Hours.ToString ("D2") + " hrs";
+							timeSecondary.Text = rental.Duration.Minutes.ToString ("D2") + " min";
+						} else {
+							timePrimary.Text = rental.Duration.ToString ("h\\:mm\\:ss");
+						}
 					} else {
-						timePrimary.Text = rental.Duration.Minutes.ToString ("D2") + " min";
-						timeSecondary.Text = rental.Duration.Seconds.ToString ("D2") + " sec";
+						if (timeSecondary != null) {
+							timePrimary.Text = rental.Duration.Minutes.ToString ("D2") + " min";
+							timeSecondary.Text = rental.Duration.Seconds.ToString ("D2") + " sec";
+						} else {
+							timePrimary.Text = rental.Duration.ToString ("m\\:ss");
+						}
 					}
 					var color = basePriceColor;
 					if (rental.Price > 0)
@@ -379,6 +388,9 @@ namespace Moyeu
 
 			TextView MakeHeaderView ()
 			{
+				if (AndroidExtensions.IsMaterial)
+					return (TextView)LayoutInflater.From (context).Inflate (Resource.Layout.RentalHeader, null);
+
 				var result = new TextView (context) {
 					Gravity = GravityFlags.Center,
 					TextSize = 10,

@@ -3,51 +3,38 @@ using System.Collections.Generic;
 using Android.Views;
 using Android.Animation;
 
+using Android.Support.V4.View;
+using Runnable = Java.Lang.Runnable;
+using Android.Views.Animations;
+using Android.Graphics;
+
 namespace Moyeu
 {
 	public static class AnimationExtensions
 	{
-		static Dictionary<View, Animator> currentAnimations = new Dictionary<View, Animator> ();
-
-		static void ClearOldAnimation (View view)
-		{
-			Animator oldAnimator;
-			if (currentAnimations.TryGetValue (view, out oldAnimator)) {
-				oldAnimator.Cancel ();
-				currentAnimations.Remove (view);
-			}
-		}
-
 		public static void AlphaAnimate (this View view, float alpha, int duration = 300, Action endAction = null, int startDelay = 0)
 		{
-			ClearOldAnimation (view);
-			var animator = ObjectAnimator.OfFloat (view, "alpha", view.Alpha, alpha);
-			currentAnimations [view] = animator;
-			animator.SetDuration (duration);
-			animator.StartDelay = startDelay;
-			animator.AnimationEnd += (sender, e) => {
-				currentAnimations.Remove (view);
-				if (endAction != null)
-					endAction ();
-				((Animator)sender).RemoveAllListeners ();
-			};
+			var animator = ViewCompat.Animate (view);
+			animator
+				.SetDuration (duration)
+				.SetStartDelay (startDelay)
+				.Alpha (alpha);
+			if (endAction != null)
+				animator.WithEndAction (new Runnable (endAction));
 			animator.Start ();
 		}
 
 		public static void TranslationYAnimate (this View view, int translation, int duration = 300,
-		                                        ITimeInterpolator interpolator = null, Action endAction = null)
+		                                        IInterpolator interpolator = null, Action endAction = null)
 		{
-			ClearOldAnimation (view);
-			var animator = ObjectAnimator.OfFloat (view, "translationY", view.TranslationY, translation);
-			animator.SetDuration (duration);
+			var animator = ViewCompat.Animate (view);
+			animator
+				.SetDuration (duration)
+				.TranslationY (translation);
+			if (endAction != null)
+				animator.WithEndAction (new Runnable (endAction));
 			if (interpolator != null)
 				animator.SetInterpolator (interpolator);
-			animator.AnimationEnd += (sender, e) => {
-				currentAnimations.Remove (view);
-				if (endAction != null)
-					endAction ();
-				((Animator)sender).RemoveAllListeners ();
-			};
 			animator.Start ();
 		}
 	}

@@ -146,9 +146,14 @@ namespace Moyeu
 					bikePicture = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.bike);
 				bikeImage.SetImageDrawable (bikePicture);
 			}
-			if (mapPlaceholder == null)
-				mapPlaceholder = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.map_placeholder);
-			mapView.SetImageDrawable (mapPlaceholder);
+
+			if (!AndroidExtensions.IsMaterial) {
+				if (mapPlaceholder == null)
+					mapPlaceholder = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.map_placeholder);
+				mapView.SetImageDrawable (mapPlaceholder);
+			} else {
+				mapView.SetImageDrawable (context.Resources.GetDrawable (Resource.Color.loading_background_color));
+			}
 
 			var station = stations [position];
 			view.Station = station;
@@ -200,15 +205,17 @@ namespace Moyeu
 		{
 			var inflater = LayoutInflater.From (context);
 			inflater.Inflate (Resource.Layout.FavoriteItem, this, true);
-			var mapView = FindViewById<ImageView> (Resource.Id.StationMap);
-			mapView.Focusable = false;
-			mapView.FocusableInTouchMode = false;
-			mapView.Click += (sender, e) => {
-				var uri = Android.Net.Uri.Parse (Station.GeoUrl);
-				Android.Util.Log.Info ("MapUri", uri.ToString ());
-				var intent = new Intent (Intent.ActionView, uri);
-				context.StartActivity (intent);
-			};
+			if (!AndroidExtensions.IsMaterial) {
+				var mapView = FindViewById<ImageView> (Resource.Id.StationMap);
+				mapView.Focusable = false;
+				mapView.FocusableInTouchMode = false;
+				mapView.Click += (sender, e) => {
+					var uri = Android.Net.Uri.Parse (Station.GeoUrl);
+					Android.Util.Log.Info ("MapUri", uri.ToString ());
+					var intent = new Intent (Intent.ActionView, uri);
+					context.StartActivity (intent);
+				};
+			}
 		}
 
 		public long VersionNumber;

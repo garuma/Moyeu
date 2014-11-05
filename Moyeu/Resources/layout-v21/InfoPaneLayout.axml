@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<moyeu.InfoPane xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/infoPane"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_gravity="bottom"
+    android:paddingTop="4dp">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="72dp"
+        android:layout_width="match_parent"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:background="@color/card_background"
+        android:id="@+id/PaneHeaderView">
+        <moyeu.CheckedImageButton
+            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/StarButton"
+            android:background="@drawable/favorite_ripple_background"
+            android:src="@drawable/ic_favorite"
+            android:tint="@color/favorite_color_list"
+            android:layout_gravity="center" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="0px"
+            android:layout_gravity="center"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/InfoViewName"
+                android:text="Union Square"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_primary"
+                android:textAppearance="@android:style/TextAppearance.Material.Title"
+                android:lines="1"
+                android:ellipsize="end" />
+            <TextView
+                android:id="@+id/InfoViewSecondName"
+                android:text="Somerville"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_primary"
+                android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+                android:lines="1"
+                android:ellipsize="end" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:paddingBottom="3dp"
+            android:id="@+id/stationStats">
+            <TextView
+                android:text="8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/InfoViewBikeNumber"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:textAppearance="@android:style/TextAppearance.Material.Title"
+                android:drawableBottom="@drawable/ic_bike_vector"
+                android:drawablePadding="4dp"
+                android:layout_marginRight="8dp" />
+            <TextView
+                android:text="6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/InfoViewSlotNumber"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:textAppearance="@android:style/TextAppearance.Material.Title"
+                android:drawableBottom="@drawable/ic_racks_vector"
+                android:drawablePadding="4dp"
+                android:layout_marginLeft="8dp" />
+        </LinearLayout>
+        <ImageView
+            android:src="@android:color/transparent"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:id="@+id/stationLock"
+            android:layout_marginLeft="17dp"
+            android:layout_marginRight="17dp"
+            android:scaleType="fitXY"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone" />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/card_background"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/info_pane_section" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/time_cell_bg"
+                android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">
+                <ImageView
+                    android:src="@android:drawable/ic_menu_gallery"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:id="@+id/clockImg"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="8dp" />
+                <TextView
+                    android:id="@+id/historyTime1"
+                    style="@style/activity_time_entry" />
+                <TextView
+                    android:id="@+id/historyTime2"
+                    style="@style/activity_time_entry" />
+                <TextView
+                    android:id="@+id/historyTime3"
+                    style="@style/activity_time_entry" />
+                <TextView
+                    android:id="@+id/historyTime4"
+                    style="@style/activity_time_entry" />
+                <TextView
+                    android:id="@+id/historyTime5"
+                    style="@style/activity_time_entry" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">
+                <ImageView
+                    android:src="@android:drawable/ic_menu_gallery"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:id="@+id/bikeNumberImg"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="8dp" />
+                <TextView
+                    android:id="@+id/historyValue1"
+                    style="@style/activity_number_entry" />
+                <TextView
+                    android:id="@+id/historyValue2"
+                    style="@style/activity_number_entry" />
+                <TextView
+                    android:id="@+id/historyValue3"
+                    style="@style/activity_number_entry" />
+                <TextView
+                    android:id="@+id/historyValue4"
+                    style="@style/activity_number_entry" />
+                <TextView
+                    android:id="@+id/historyValue5"
+                    style="@style/activity_number_entry" />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:text="Location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/info_pane_section" />
+        <com.google.android.gms.maps.StreetViewPanoramaView
+            android:id="@+id/streetViewPanorama"
+            android:layout_width="match_parent"
+            android:layout_height="160dp" />
+    </LinearLayout>
+</moyeu.InfoPane>

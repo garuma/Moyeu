@@ -82,7 +82,23 @@ namespace Moyeu
 				this.lollipopDrawerToggle = new LollipopDrawerToggle (this,
 				                                                      drawer,
 				                                                      Resource.String.open_drawer,
-				                                                      Resource.String.close_drawer);
+				                                                      Resource.String.close_drawer) {
+					OpenCallback = () => {
+						ActionBar.Title = Title;
+						CurrentFragment.HasOptionsMenu = false;
+						CurrentFragment.View.Enabled = false;
+						InvalidateOptionsMenu ();
+					},
+					CloseCallback = () => {
+						var currentFragment = CurrentFragment;
+						if (currentFragment != null) {
+							ActionBar.Title = ((IMoyeuSection)currentFragment).Title;
+							currentFragment.HasOptionsMenu = true;
+							currentFragment.View.Enabled = true;
+						}
+						InvalidateOptionsMenu ();
+					},
+				};
 				drawer.SetDrawerListener (lollipopDrawerToggle);
 			} else {
 				this.drawerToggle = new MoyeuActionBarToggle (this,

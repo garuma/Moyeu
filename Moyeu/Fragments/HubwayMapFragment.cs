@@ -144,23 +144,29 @@ namespace Moyeu
 				mapFragment.Map.MoveCamera (CameraUpdateFactory.NewCameraPosition (oldPosition));
 
 			// Setup info pane
-			var bikeDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.bike);
-			var lockDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.ic_lock);
-			var stationLockDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.station_lock);
-			var bikeNumberDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.bike_number);
-			var clockDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.clock);
+			SetSvgImage (pane, Resource.Id.bikeImageView, Resource.Raw.bike);
+			SetSvgImage (pane, Resource.Id.lockImageView, Resource.Raw.ic_lock);
+			SetSvgImage (pane, Resource.Id.stationLock, Resource.Raw.station_lock);
+			SetSvgImage (pane, Resource.Id.bikeNumberImg, Resource.Raw.bike_number);
+			SetSvgImage (pane, Resource.Id.clockImg, Resource.Raw.clock);
+
 			starOnDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.star_on);
 			starOffDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.star_off);
-			pane.FindViewById<ImageView> (Resource.Id.bikeImageView).SetImageDrawable (bikeDrawable);
-			pane.FindViewById<ImageView> (Resource.Id.lockImageView).SetImageDrawable (lockDrawable);
-			pane.FindViewById<ImageView> (Resource.Id.stationLock).SetImageDrawable (stationLockDrawable);
-			pane.FindViewById<ImageView> (Resource.Id.bikeNumberImg).SetImageDrawable (bikeNumberDrawable);
-			pane.FindViewById<ImageView> (Resource.Id.clockImg).SetImageDrawable (clockDrawable);
-			var starBtn = pane.FindViewById<ImageButton> (Resource.Id.StarButton);
+			var starBtn = pane.FindViewById (Resource.Id.StarButton);
 			starBtn.Click += HandleStarButtonChecked;
+
 			streetViewFragment.StreetViewPanorama.UserNavigationEnabled = false;
 			streetViewFragment.StreetViewPanorama.StreetNamesEnabled = false;
 			streetViewFragment.StreetViewPanorama.StreetViewPanoramaClick += HandleMapButtonClick;
+		}
+
+		void SetSvgImage (View baseView, int viewId, int resId)
+		{
+			var view = baseView.FindViewById<ImageView> (viewId);
+			if (view == null)
+				return;
+			var img = SvgFactory.GetDrawable (Resources, resId);
+			view.SetImageDrawable (img);
 		}
 
 		void HandlePaneStateChanged (InfoPane.State state)
@@ -290,15 +296,19 @@ namespace Moyeu
 		{
 			if (currentShownID == -1)
 				return;
-			var starButton = (ImageButton)sender;
 			var favorites = favManager.LastFavorites ?? favManager.GetFavoriteStationIds ();
 			bool contained = favorites.Contains (currentShownID);
 			if (contained) {
-				starButton.SetImageDrawable (starOffDrawable);
 				favManager.RemoveFromFavorite (currentShownID);
 			} else {
-				starButton.SetImageDrawable (starOnDrawable);
 				favManager.AddToFavorite (currentShownID);
+			}
+
+			if (!AndroidExtensions.IsMaterial) {
+				var starButton = (ImageButton)sender;
+				starButton.SetImageDrawable (
+					contained ? starOffDrawable : starOnDrawable
+				);
 			}
 		}
 
@@ -391,7 +401,6 @@ namespace Moyeu
 			var name2 = pane.FindViewById<TextView> (Resource.Id.InfoViewSecondName);
 			var bikes = pane.FindViewById<TextView> (Resource.Id.InfoViewBikeNumber);
 			var slots = pane.FindViewById<TextView> (Resource.Id.InfoViewSlotNumber);
-			var starButton = pane.FindViewById<ImageButton> (Resource.Id.StarButton);
 
 			var splitTitle = marker.Title.Split ('|');
 			string displayNameSecond;
@@ -409,11 +418,33 @@ namespace Moyeu
 				var splitNumbers = marker.Snippet.Split ('|');
 				bikes.Text = splitNumbers [0];
 				slots.Text = splitNumbers [1];
+
+				if (AndroidExtensions.IsMaterial) {
+					var baseGreen = Color.Rgb (0x66, 0x99, 0x00);
+					var baseRed = Color.Rgb (0xcc, 0x00, 0x00);
+					var bikesNum = int.Parse (splitNumbers [0]);
+					var slotsNum = int.Parse (splitNumbers [1]);
+					var total = bikesNum + slotsNum;
+					var bikesColor = PinFactory.InterpolateColor (baseRed, baseGreen,
+					                                              ((float)bikesNum) / total);
+					var slotsColor = PinFactory.InterpolateColor (baseRed, baseGreen,
+					                                              ((float)slotsNum) / total);
+					bikes.SetTextColor (bikesColor);
+					bikes.GetCompoundDrawables ().Last ().SetTint (bikesColor.ToArgb ());
+					slots.SetTextColor (slotsColor);
+					slots.GetCompoundDrawables ().Last ().SetTint (slotsColor.ToArgb ());
+				}
 			}
 
 			var favs = favManager.LastFavorites ?? favManager.GetFavoriteStationIds ();
 			bool activated = favs.Contains (currentShownID);
-			starButton.SetImageDrawable (activated ? starOnDrawable : starOffDrawable);
+			if (!AndroidExtensions.IsMaterial) {
+				var starButton = pane.FindViewById<ImageButton> (Resource.Id.StarButton);
+				starButton.SetImageDrawable (activated ? starOnDrawable : starOffDrawable);
+			} else {
+				var starButton = pane.FindViewById<CheckedImageButton> (Resource.Id.StarButton);
+				starButton.Checked = activated;
+			}
 
 			var streetView = streetViewFragment.StreetViewPanorama;
 			streetView.SetPosition (marker.Position);

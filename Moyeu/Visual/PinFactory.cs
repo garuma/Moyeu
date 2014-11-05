@@ -39,17 +39,10 @@ namespace Moyeu
 				Color = Color.White
 			};
 
-			/*if (Android.OS.Build.VERSION.SdkInt == Android.OS.BuildVersionCodes.Lollipop) {
-				baseLightGreenColor = Color.Rgb (0x2b, 0xaf, 0x2b);
-				baseLightRedColor = Color.Rgb (0xe5, 0x1c, 0x23);
-				baseDarkGreenColor = Color.Rgb (0x25, 0x9b, 0x24);
-				baseDarkRedColor = Color.Rgb (0xdd, 0x19, 0x1d);
-			} else {*/
 			baseLightGreenColor = Color.Rgb (0x99, 0xcc, 0x00);
 			baseLightRedColor = Color.Rgb (0xff, 0x44, 0x44);
 			baseDarkGreenColor = Color.Rgb (0x66, 0x99, 0x00);
 			baseDarkRedColor = Color.Rgb (0xcc, 0x00, 0x00);
-			//}
 		}
 
 		public Task<Bitmap> GetPinAsync (float ratio, int number, int width, int height, float alpha = 1)
@@ -102,7 +95,7 @@ namespace Moyeu
 			return result;
 		}
 
-		Color InterpolateColor (Color c1, Color c2, float ratio)
+		public static Color InterpolateColor (Color c1, Color c2, float ratio)
 		{
 			ratio = ExtraInterpolation (ratio);
 			return Color.Rgb (c1.R + (int)((c2.R - c1.R) * ratio),
@@ -110,14 +103,14 @@ namespace Moyeu
 			                  c1.B + (int)((c2.B - c1.B) * ratio));
 		}
 
-		Color Lighten (Color baseColor, int increment)
+		static Color Lighten (Color baseColor, int increment)
 		{
 			return Color.Rgb (Math.Min (255, baseColor.R + increment),
 			                  Math.Min (255, baseColor.G + increment),
 			                  Math.Min (255, baseColor.B + increment));
 		}
 
-		float ExtraInterpolation (float ratio)
+		static float ExtraInterpolation (float ratio)
 		{
 			return ratio = 1 - (float)Math.Pow (1 - ratio, 4);
 		}

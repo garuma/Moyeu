@@ -2,17 +2,16 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card"
-    card_view:cardBackgroundColor="#ffffff"
-    android:layout_width="fill_parent"
+    card_view:cardBackgroundColor="@color/card_background"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:stateListAnimator="@anim/paper_state_list_anim_material"
-    android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground">
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -25,7 +24,7 @@
                 android:layout_weight="1">
                 <TextView
                     android:text="Text"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/MainStationName"
                     android:textColor="@color/black_primary"
@@ -34,7 +33,7 @@
                     android:ellipsize="end" />
                 <TextView
                     android:text="Text"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/SecondStationName"
                     android:textColor="@color/black_secondary"
@@ -54,14 +53,14 @@
                     android:fontFamily="sans-serif-medium"
                     android:textSize="18sp"
                     android:textColor="@color/black_primary"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/BikeNumber"
                     android:gravity="center" />
                 <TextView
                     android:text="bikes"
                     android:fontFamily="sans-serif-condensed"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black_secondary"
                     android:textSize="10sp"
@@ -79,14 +78,14 @@
                     android:fontFamily="sans-serif-medium"
                     android:textSize="18sp"
                     android:textColor="@color/black_primary"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/SlotNumber"
                     android:gravity="center" />
                 <TextView
                     android:text="racks"
                     android:fontFamily="sans-serif-condensed"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView4"
                     android:textColor="@color/black_secondary"
