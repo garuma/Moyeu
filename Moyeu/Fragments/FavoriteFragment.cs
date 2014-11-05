@@ -75,6 +75,11 @@ namespace Moyeu
 			view.SetBackgroundDrawable (AndroidExtensions.DefaultBackground);
 			SetEmptyText ("You have no favorites yet");
 			ListView.ItemClick += (sender, e) => StationShower (e.Id);
+			if (AndroidExtensions.IsMaterial) {
+				ListView.DividerHeight = 0;
+				ListView.Divider = null;
+				ListView.SetSelector (Android.Resource.Color.Transparent);
+			}
 		}
 
 		void StationShower (long id)
@@ -144,12 +149,19 @@ namespace Moyeu
 			var bikeNumber = view.FindViewById<TextView> (Resource.Id.BikeNumber);
 			var slotNumber = view.FindViewById<TextView> (Resource.Id.SlotNumber);
 			var bikeImage = view.FindViewById<ImageView> (Resource.Id.bikeImageView);
-			if (bikePicture == null)
-				bikePicture = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.bike);
-			bikeImage.SetImageDrawable (bikePicture);
-			if (mapPlaceholder == null)
-				mapPlaceholder = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.map_placeholder);
-			mapView.SetImageDrawable (mapPlaceholder);
+			if (bikeImage != null) {
+				if (bikePicture == null)
+					bikePicture = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.bike);
+				bikeImage.SetImageDrawable (bikePicture);
+			}
+
+			if (!AndroidExtensions.IsMaterial) {
+				if (mapPlaceholder == null)
+					mapPlaceholder = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.map_placeholder);
+				mapView.SetImageDrawable (mapPlaceholder);
+			} else {
+				mapView.SetImageDrawable (context.Resources.GetDrawable (Resource.Color.loading_background_color));
+			}
 
 			var station = stations [position];
 			view.Station = station;
@@ -165,7 +177,7 @@ namespace Moyeu
 			if (api.MapCache.TryGet (mapUrl, out mapDrawable))
 				mapView.SetImageDrawable (mapDrawable);
 			else
-				api.LoadMap (station.Location, view, mapView, version);
+				api.LoadMap (station.Location, view, mapView, version, mapWidth, mapHeight);
 
 			return view;
 		}
@@ -196,17 +208,19 @@ namespace Moyeu
 	{
 		public FavoriteView (Context context) : base (context)
 		{
-			var inflater = Context.GetSystemService (Context.LayoutInflaterService).JavaCast<LayoutInflater> ();
+			var inflater = LayoutInflater.From (context);
 			inflater.Inflate (Resource.Layout.FavoriteItem, this, true);
-			var mapView = FindViewById<ImageView> (Resource.Id.StationMap);
-			mapView.Focusable = false;
-			mapView.FocusableInTouchMode = false;
-			mapView.Click += (sender, e) => {
-				var uri = Android.Net.Uri.Parse (Station.GeoUrl);
-				Android.Util.Log.Info ("MapUri", uri.ToString ());
-				var intent = new Intent (Intent.ActionView, uri);
-				context.StartActivity (intent);
-			};
+			if (!AndroidExtensions.IsMaterial) {
+				var mapView = FindViewById<ImageView> (Resource.Id.StationMap);
+				mapView.Focusable = false;
+				mapView.FocusableInTouchMode = false;
+				mapView.Click += (sender, e) => {
+					var uri = Android.Net.Uri.Parse (Station.GeoUrl);
+					Android.Util.Log.Info ("MapUri", uri.ToString ());
+					var intent = new Intent (Intent.ActionView, uri);
+					context.StartActivity (intent);
+				};
+			}
 		}
 
 		public long VersionNumber;

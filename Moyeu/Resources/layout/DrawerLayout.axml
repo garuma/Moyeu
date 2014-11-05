@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/content_frame"
-    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="240dp"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
-    <FrameLayout
-        android:layout_height="match_parent"
-        android:layout_width="250dp"
-        android:background="@drawable/texture_pattern" />
-    <FrameLayout
-        android:layout_height="match_parent"
-        android:layout_width="20px"
-        android:background="@drawable/drawer_shadow" />
+    android:background="@drawable/texture_pattern"
+    android:layout_gravity="start">
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/left_drawer"
+        android:choiceMode="singleChoice"
+        android:listSelector="@drawable/list_selector_bg"
+        android:headerDividersEnabled="false"
+        android:divider="#0b000000"
+        android:dividerHeight="1dp" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1" />
+    <include
+        layout="@layout/DrawerHeader" />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:id="@+id/left_drawer_around"
+        android:headerDividersEnabled="false"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:listSelector="@drawable/list_selector_bg"
+        android:dividerHeight="8dp" />
 </LinearLayout>

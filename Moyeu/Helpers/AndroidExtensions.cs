@@ -26,6 +26,12 @@ namespace Moyeu
 			defaultBgColor = new ColorDrawable (new Android.Graphics.Color (bg.Data));
 		}
 
+		public static bool IsMaterial {
+			get {
+				return Android.OS.Build.VERSION.SdkInt == Android.OS.BuildVersionCodes.Lollipop;
+			}
+		}
+
 		public static int ToPixels (this int dp)
 		{
 			return (int)(dp * density + 0.5f);

@@ -8,13 +8,10 @@
         android:text="Hubway Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView1"
-        android:textAllCaps="true"
+        style="@style/dialog_title"
         android:layout_gravity="center"
-        android:textColor="#444444"
         android:layout_marginBottom="12dp"
-        android:layout_marginTop="8dp"
-        android:textSize="13sp" />
+        android:layout_marginTop="8dp" />
     <EditText
         android:layout_width="250dp"
         android:layout_height="wrap_content"

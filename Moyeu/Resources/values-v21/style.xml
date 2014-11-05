@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="moyeu_primary">#2baf2b</color>
+	<color name="moyeu_primary_dark">#0a7e07</color>
+	<color name="moyeu_accent">#b2ff59 </color>
+	<color name="nav_drawer_background">#333333</color>
+	<color name="loading_background_color">#dddddd</color>
+	<color name="card_background">#fdfdfd</color>
+	<color name="dim_foreground">#cccccc</color>
+	<color name="favorite_foreground">#e00032</color>
+
+	<color name="white_primary">#d6ffffff</color>
+	<color name="white_secondary">#89ffffff</color>
+	<color name="black_primary">#c6000000</color>
+	<color name="black_secondary">#89000000</color>
+
+	<color name="vector_foreground_color">#000000</color>
+
+	<dimen name="gmap_preview_width">288dp</dimen>
+	<dimen name="gmap_preview_height">128dp</dimen>
+
+	<style name="MoyeuTheme" parent="android:Theme.Material.Light.DarkActionBar">
+    	<item name="android:colorPrimary">@color/moyeu_primary</item>
+	    <item name="android:colorPrimaryDark">@color/moyeu_primary_dark</item>
+	    <item name="android:colorAccent">@color/moyeu_accent</item>
+	    <item name="android:actionBarStyle">@style/MoyeuActionBar</item>
+	</style>
+
+	<style name="MoyeuDialog" parent="@android:style/Theme.Material.Light.Dialog">
+		<item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+		<item name="android:colorPrimary">@color/moyeu_primary</item>
+	    <item name="android:colorPrimaryDark">@color/moyeu_primary_dark</item>
+	    <item name="android:colorAccent">@color/moyeu_primary_dark</item>
+	</style>
+
+	<style name="MoyeuActionBar" parent="android:Widget.Material.Light.ActionBar.Solid">
+		<item name="android:contentInsetStart">72dp</item>
+	</style>
+
+	<style name="info_pane_section" parent="@android:style/TextAppearance.Material.Caption">
+		<item name="android:gravity">left|center_vertical</item>
+		<item name="android:minHeight">48dp</item>
+		<item name="android:layout_marginLeft">16dp</item>
+	</style>
+
+	<style name="dialog_title" parent="@android:style/TextAppearance.Material.Title" />
+</resources>

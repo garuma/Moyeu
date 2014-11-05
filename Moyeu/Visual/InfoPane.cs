@@ -13,6 +13,7 @@ using Android.Animation;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Runnable = Java.Lang.Runnable;
+using Android.Views.Animations;
 
 namespace Moyeu
 {
@@ -29,8 +30,8 @@ namespace Moyeu
 		State state;
 		int contentOffsetY;
 		bool isAnimating;
-		ITimeInterpolator smoothInterpolator = new SmoothInterpolator ();
-		ITimeInterpolator overInterpolator = new Android.Views.Animations.OvershootInterpolator ();
+		IInterpolator smoothInterpolator = new SmoothInterpolator ();
+		IInterpolator overInterpolator = new Android.Views.Animations.OvershootInterpolator ();
 		VelocityTracker velocityTracker;
 		GestureDetector paneGestureDetector;
 		State stateBeforeTracking;
@@ -68,7 +69,7 @@ namespace Moyeu
 			this.maxFlingVelocity = config.ScaledMaximumFlingVelocity;
 			const int BaseShadowColor = 0;
 			var shadowColors = new[] {
-				Color.Argb (0x50, BaseShadowColor, BaseShadowColor, BaseShadowColor).ToArgb (),
+				Color.Argb (0x30, BaseShadowColor, BaseShadowColor, BaseShadowColor).ToArgb (),
 				Color.Argb (0, BaseShadowColor, BaseShadowColor, BaseShadowColor).ToArgb ()
 			};
 			this.shadowDrawable = new GradientDrawable (GradientDrawable.Orientation.BottomTop,
@@ -251,14 +252,14 @@ namespace Moyeu
 		{
 			base.DispatchDraw (canvas);
 
-			if (state == State.Opened || isTracking || isAnimating) {
+			if (shadowDrawable != null && (state == State.Opened || isTracking || isAnimating)) {
 				// Draw inset shadow on top of the pane
 				shadowDrawable.SetBounds (0, 0, Width, PaddingTop);
 				shadowDrawable.Draw (canvas);
 			}
 		}
 
-		class SmoothInterpolator : Java.Lang.Object, ITimeInterpolator
+		class SmoothInterpolator : Java.Lang.Object, IInterpolator, ITimeInterpolator
 		{
 			public float GetInterpolation (float input)
 			{

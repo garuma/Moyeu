@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="left|center_vertical"
+    android:minHeight="48dp"
+    android:paddingStart="?android:listPreferredItemPaddingStart"
+    android:paddingEnd="?android:listPreferredItemPaddingEnd"
+    style="@android:style/TextAppearance.Material.Body2"
+    android:textColor="@color/black_secondary"
+    android:background="@drawable/list_divider_material"
+    android:text="Foo" />

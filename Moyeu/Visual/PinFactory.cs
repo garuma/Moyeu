@@ -16,10 +16,10 @@ namespace Moyeu
 		Dictionary<int, Bitmap> pinCache = new Dictionary<int, Bitmap> ();
 		Bitmap closedPin;
 
-		readonly Color baseLightGreenColor = Color.Rgb (0x99, 0xcc, 0x00);
-		readonly Color baseLightRedColor = Color.Rgb (0xff, 0x44, 0x44);
-		readonly Color baseDarkGreenColor = Color.Rgb (0x66, 0x99, 0x00);
-		readonly Color baseDarkRedColor = Color.Rgb (0xcc, 0x00, 0x00);
+		readonly Color baseLightGreenColor;
+		readonly Color baseLightRedColor;
+		readonly Color baseDarkGreenColor;
+		readonly Color baseDarkRedColor;
 
 		readonly Color fillColor = Color.Rgb (0x01, 0x02, 0x03);
 		readonly Color bottomFillColor = Color.Rgb (0xaa, 0xbb, 0xcc);
@@ -38,6 +38,11 @@ namespace Moyeu
 				TextAlign = Paint.Align.Center,
 				Color = Color.White
 			};
+
+			baseLightGreenColor = Color.Rgb (0x99, 0xcc, 0x00);
+			baseLightRedColor = Color.Rgb (0xff, 0x44, 0x44);
+			baseDarkGreenColor = Color.Rgb (0x66, 0x99, 0x00);
+			baseDarkRedColor = Color.Rgb (0xcc, 0x00, 0x00);
 		}
 
 		public Task<Bitmap> GetPinAsync (float ratio, int number, int width, int height, float alpha = 1)
@@ -90,7 +95,7 @@ namespace Moyeu
 			return result;
 		}
 
-		Color InterpolateColor (Color c1, Color c2, float ratio)
+		public static Color InterpolateColor (Color c1, Color c2, float ratio)
 		{
 			ratio = ExtraInterpolation (ratio);
 			return Color.Rgb (c1.R + (int)((c2.R - c1.R) * ratio),
@@ -98,14 +103,14 @@ namespace Moyeu
 			                  c1.B + (int)((c2.B - c1.B) * ratio));
 		}
 
-		Color Lighten (Color baseColor, int increment)
+		static Color Lighten (Color baseColor, int increment)
 		{
 			return Color.Rgb (Math.Min (255, baseColor.R + increment),
 			                  Math.Min (255, baseColor.G + increment),
 			                  Math.Min (255, baseColor.B + increment));
 		}
 
-		float ExtraInterpolation (float ratio)
+		static float ExtraInterpolation (float ratio)
 		{
 			return ratio = 1 - (float)Math.Pow (1 - ratio, 4);
 		}
