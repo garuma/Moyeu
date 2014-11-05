@@ -23,6 +23,7 @@ namespace Moyeu
 		Context context;
 		HttpClient client = new HttpClient ();
 		BitmapCache mapCache;
+		Task<BitmapCache> mapCacheLoader;
 
 		public static GoogleApis Obtain (Context context)
 		{
@@ -34,12 +35,19 @@ namespace Moyeu
 		private GoogleApis (Context context)
 		{
 			this.context = context;
+			this.mapCacheLoader = Task.Run (new Func<BitmapCache> (LoadMapCache));
 		}
 
 		public BitmapCache MapCache {
 			get {
-				return mapCache ?? (mapCache = BitmapCache.CreateCache (context, "MapsPictures"));
+				return mapCache ?? (mapCache = mapCacheLoader.Result);
 			}
+		}
+
+		BitmapCache LoadMapCache ()
+		{
+			var round = !AndroidExtensions.IsMaterial;
+			return BitmapCache.CreateCache (context, "MapsPictures", useRoundCorners: round);
 		}
 
 		async Task<Drawable> LoadInternal (string url, BitmapCache cache)
