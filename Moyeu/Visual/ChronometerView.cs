@@ -15,10 +15,12 @@ namespace Moyeu
 {
 	public class ChronometerView : View
 	{
-		Color baseQuadrantColor;
-		Color chromeColor;
-
 		TimeSpan time;
+
+		Color baseQuadrantColor;
+		Paint chromeBorder;
+		Paint markerPaint;
+		Paint fillPaint;
 
 		public ChronometerView (Context context) :
 			base (context)
@@ -41,7 +43,20 @@ namespace Moyeu
 		void Initialize ()
 		{
 			baseQuadrantColor = Color.Rgb (0x33, 0xb5, 0xe5);
-			chromeColor = Color.Rgb (0x33, 0x33, 0x33);
+			var chromeColor = Color.Rgb (0x33, 0x33, 0x33);
+
+			chromeBorder = new Paint {
+				AntiAlias = true,
+				Color = chromeColor,
+				StrokeWidth = Math.Max (1, 1.ToPixels () / 2)
+			};
+			markerPaint = new Paint {
+				Color = chromeColor,
+				AntiAlias = true
+			};
+			fillPaint = new Paint {
+				AntiAlias = true
+			};
 		}
 
 		public TimeSpan Time {
@@ -67,10 +82,12 @@ namespace Moyeu
 			for (int i = 0; i <= rotation; i++) {
 				var angle = minutes > 60 ? 360 : (int)((minutes * 360f) / 60);
 
-				canvas.DrawArc (new RectF (middleX - radius, middleY - radius, middleX + radius, middleY + radius), -90, angle, true, new Paint {
-					Color = color,
-					AntiAlias = true,
-				});
+				fillPaint.Color = color;
+				canvas.DrawArc (middleX - radius,
+					            middleY - radius,
+					            middleX + radius,
+					            middleY + radius,
+					            -90, angle, true, fillPaint);
 
 				minutes -= 60;
 				color = Color.Rgb ((byte)Math.Max (0, color.R - 30),
@@ -79,19 +96,10 @@ namespace Moyeu
 			}
 
 			// Draw chrome
-			Paint chromeBorder = new Paint {
-				AntiAlias = true,
-				Color = chromeColor,
-				StrokeWidth = 1.ToPixels ()
-			};
 			chromeBorder.SetStyle (Paint.Style.Stroke);
 			canvas.DrawCircle (middleX, middleY, radius, chromeBorder);
 
 			// Draw markers
-			var markerPaint = new Paint {
-				Color = chromeColor,
-				AntiAlias = true
-			};
 			var innerRadius = radius - 6;
 			for (int i = 0; i < 8; i++) {
 				var stepAngle = i * Math.PI / 4;
