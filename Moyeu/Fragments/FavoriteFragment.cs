@@ -89,19 +89,27 @@ namespace Moyeu
 	{
 		List<Station> stations;
 		Context context;
+		GoogleApis api;
 		XamSvg.PictureBitmapDrawable bikePicture;
 		XamSvg.PictureBitmapDrawable mapPlaceholder;
+
+		int mapWidth;
+		int mapHeight;
 
 		public FavoriteAdapter (Context context)
 		{
 			this.context = context;
+			this.api = GoogleApis.Obtain (context);
+			this.mapWidth = (int)context.Resources.GetDimension (Resource.Dimension.gmap_preview_width);
+			this.mapHeight = (int)context.Resources.GetDimension (Resource.Dimension.gmap_preview_height);
 		}
 
 		public async void SetStationIds (HashSet<int> ids)
 		{
 			while (true) {
 				try {
-					var stationList = await Hubway.Instance.GetStations ();
+					var hubway = Hubway.Instance;
+					var stationList = hubway.HasCachedData ? hubway.LastStations : (await hubway.GetStations ());
 					stations = stationList
 						.Where (s => ids.Contains (s.Id))
 						.OrderBy (s => s.Name)
@@ -152,8 +160,7 @@ namespace Moyeu
 			bikeNumber.Text = station.BikeCount.ToString ();
 			slotNumber.Text = station.Capacity.ToString ();
 
-			var api = GoogleApis.Obtain (context);
-			string mapUrl = GoogleApis.MakeMapUrl (station.Location);
+			string mapUrl = GoogleApis.MakeMapUrl (station.Location, mapWidth, mapHeight);
 			SelfDisposingBitmapDrawable mapDrawable;
 			if (api.MapCache.TryGet (mapUrl, out mapDrawable))
 				mapView.SetImageDrawable (mapDrawable);
