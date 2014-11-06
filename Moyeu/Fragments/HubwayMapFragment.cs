@@ -54,6 +54,7 @@ namespace Moyeu
 		public HubwayMapFragment ()
 		{
 			HasOptionsMenu = true;
+			AnimationExtensions.SetupFragmentTransitions (this);
 		}
 
 		public string Name {
@@ -124,6 +125,8 @@ namespace Moyeu
 		public override void OnViewCreated (View view, Bundle savedInstanceState)
 		{
 			base.OnViewCreated (view, savedInstanceState);
+
+			view.SetBackgroundDrawable (AndroidExtensions.DefaultBackground);
 
 			// Default map initialization
 			mapFragment.Map.MyLocationEnabled = true;

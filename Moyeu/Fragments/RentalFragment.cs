@@ -41,6 +41,7 @@ namespace Moyeu
 		public RentalFragment ()
 		{
 			HasOptionsMenu = true;
+			AnimationExtensions.SetupFragmentTransitions (this);
 		}
 
 		public string Name {

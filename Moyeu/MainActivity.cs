@@ -201,18 +201,23 @@ namespace Moyeu
 			if (currentFragment == null) {
 				t.Add (Resource.Id.content_frame, fragment, name);
 			} else {
-				t.SetCustomAnimations (Resource.Animator.frag_slide_in,
-				                       Resource.Animator.frag_slide_out);
 				var existingFragment = SupportFragmentManager.FindFragmentByTag (name);
-				if (existingFragment != null)
-					existingFragment.View.BringToFront ();
-				currentFragment.View.BringToFront ();
-				t.Hide (CurrentFragment);
-				if (existingFragment != null) {
-					t.Show (existingFragment);
+				if (!AndroidExtensions.IsMaterial) {
+					t.SetCustomAnimations (Resource.Animator.frag_slide_in,
+					                       Resource.Animator.frag_slide_out);
+					if (existingFragment != null)
+						existingFragment.View.BringToFront ();
+					currentFragment.View.BringToFront ();
 				} else {
-					t.Add (Resource.Id.content_frame, fragment, name);
+					currentFragment.View.BringToFront ();
+					if (existingFragment != null)
+						existingFragment.View.BringToFront ();
 				}
+				t.Hide (CurrentFragment);
+				if (existingFragment != null)
+					t.Show (existingFragment);
+				else
+					t.Add (Resource.Id.content_frame, fragment, name);
 				section.RefreshData ();
 			}
 			t.Commit ();

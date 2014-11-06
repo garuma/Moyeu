@@ -7,6 +7,7 @@ using Android.Support.V4.View;
 using Runnable = Java.Lang.Runnable;
 using Android.Views.Animations;
 using Android.Graphics;
+using Android.Transitions;
 
 namespace Moyeu
 {
@@ -36,6 +37,14 @@ namespace Moyeu
 			if (interpolator != null)
 				animator.SetInterpolator (interpolator);
 			animator.Start ();
+		}
+
+		public static void SetupFragmentTransitions (Android.Support.V4.App.Fragment frag)
+		{
+			if (!AndroidExtensions.IsMaterial)
+				return;
+			frag.EnterTransition = new Slide (GravityFlags.Left);
+			frag.ExitTransition = new Fade (FadingMode.Out);
 		}
 	}
 }

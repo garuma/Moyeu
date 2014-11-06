@@ -31,6 +31,7 @@ namespace Moyeu
 		public FavoriteFragment ()
 		{
 			HasOptionsMenu = false;
+			AnimationExtensions.SetupFragmentTransitions (this);
 		}
 
 		public override void OnActivityCreated (Bundle savedInstanceState)
