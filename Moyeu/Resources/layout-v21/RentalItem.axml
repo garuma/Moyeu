@@ -49,10 +49,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rentalToStation"
-            style="@android:style/TextAppearance.Material.Body1"
+            style="@android:style/TextAppearance.Material.Subhead"
             android:lines="1"
             android:ellipsize="end"
-            android:drawableLeft="@drawable/ic_arrow_forward"
+            android:drawableLeft="@drawable/ic_small_bike_vector"
             android:drawablePadding="4dp" />
     </LinearLayout>
     <TextView

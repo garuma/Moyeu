@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_layout"
+        android:layout_gravity="top"
+        android:layout_marginTop="8dp">
+        <TextView
+            android:text="Hubway Login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/dialog_title"
+            android:layout_gravity="center"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="8dp" />
+        <TextView
+            android:text="Your credentials are solely used to interact with Hubway and won't be transmitted to any third-party."
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:gravity="center"
+            android:textColor="@color/black_secondary"
+            android:layout_marginTop="4dp"
+            android:lines="3"
+            android:layout_marginBottom="4dp"
+            android:layout_gravity="center" />
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/username"
+            android:hint="Username"
+            android:lines="1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:inputType="textNoSuggestions"
+            android:layout_marginBottom="4dp" />
+        <EditText
+            android:inputType="textPassword"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/password"
+            android:hint="Password"
+            android:lines="1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="4dp"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="4dp" />
+        <TextView
+            android:text="Error connecting to Hubway. Please retry."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginStatusText"
+            android:textColor="#ff4444"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            android:layout_marginBottom="4dp" />
+        <Button
+            android:text="Login"
+            android:layout_width="132dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginBtn"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="24dp"
+            android:layout_gravity="center" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/loading_layout"
+        android:layout_gravity="center"
+        android:layout_marginBottom="80dp">
+        <ImageView
+            android:src="@drawable/loading_graphic"
+            android:layout_width="225dp"
+            android:layout_height="120dp"
+            android:id="@+id/loading_icon" />
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loading_progress"
+            android:indeterminate="true"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/refresh_layout"
+        android:visibility="invisible">
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recycler" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</FrameLayout>

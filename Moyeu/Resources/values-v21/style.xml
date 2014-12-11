@@ -2,7 +2,7 @@
 <resources>
 	<color name="moyeu_primary">#2baf2b</color>
 	<color name="moyeu_primary_dark">#0a7e07</color>
-	<color name="moyeu_accent">#b2ff59 </color>
+	<color name="moyeu_accent">#a6df00</color>
 	<color name="nav_drawer_background">#333333</color>
 	<color name="loading_background_color">#dddddd</color>
 	<color name="card_background">#fdfdfd</color>

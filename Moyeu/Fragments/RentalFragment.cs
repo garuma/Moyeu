@@ -36,11 +36,11 @@ namespace Moyeu
 		bool loading;
 
 		DateTime lastLoadingTime = DateTime.Now;
-		ListFragmentSwipeRefreshLayout refreshLayout;
+		SwipeRefreshLayout refreshLayout;
 
 		public RentalFragment ()
 		{
-			HasOptionsMenu = true;
+			HasOptionsMenu = false;
 			AnimationExtensions.SetupFragmentTransitions (this);
 		}
 
@@ -58,15 +58,22 @@ namespace Moyeu
 
 		public void RefreshData ()
 		{
-			if ((DateTime.Now - lastLoadingTime) > TimeSpan.FromMinutes (5))
+			if ((DateTime.Now - lastLoadingTime) > TimeSpan.FromMinutes (5)) {
 				Refresh (reset: false);
+				lastLoadingTime = DateTime.Now;
+			}
 		}
 
 		public override void OnStart ()
 		{
 			base.OnStart ();
 			if (currentPageId == 0)
-				DoFetch ();
+				Refresh ();
+			InitializeList ();
+		}
+
+		protected virtual void InitializeList ()
+		{
 			if (!listInitialized) {
 				ListView.Scroll += HandleScroll;
 				listInitialized = true;
@@ -185,7 +192,7 @@ namespace Moyeu
 			editor.Commit ();
 		}
 
-		void Refresh (bool reset = true)
+		protected virtual void Refresh (bool reset = true)
 		{
 			currentPageId = 0;
 			if (reset || ListAdapter == null) {
@@ -216,12 +223,11 @@ namespace Moyeu
 			adapter.AppendRentals (newRentals);
 			if (!isFirst && ListView.LastVisiblePosition > oldCount - 4)
 				ListView.SmoothScrollByOffset (1);
-			lastLoadingTime = DateTime.Now;
 			loading = false;
 			return true;
 		}
 
-		CookieContainer StoredCookies {
+		protected CookieContainer StoredCookies {
 			get {
 				if (cookies == null) {
 					var prefs = Activity.GetPreferences (FileCreationMode.Private);
@@ -235,7 +241,7 @@ namespace Moyeu
 			}
 		}
 
-		RentalCrendentials StoredCredentials {
+		protected RentalCrendentials StoredCredentials {
 			get {
 				var prefs = Activity.GetPreferences (FileCreationMode.Private);
 				return new RentalCrendentials {

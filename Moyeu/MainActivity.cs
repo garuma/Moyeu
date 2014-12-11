@@ -177,7 +177,7 @@ namespace Moyeu
 				break;
 			case 2:
 				if (rentalFragment == null)
-					rentalFragment = new RentalFragment ();
+					rentalFragment = AndroidExtensions.IsMaterial ? new RentalMaterialFragment () : new RentalFragment ();
 				SwitchTo (rentalFragment);
 				break;
 			default:

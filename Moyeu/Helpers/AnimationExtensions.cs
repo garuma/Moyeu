@@ -46,6 +46,12 @@ namespace Moyeu
 			frag.EnterTransition = new Slide (GravityFlags.Left);
 			frag.ExitTransition = new Fade (FadingMode.Out);
 		}
+
+		public static void SetupAutoSceneTransition (ViewGroup root)
+		{
+			if (Android.OS.Build.VERSION.SdkInt == Android.OS.BuildVersionCodes.Kitkat)
+				TransitionManager.BeginDelayedTransition (root);
+		}
 	}
 }
 

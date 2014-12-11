@@ -67,6 +67,9 @@
     <Reference Include="Xamarin.Android.Support.v7.CardView">
       <HintPath>..\packages\Xamarin.Android.Support.v7.CardView.21.0.0.0-beta1\lib\MonoAndroid\Xamarin.Android.Support.v7.CardView.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.RecyclerView">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.RecyclerView.21.0.0.0-beta1\lib\MonoAndroid\Xamarin.Android.Support.v7.RecyclerView.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -98,6 +101,7 @@
     <Compile Include="Visual\RoundCornerDrawable.cs" />
     <Compile Include="Visual\LollipopDrawerToggle.cs" />
     <Compile Include="Visual\CheckedImageButton.cs" />
+    <Compile Include="Fragments\RentalMaterialFragment.cs" />
     <Compile Include="Helpers\DoubleExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +224,9 @@
     <AndroidResource Include="Resources\drawable-xhdpi-v21\ic_arrow_forward.png" />
     <AndroidResource Include="Resources\layout-v21\RentalHeader.axml" />
     <AndroidResource Include="Resources\drawable-v21\list_divider_material.xml" />
+    <AndroidResource Include="Resources\drawable-nodpi\loading_graphic.png" />
+    <AndroidResource Include="Resources\layout-v21\RentalsLayout.axml" />
+    <AndroidResource Include="Resources\drawable-v21\ic_small_bike_vector.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>

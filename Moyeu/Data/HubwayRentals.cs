@@ -28,6 +28,11 @@ namespace Moyeu
 		public TimeSpan Duration { get; set; }
 	}
 
+	public interface IRentalStorage {
+		Rental[] GetStoredRentals ();
+		void StoreRentals (Rental[] rentals);
+	}
+
 	public class HubwayRentals
 	{
 		const string HubwayLoginUrl = "https://www.thehubway.com/login";
