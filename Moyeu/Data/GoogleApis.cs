@@ -82,7 +82,7 @@ namespace Moyeu
 				{ "key", ApiKey },
 				{ "sensor", "false" },
 				{ "size", Math.Min (width, MaxStreetViewSize) + "x" + Math.Min (height, MaxStreetViewSize) },
-				{ "location", position.Lat.ToString () + "," + position.Lon.ToString () },
+				{ "location", position.Lat.ToSafeString () + "," + position.Lon.ToSafeString () },
 				{ "pitch", "-10" },
 			};
 

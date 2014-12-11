@@ -117,8 +117,8 @@ namespace Moyeu
 					Id = int.Parse (station.Element ("id").Value),
 					Name = station.Element ("name").Value,
 					Location = new GeoPoint {
-						Lat = double.Parse (station.Element ("lat").Value),
-						Lon = double.Parse (station.Element ("long").Value)
+					   Lat = station.Element ("lat").Value.ToSafeDouble (),
+					   Lon = station.Element ("long").Value.ToSafeDouble ()
 					},
 					Installed = station.Element ("installed").Value == "true",
 					Locked = station.Element ("locked").Value == "true",

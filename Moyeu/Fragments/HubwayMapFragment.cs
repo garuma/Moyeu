@@ -535,8 +535,8 @@ namespace Moyeu
 
 			if (serial != null) {
 				var latlng = serial.Split ('|');
-				var finalLatLng = new LatLng (double.Parse (latlng [0]),
-				                              double.Parse (latlng [1]));
+				var finalLatLng = new LatLng (latlng [0].ToSafeDouble (),
+				                              latlng [1].ToSafeDouble ());
 				CenterMapOnLocation (finalLatLng);
 			} else if (!string.IsNullOrEmpty (searchTerm)) {
 				if (existingMarkers.Count == 0)

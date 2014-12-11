@@ -134,8 +134,7 @@ namespace Moyeu
 
 		double ParseRentalPrice (string price)
 		{
-			return double.Parse (price.Substring ("$ ".Length),
-			                     System.Globalization.CultureInfo.InvariantCulture);
+			return price.Substring ("$ ".Length).ToSafeDouble ();
 		}
 	}
 }

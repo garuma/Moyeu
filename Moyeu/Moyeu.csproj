@@ -98,6 +98,7 @@
     <Compile Include="Visual\RoundCornerDrawable.cs" />
     <Compile Include="Visual\LollipopDrawerToggle.cs" />
     <Compile Include="Visual\CheckedImageButton.cs" />
+    <Compile Include="Helpers\DoubleExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />

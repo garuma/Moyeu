@@ -78,7 +78,7 @@ namespace Moyeu
 					id++,
 					line1,
 					line2,
-					address.Latitude + "|" + address.Longitude
+					address.Latitude.ToSafeString () + "|" + address.Longitude.ToSafeString ()
 				});
 			}
 
