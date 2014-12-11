@@ -8,6 +8,7 @@
 	<color name="card_background">#fdfdfd</color>
 	<color name="dim_foreground">#cccccc</color>
 	<color name="favorite_foreground">#e00032</color>
+	<color name="favorite_background">#ff5252</color>
 
 	<color name="white_primary">#d6ffffff</color>
 	<color name="white_secondary">#89ffffff</color>
