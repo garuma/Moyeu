@@ -87,10 +87,10 @@ namespace Moyeu
 
 		void HandlePageScrolled (object sender, GridViewPager.PageScrolledEventArgs e)
 		{
-			var col = e.P1;
+			var col = e.Column;
 
 			if (col == 0) {
-				var offset = e.P3;
+				var offset = e.ColumnOffsetPixels;
 				var w = pager.Width;
 				countSwitch.TranslationX = -(w * offset);
 			}
