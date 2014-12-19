@@ -25,12 +25,14 @@ using XamSvg;
 
 namespace Moyeu
 {
-	public class HubwayMapFragment: Android.Support.V4.App.Fragment, ViewTreeObserver.IOnGlobalLayoutListener, IMoyeuSection
+	public class HubwayMapFragment: Android.Support.V4.App.Fragment, ViewTreeObserver.IOnGlobalLayoutListener, IMoyeuSection, IOnMapReadyCallback, IOnStreetViewPanoramaReadyCallback
 	{
 		Dictionary<int, Marker> existingMarkers = new Dictionary<int, Marker> ();
 		Marker locationPin;
 		MapView mapFragment;
+		GoogleMap map;
 		StreetViewPanoramaView streetViewFragment;
+		StreetViewPanorama streetPanorama;
 		Hubway hubway = Hubway.Instance;
 		HubwayHistory hubwayHistory = new HubwayHistory ();
 
@@ -128,24 +130,7 @@ namespace Moyeu
 
 			view.SetBackgroundDrawable (AndroidExtensions.DefaultBackground);
 
-			// Default map initialization
-			mapFragment.Map.MyLocationEnabled = true;
-			mapFragment.Map.MapType = GoogleMap.MapTypeNormal;
-			mapFragment.Map.UiSettings.MyLocationButtonEnabled = false;
-			mapFragment.Map.UiSettings.ZoomControlsEnabled = false;
-			mapFragment.Map.UiSettings.CompassEnabled = false;
-			mapFragment.Map.UiSettings.RotateGesturesEnabled = false;
-			mapFragment.Map.UiSettings.TiltGesturesEnabled = false;
-			mapFragment.Map.MoveCamera (CameraUpdateFactory.NewLatLngZoom (
-				new LatLng (42.366031, -71.071405),
-				13
-			));
-
-			mapFragment.Map.MarkerClick += HandleMarkerClick;
-			mapFragment.Map.MapClick += HandleMapClick;
-			var oldPosition = PreviousCameraPosition;
-			if (oldPosition != null)
-				mapFragment.Map.MoveCamera (CameraUpdateFactory.NewCameraPosition (oldPosition));
+			mapFragment.GetMapAsync (this);
 
 			// Setup info pane
 			SetSvgImage (pane, Resource.Id.bikeImageView, Resource.Raw.bike);
@@ -159,9 +144,7 @@ namespace Moyeu
 			var starBtn = pane.FindViewById (Resource.Id.StarButton);
 			starBtn.Click += HandleStarButtonChecked;
 
-			streetViewFragment.StreetViewPanorama.UserNavigationEnabled = false;
-			streetViewFragment.StreetViewPanorama.StreetNamesEnabled = false;
-			streetViewFragment.StreetViewPanorama.StreetViewPanoramaClick += HandleMapButtonClick;
+			streetViewFragment.GetStreetViewPanoramaAsync (this);
 		}
 
 		void SetSvgImage (View baseView, int viewId, int resId)
@@ -173,21 +156,47 @@ namespace Moyeu
 			view.SetImageDrawable (img);
 		}
 
+		public void OnMapReady (GoogleMap googleMap)
+		{
+			this.map = googleMap;
+			MapsInitializer.Initialize (Activity.ApplicationContext);
+
+			// Default map initialization
+			googleMap.MyLocationEnabled = true;
+			googleMap.UiSettings.MyLocationButtonEnabled = false;
+
+			googleMap.MarkerClick += HandleMarkerClick;
+			googleMap.MapClick += HandleMapClick;
+			var oldPosition = PreviousCameraPosition;
+			if (oldPosition != null)
+				googleMap.MoveCamera (CameraUpdateFactory.NewCameraPosition (oldPosition));
+		}
+
+		public void OnStreetViewPanoramaReady (StreetViewPanorama panorama)
+		{
+			this.streetPanorama = panorama;
+			panorama.UserNavigationEnabled = false;
+			panorama.StreetNamesEnabled = false;
+			panorama.StreetViewPanoramaClick += HandleMapButtonClick;
+		}
+
 		void HandlePaneStateChanged (InfoPane.State state)
 		{
+			if (map == null)
+				return;
 			var time = Resources.GetInteger (Android.Resource.Integer.ConfigShortAnimTime);
 			var enabled = state != InfoPane.State.FullyOpened;
-			mapFragment.Map.UiSettings.ScrollGesturesEnabled = enabled;
-			mapFragment.Map.UiSettings.ZoomGesturesEnabled = enabled;
+			map.UiSettings.ScrollGesturesEnabled = enabled;
+			map.UiSettings.ZoomGesturesEnabled = enabled;
 			if (state == InfoPane.State.FullyOpened && currentShownMarker != null) {
-				oldPosition = mapFragment.Map.CameraPosition;
+				oldPosition = map.CameraPosition;
 				var destX = mapFragment.Width / 2;
 				var destY = (mapFragment.Height - pane.Height) / 2;
-				var currentPoint = mapFragment.Map.Projection.ToScreenLocation (currentShownMarker.Position);
+				var currentPoint = map.Projection.ToScreenLocation (currentShownMarker.Position);
 				var scroll = CameraUpdateFactory.ScrollBy (- destX + currentPoint.X, - destY + currentPoint.Y);
-				mapFragment.Map.AnimateCamera (scroll, time, null);
+				map.AnimateCamera (scroll, time, null);
 			} else if (oldPosition != null) {
-				mapFragment.Map.AnimateCamera (CameraUpdateFactory.NewCameraPosition (oldPosition), time, null);
+				map.AnimateCamera (CameraUpdateFactory.NewCameraPosition (oldPosition), time, null);
 				oldPosition = null;
 			}
 		}
@@ -240,9 +249,9 @@ namespace Moyeu
 			base.OnViewStateRestored (savedInstanceState);
 			if (savedInstanceState != null && savedInstanceState.ContainsKey ("previousPosition")) {
 				var pos = savedInstanceState.GetParcelable ("previousPosition") as CameraPosition;
-				if (pos != null) {
+				if (pos != null && map != null) {
 					var update = CameraUpdateFactory.NewCameraPosition (pos);
-					mapFragment.Map.MoveCamera (update);
+					map.MoveCamera (update);
 				}
 			}
 		}
@@ -265,7 +274,8 @@ namespace Moyeu
 		{
 			base.OnPause ();
 			mapFragment.OnPause ();
-			PreviousCameraPosition = mapFragment.Map.CameraPosition;
+			if (map != null)
+				PreviousCameraPosition = map.CameraPosition;
 			streetViewFragment.OnPause ();
 		}
 
@@ -376,7 +386,7 @@ namespace Moyeu
 					.SetSnippet (station.Locked ? string.Empty : station.BikeCount + "|" + station.EmptySlotCount)
 					.SetPosition (new Android.Gms.Maps.Model.LatLng (station.Location.Lat, station.Location.Lon))
 					.InvokeIcon (BitmapDescriptorFactory.FromBitmap (pin));
-				existingMarkers [station.Id] = mapFragment.Map.AddMarker (markerOptions);
+				existingMarkers [station.Id] = map.AddMarker (markerOptions);
 			}
 		}
 
@@ -397,7 +407,8 @@ namespace Moyeu
 			var latLng = marker.Position;
 			var camera = CameraUpdateFactory.NewLatLngZoom (latLng, zoom);
 			var time = Resources.GetInteger (animDurationID);
-			mapFragment.Map.AnimateCamera (camera, time, new MapAnimCallback (() => OpenStationWithMarker (marker)));
+			if (map != null)
+				map.AnimateCamera (camera, time, new MapAnimCallback (() => OpenStationWithMarker (marker)));
 		}
 
 		public void OpenStationWithMarker (Marker marker)
@@ -452,10 +463,11 @@ namespace Moyeu
 			} else {
 				var starButton = pane.FindViewById<CheckedImageButton> (Resource.Id.StarButton);
 				starButton.Checked = activated;
+				starButton.Drawable.JumpToCurrentState ();
 			}
 
-			var streetView = streetViewFragment.StreetViewPanorama;
-			streetView.SetPosition (marker.Position);
+			if (streetPanorama != null)
+				streetPanorama.SetPosition (marker.Position);
 
 			LoadStationHistory (currentShownID);
 
@@ -518,9 +530,11 @@ namespace Moyeu
 
 		public void CenterMapOnLocation (LatLng latLng)
 		{
+			if (map == null)
+				return;
 			var camera = CameraUpdateFactory.NewLatLngZoom (latLng, 16);
-			mapFragment.Map.AnimateCamera (camera,
-			                               new MapAnimCallback (() => SetLocationPin (latLng)));
+			map.AnimateCamera (camera,
+			                   new MapAnimCallback (() => SetLocationPin (latLng)));
 		}
 
 		public void OnSearchIntent (Intent intent)
@@ -639,7 +653,7 @@ namespace Moyeu
 					.Build ();
 			}
 			set {
-				var position = mapFragment.Map.CameraPosition;
+				var position = map.CameraPosition;
 				var prefs = Activity.GetPreferences (FileCreationMode.Private);
 				using (var editor = prefs.Edit ()) {
 					editor.PutFloat ("lastPosition-bearing", position.Bearing);
@@ -654,7 +668,6 @@ namespace Moyeu
 
 		bool CenterMapOnUser ()
 		{
-			var map = mapFragment.Map;
 			var location = map.MyLocation;
 			if (location == null)
 				return false;
@@ -675,7 +688,7 @@ namespace Moyeu
 				locationPin.Remove ();
 				locationPin = null;
 			}
-			var proj = mapFragment.Map.Projection;
+			var proj = map.Projection;
 			var location = proj.ToScreenLocation (finalLatLng);
 			location.Offset (0, -(35.ToPixels ()));
 			var startLatLng = proj.FromScreenLocation (location);
@@ -685,7 +698,7 @@ namespace Moyeu
 					.SetPosition (startLatLng)
 					.SetTitle (SearchPinId)
 					.InvokeIcon (BitmapDescriptorFactory.DefaultMarker (BitmapDescriptorFactory.HueViolet));
-				var marker = mapFragment.Map.AddMarker (opts);
+				var marker = map.AddMarker (opts);
 				var animator = ObjectAnimator.OfObject (marker, "position", new LatLngEvaluator (), startLatLng, finalLatLng);
 				animator.SetDuration (1000);
 				animator.SetInterpolator (new Android.Views.Animations.BounceInterpolator ());

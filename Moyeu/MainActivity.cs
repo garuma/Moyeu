@@ -333,7 +333,6 @@ namespace Moyeu
 
 		void PostCheckGooglePlayServices ()
 		{
-			MapsInitializer.Initialize (this);
 			if (client == null)
 				client = CreateApiClient ();
 			SwitchTo (mapFragment = new HubwayMapFragment ());
