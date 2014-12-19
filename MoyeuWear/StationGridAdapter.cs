@@ -10,6 +10,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 
 using Android.Support.Wearable;
 using Android.Support.Wearable.Activity;
@@ -24,9 +25,7 @@ namespace Moyeu
 		IList<SimpleStation> stations;
 		IMoyeuActions actions;
 		StationCardFragment[] stationFragments;
-
-		// We alternate between two version of the same background so that the parallax doesn't get confused
-		ImageReference background, background2;
+		Drawable[] backgrounds;
 
 		public StationGridAdapter (FragmentManager manager,
 		                           IList<SimpleStation> stations,
@@ -36,8 +35,7 @@ namespace Moyeu
 			this.stations = stations;
 			this.actions = actions;
 			this.stationFragments = new StationCardFragment[stations.Count];
-			this.background = ImageReference.ForDrawable (Resource.Drawable.pager_background);
-			this.background2 = ImageReference.ForDrawable (Resource.Drawable.pager_background2);
+			this.backgrounds = new Drawable[stations.Count];
 		}
 
 		public void SwitchCount ()
@@ -53,17 +51,33 @@ namespace Moyeu
 			}
 		}
 
-		public override ImageReference GetBackground (int row, int column)
+		public override Drawable GetBackgroundForRow (int row)
 		{
+			if (backgrounds [row] != null)
+				return backgrounds [row];
+
 			var station = stations [row];
-			return station.Background != null ? ImageReference.ForBitmap (station.Background)
-				: (row % 2) == 0 ? background : background2;
+			var bg = station.Background != null ?
+				new ShadowedBitmapDrawable (station.Background) { ShadowColor = Color.Argb (0x80, 0, 0, 0) } : 
+				GridPagerAdapter.BackgroundNone;
+			backgrounds [row] = bg;
+			return bg;
+		}
+
+		public override Drawable GetBackgroundForPage (int p0, int p1)
+		{
+			return GridPagerAdapter.BackgroundNone;
 		}
 
 		public override int GetColumnCount (int p0)
 		{
 			// The data item and two actions (navigate, favorite)
 			return 3;
+		}
+
+		public override int GetOptionsForPage (int row, int column)
+		{
+			return column > 0 ? GridPagerAdapter.OptionDisableParallax : GridPagerAdapter.PageDefaultOptions;
 		}
 
 		public override Fragment GetFragment (int row, int column)

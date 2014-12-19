@@ -3,7 +3,6 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/dismiss_overlay_bg"
     android:paddingTop="24dp"
     android:paddingRight="16dp"
     android:paddingLeft="16dp"

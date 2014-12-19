@@ -49,6 +49,7 @@ namespace Moyeu
 		GridViewPager pager;
 		ProgressBar loading;
 		Switch countSwitch;
+		DotsPageIndicator dotsIndicator;
 
 		StationGridAdapter adapter;
 		Handler handler;
@@ -65,10 +66,12 @@ namespace Moyeu
 			pager = FindViewById<GridViewPager> (Resource.Id.pager);
 			loading = FindViewById<ProgressBar> (Resource.Id.loading);
 			countSwitch = FindViewById<Switch> (Resource.Id.metricSwitch);
+			dotsIndicator = FindViewById<DotsPageIndicator> (Resource.Id.dotsIndicator);
 
 			countSwitch.Checked = ActionStatus == BikeActionStatus.Stop;
 			countSwitch.CheckedChange += HandleCheckedChange;
-			pager.PageScrolled += HandlePageScrolled;
+			dotsIndicator.PageScrolled += HandlePageScrolled;
+			dotsIndicator.SetPager (pager);
 		}
 
 		BikeActionStatus ActionStatus {
@@ -87,12 +90,18 @@ namespace Moyeu
 
 		void HandlePageScrolled (object sender, GridViewPager.PageScrolledEventArgs e)
 		{
-			var col = e.Column;
+			var col = e.P1;
 
 			if (col == 0) {
-				var offset = e.ColumnOffsetPixels;
+				var offset = e.P3;
 				var w = pager.Width;
+
 				countSwitch.TranslationX = -(w * offset);
+
+				if (adapter != null) {
+					var bg = (ShadowedBitmapDrawable)adapter.GetBackgroundForRow (e.P0);
+					bg.SetShadowLevel (offset);
+				}
 			}
 		}
 
@@ -137,6 +146,7 @@ namespace Moyeu
 					loading.Visibility = ViewStates.Invisible;
 					pager.Visibility = ViewStates.Visible;
 					countSwitch.Visibility = ViewStates.Visible;
+					dotsIndicator.Visibility = ViewStates.Visible;
 				});
 			}
 		}
