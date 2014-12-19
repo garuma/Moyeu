@@ -7,6 +7,8 @@
 	<color name="loading_background_color">#dddddd</color>
 	<color name="card_background">#fdfdfd</color>
 	<color name="dim_foreground">#cccccc</color>
+
+	<color name="favorite_foreground_dark">#600000</color>
 	<color name="favorite_foreground">#e00032</color>
 	<color name="favorite_background">#ff5252</color>
 
@@ -19,6 +21,8 @@
 
 	<dimen name="gmap_preview_width">288dp</dimen>
 	<dimen name="gmap_preview_height">128dp</dimen>
+
+	<integer name="favorite_anim_time">250</integer>
 
 	<style name="MoyeuTheme" parent="android:Theme.Material.Light.DarkActionBar">
     	<item name="android:colorPrimary">@color/moyeu_primary</item>

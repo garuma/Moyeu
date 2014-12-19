@@ -19,8 +19,7 @@
             android:layout_height="match_parent"
             android:id="@+id/StarButton"
             android:background="@drawable/favorite_ripple_background"
-            android:src="@drawable/ic_favorite"
-            android:tint="@color/favorite_color_list"
+            android:src="@drawable/ic_favorite_selector"
             android:layout_gravity="center" />
         <LinearLayout
             android:orientation="vertical"

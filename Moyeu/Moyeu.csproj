@@ -227,6 +227,10 @@
     <AndroidResource Include="Resources\drawable-nodpi\loading_graphic.png" />
     <AndroidResource Include="Resources\layout-v21\RentalsLayout.axml" />
     <AndroidResource Include="Resources\drawable-v21\ic_small_bike_vector.xml" />
+    <AndroidResource Include="Resources\drawable-v21\ic_favorite_vector.xml" />
+    <AndroidResource Include="Resources\anim-v21\favorite_reveal_anim.xml" />
+    <AndroidResource Include="Resources\drawable-v21\ic_favorite_selector.xml" />
+    <AndroidResource Include="Resources\anim-v21\favorite_color_anim.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
