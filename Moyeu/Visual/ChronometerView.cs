@@ -21,6 +21,7 @@ namespace Moyeu
 		Paint chromeBorder;
 		Paint markerPaint;
 		Paint fillPaint;
+		RectF oval;
 
 		public ChronometerView (Context context) :
 			base (context)
@@ -57,6 +58,7 @@ namespace Moyeu
 			fillPaint = new Paint {
 				AntiAlias = true
 			};
+			oval = new RectF ();
 		}
 
 		public TimeSpan Time {
@@ -83,11 +85,11 @@ namespace Moyeu
 				var angle = minutes > 60 ? 360 : (int)((minutes * 360f) / 60);
 
 				fillPaint.Color = color;
-				canvas.DrawArc (middleX - radius,
-					            middleY - radius,
-					            middleX + radius,
-					            middleY + radius,
-					            -90, angle, true, fillPaint);
+				oval.Set (middleX - radius,
+				          middleY - radius,
+				          middleX + radius,
+				          middleY + radius);
+				canvas.DrawArc (oval, -90, angle, true, fillPaint);
 
 				minutes -= 60;
 				color = Color.Rgb ((byte)Math.Max (0, color.R - 30),
