@@ -56,6 +56,7 @@ namespace Moyeu
 
 		public void Toggle ()
 		{
+			JumpDrawablesToCurrentState ();
 			Checked = !Checked;
 		}
 
@@ -64,15 +65,17 @@ namespace Moyeu
 				return chked;
 			}
 			set {
+				if (chked == value)
+					return;
 				chked = value;
 				RefreshDrawableState ();
-				Invalidate ();
 			}
 		}
 
 		public override int[] OnCreateDrawableState (int extraSpace)
 		{
-			var drawableState = base.OnCreateDrawableState (extraSpace + 1);
+			var space = extraSpace + (Checked ? CheckedStateSet.Length : 0);
+			var drawableState = base.OnCreateDrawableState (space);
 			if (Checked)
 				MergeDrawableStates (drawableState, CheckedStateSet);
 			return drawableState;
