@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/text"
     android:paddingRight="16dp"
     android:paddingLeft="16dp"
