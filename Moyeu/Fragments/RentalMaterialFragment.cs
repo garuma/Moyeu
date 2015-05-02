@@ -24,8 +24,12 @@ using Android.Support.V7.Widget;
 
 namespace Moyeu
 {
-	public class RentalMaterialFragment : RentalFragment, IMoyeuSection
+	public class RentalMaterialFragment : Android.Support.V4.App.Fragment, IMoyeuSection
 	{
+		CookieContainer cookies;
+
+		DateTime lastLoadingTime = DateTime.Now;
+
 		HubwayRentals rentals;
 		RentalsRecyclerAdapter adapter;
 		PreferencesRentalStorage storage;
@@ -61,9 +65,31 @@ namespace Moyeu
 			AnimationExtensions.SetupFragmentTransitions (this);
 		}
 
-		protected override void InitializeList ()
-		{
+		public string Name {
+			get {
+				return "RentalFragment";
+			}
+		}
 
+		public string Title {
+			get {
+				return "Rental History";
+			}
+		}
+
+		public void RefreshData ()
+		{
+			if ((DateTime.Now - lastLoadingTime) > TimeSpan.FromMinutes (5)) {
+				Refresh (reset: false);
+				lastLoadingTime = DateTime.Now;
+			}
+		}
+
+		public override void OnStart ()
+		{
+			base.OnStart ();
+			if (currentPageId == 0)
+				Refresh ();
 		}
 
 		public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -72,15 +98,15 @@ namespace Moyeu
 			var view = inflater.Inflate (Resource.Layout.RentalsLayout, container, false);
 			refreshLayout = view.FindViewById<SwipeRefreshLayout> (Resource.Id.refresh_layout);
 
-			refreshLayout.SetColorScheme (Resource.Color.swipe_refresh_color_main,
-			                              Resource.Color.swipe_refresh_color_shade1,
-			                              Resource.Color.swipe_refresh_color_shade2,
-			                              Resource.Color.swipe_refresh_color_shade3);
+			refreshLayout.SetColorSchemeResources (Resource.Color.swipe_refresh_color_main,
+			                                       Resource.Color.swipe_refresh_color_shade1,
+			                                       Resource.Color.swipe_refresh_color_shade2,
+			                                       Resource.Color.swipe_refresh_color_shade3);
 			refreshLayout.Refresh += (sender, e) => Refresh (reset: false);
 
 			recycler = view.FindViewById<RecyclerView> (Resource.Id.recycler);
 			layoutManager = new LinearLayoutManager (ctx) {
-				SmoothScrollbarEnabled = true
+				SmoothScrollbarEnabled = true,
 			};
 			recycler.HasFixedSize = true;
 			recycler.SetLayoutManager (layoutManager);
@@ -100,7 +126,7 @@ namespace Moyeu
 
 		public override void OnViewCreated (View view, Bundle savedInstanceState)
 		{
-			view.SetBackgroundDrawable (AndroidExtensions.DefaultBackground);
+			view.Background = AndroidExtensions.DefaultBackground;
 			var existingRentals = preloadedRentals.Result;
 			adapter = new RentalsRecyclerAdapter ();
 			recycler.SetAdapter (adapter);
@@ -161,7 +187,8 @@ namespace Moyeu
 
 		void SwitchLayoutPhase (LayoutPhase phase)
 		{
-			AnimationExtensions.SetupAutoSceneTransition ((ViewGroup)View);
+			if (View != null)
+				AnimationExtensions.SetupAutoSceneTransition ((ViewGroup)View);
 			loadingLayout.Visibility = ViewStates.Invisible;
 			refreshLayout.Visibility = ViewStates.Invisible;
 			loginLayout.Visibility = ViewStates.Invisible;
@@ -193,7 +220,7 @@ namespace Moyeu
 			currentLayoutPhase = phase;
 		}
 
-		protected override void Refresh (bool reset = true)
+		protected void Refresh (bool reset = true)
 		{
 			currentPageId = 0;
 			DoFetch (forceRefresh: true);
@@ -221,6 +248,52 @@ namespace Moyeu
 			}
 			loading = false;
 			return true;
+		}
+
+		public override void OnPause ()
+		{
+			base.OnPause ();
+			var serializer = new XmlSerializer (typeof(CookieContainer));
+			var prefs = Activity.GetPreferences (FileCreationMode.Private);
+			var editor = prefs.Edit ();
+			if (cookies != null && cookies.Count > 0) {
+				var buffer = new System.IO.StringWriter ();
+				serializer.Serialize (buffer, cookies);
+				editor.PutString ("cookies", buffer.ToString ());
+			}
+
+			editor.Commit ();
+		}
+
+		CookieContainer StoredCookies {
+			get {
+				if (cookies == null) {
+					var prefs = Activity.GetPreferences (FileCreationMode.Private);
+					var serialized = prefs.GetString ("cookies", null);
+					if (serialized != null) {
+						var serializer = new XmlSerializer (typeof(CookieContainer));
+						cookies = (CookieContainer)serializer.Deserialize (new System.IO.StringReader (serialized));
+					}
+				}
+				return cookies ?? (cookies = new CookieContainer ());
+			}
+		}
+
+		RentalCrendentials StoredCredentials {
+			get {
+				var prefs = Activity.GetPreferences (FileCreationMode.Private);
+				return new RentalCrendentials {
+					Username = prefs.GetString ("hubwayUsername", null),
+					Password = prefs.GetString ("hubwayPass", null),
+				};
+			}
+			set {
+				var prefs = Activity.GetPreferences (FileCreationMode.Private);
+				var editor = prefs.Edit ();
+				editor.PutString ("hubwayUsername", value.Username ?? string.Empty);
+				editor.PutString ("hubwayPass", value.Password ?? string.Empty);
+				editor.Commit ();
+			}
 		}
 
 		class RentalsRecyclerAdapter : RecyclerView.Adapter
@@ -268,10 +341,9 @@ namespace Moyeu
 
 			public override RecyclerView.ViewHolder OnCreateViewHolder (ViewGroup parent, int viewType)
 			{
-				if (viewType == 0)
-					return new RentalHeaderHolder (MakeHeaderView (parent.Context));
-
 				var inflater = LayoutInflater.From (parent.Context);
+				if (viewType == 0)
+					return new RentalHeaderHolder (inflater.Inflate (Resource.Layout.RentalHeader, parent, false));
 				return new RentalItemHolder (inflater.Inflate (Resource.Layout.RentalItem, parent, false));
 			}
 
@@ -325,24 +397,6 @@ namespace Moyeu
 				}
 				if (addedCount > 0)
 					NotifyItemRangeInserted (insertIndex, addedCount);
-			}
-
-			TextView MakeHeaderView (Context context)
-			{
-				if (AndroidExtensions.IsMaterial)
-					return (TextView)LayoutInflater.From (context).Inflate (Resource.Layout.RentalHeader, null);
-
-				var result = new TextView (context) {
-					Gravity = GravityFlags.Center,
-					TextSize = 10,
-				};
-				result.SetPadding (4, 4, 4, 4);
-				result.SetBackgroundColor (Color.Rgb (0x22, 0x22, 0x22));
-				result.SetAllCaps (true);
-				result.SetTypeface (Typeface.DefaultBold, TypefaceStyle.Bold);
-				result.SetTextColor (Color.White);
-
-				return result;
 			}
 
 			Color InterpolateColor (double ratio, Color startColor, Color endColor)

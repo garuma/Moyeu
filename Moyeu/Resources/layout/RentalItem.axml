@@ -2,83 +2,72 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
-    <moyeu.ChronometerView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/rentalTime"
-        android:layout_gravity="center"
-        android:layout_marginRight="4dp"
-        android:layout_marginLeft="4dp" />
+    android:layout_height="wrap_content"
+    android:minHeight="72dp"
+    android:paddingStart="?android:listPreferredItemPaddingStart"
+    android:paddingEnd="?android:listPreferredItemPaddingEnd">
     <LinearLayout
         android:orientation="vertical"
-        android:minWidth="25px"
-        android:minHeight="25px"
+        android:minWidth="32dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout1"
         android:layout_gravity="center">
+        <moyeu.ChronometerView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/rentalTime"
+            android:layout_gravity="center"
+            android:layout_marginTop="2dp" />
         <TextView
-            android:text="05 min"
+            android:text="0:30"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:id="@+id/rentalTimePrimary"
-            android:textSize="8sp"
-            android:textColor="#ff4e4e4e" />
-        <TextView
-            android:text="30 sec"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/rentalTimeSecondary"
-            android:textSize="8sp"
-            android:textColor="#ff4e4e4e" />
+            android:textSize="8sp" />
     </LinearLayout>
-    <TextView
-        android:text="Harvard Square"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0px"
         android:layout_height="wrap_content"
-        android:id="@+id/rentalFromStation"
         android:layout_gravity="center"
-        android:padding="8dp"
-        android:gravity="center"
         android:layout_weight="1"
-        android:textSize="14sp"
-        android:lines="2"
-        android:ellipsize="marquee" />
-    <ImageView
-        android:src="@android:drawable/ic_menu_gallery"
-        android:layout_width="33dp"
-        android:layout_height="16dp"
-        android:id="@+id/bikeImageView"
-        android:layout_gravity="center"
-        android:scaleType="fitXY" />
-    <TextView
-        android:text="Union Square"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rentalToStation"
-        android:layout_gravity="center"
-        android:padding="8dp"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:textSize="14sp"
-        android:lines="2"
-        android:ellipsize="marquee" />
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="8dp">
+        <TextView
+            android:text="Harvard Square"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rentalFromStation"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:lines="1"
+            android:ellipsize="end"
+            android:layout_marginBottom="2dp" />
+        <TextView
+            android:text="Union Square"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rentalToStation"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:lines="1"
+            android:ellipsize="end"
+            android:drawableLeft="@drawable/ic_bike_small"
+            android:drawablePadding="4dp" />
+    </LinearLayout>
     <TextView
         android:text="$"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView5"
         android:layout_gravity="center"
         android:layout_marginRight="2dp"
-        android:textColor="#ff4e4e4e"
-        android:textSize="12sp" />
+        android:textColor="@color/black_secondary"
+        style="@style/TextAppearance.AppCompat.Caption" />
     <TextView
         android:text="1.50"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/rentalPrice"
         android:layout_gravity="center"
-        android:textSize="12sp"
-        android:layout_marginRight="8dp" />
+        style="@style/TextAppearance.AppCompat.Subhead" />
 </LinearLayout>

@@ -15,9 +15,9 @@ using Android.Graphics.Drawables;
 using Android.Locations;
 using Android.Animation;
 
-using Android.Gms.Maps;
-using Android.Gms.Maps.Model;
-using Android.Gms.Location;
+using Android.Gms.MapsSdk;
+using Android.Gms.MapsSdk.Model;
+using Android.Gms.LocationSdk;
 using Android.Gms.Common;
 using Android.Gms.Common.Apis;
 using ConnectionCallbacks = Android.Gms.Common.Apis.IGoogleApiClientConnectionCallbacks;
@@ -25,6 +25,9 @@ using ConnectionFailedListener = Android.Gms.Common.Apis.IGoogleApiClientOnConne
 
 using Android.Support.V4.App;
 using Android.Support.V4.Widget;
+using Android.Support.V4.Graphics.Drawable;
+using Android.Support.V4.View;
+using Android.Util;
 
 namespace Moyeu
 {
@@ -37,17 +40,16 @@ namespace Moyeu
 	[IntentFilter (new[] { "android.intent.action.SEARCH", "com.google.android.gms.actions.SEARCH_ACTION" }, Categories = new[] { "android.intent.category.DEFAULT" })]
 	[MetaData ("android.app.searchable", Resource = "@xml/searchable")]
 	public class MainActivity
-		: Android.Support.V4.App.FragmentActivity, IObserver<Station[]>, ConnectionCallbacks, ConnectionFailedListener
+		: Android.Support.V7.App.AppCompatActivity, IObserver<Station[]>, ConnectionCallbacks, ConnectionFailedListener
 	{
 		const int ConnectionFailureResolutionRequest = 9000;
 
 		HubwayMapFragment mapFragment;
 		FavoriteFragment favoriteFragment;
-		RentalFragment rentalFragment;
+		RentalMaterialFragment rentalFragment;
 
 		DrawerLayout drawer;
-		ActionBarDrawerToggle drawerToggle;
-		LollipopDrawerToggle lollipopDrawerToggle;
+		Android.Support.V7.App.ActionBarDrawerToggle drawerToggle;
 		ListView drawerMenu;
 		ListView drawerAround;
 
@@ -73,55 +75,21 @@ namespace Moyeu
 
 			SetContentView (Resource.Layout.Main);
 
+			var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar> (Resource.Id.toolbar);
+			ViewCompat.SetElevation (toolbar, TypedValue.ApplyDimension (ComplexUnitType.Dip, 2, Resources.DisplayMetrics));
+			SetSupportActionBar (toolbar);
+
 			this.drawer = FindViewById<DrawerLayout> (Resource.Id.drawer_layout);
 			drawer.SetDrawerShadow (Resource.Drawable.drawer_shadow, (int)GravityFlags.Start);
 
-			if (AndroidExtensions.IsMaterial) {
-				this.lollipopDrawerToggle = new LollipopDrawerToggle (this,
-				                                                      drawer,
-				                                                      Resource.String.open_drawer,
-				                                                      Resource.String.close_drawer) {
-					OpenCallback = () => {
-						ActionBar.Title = Title;
-						CurrentFragment.HasOptionsMenu = false;
-						CurrentFragment.View.Enabled = false;
-						InvalidateOptionsMenu ();
-					},
-					CloseCallback = () => {
-						var currentFragment = CurrentFragment;
-						if (currentFragment != null) {
-							ActionBar.Title = ((IMoyeuSection)currentFragment).Title;
-							currentFragment.HasOptionsMenu = true;
-							currentFragment.View.Enabled = true;
-						}
-						InvalidateOptionsMenu ();
-					},
-				};
-				drawer.SetDrawerListener (lollipopDrawerToggle);
-			} else {
-				this.drawerToggle = new MoyeuActionBarToggle (this,
-				                                              drawer,
-				                                              Resource.Drawable.ic_drawer,
-				                                              Resource.String.open_drawer,
-				                                              Resource.String.close_drawer) {
-					OpenCallback = () => {
-						ActionBar.Title = Title;
-						CurrentFragment.HasOptionsMenu = false;
-						InvalidateOptionsMenu ();
-					},
-					CloseCallback = () => {
-						var currentFragment = CurrentFragment;
-						if (currentFragment != null) {
-							ActionBar.Title = ((IMoyeuSection)currentFragment).Title;
-							currentFragment.HasOptionsMenu = true;
-						}
-						InvalidateOptionsMenu ();
-					},
-				};
-				drawer.SetDrawerListener (drawerToggle);
-			}
-			ActionBar.SetDisplayHomeAsUpEnabled (true);
-			ActionBar.SetHomeButtonEnabled (true);
+			drawerToggle = new Android.Support.V7.App.ActionBarDrawerToggle (this,
+			                                                                 drawer,
+			                                                                 Resource.String.open_drawer,
+			                                                                 Resource.String.close_drawer);
+			drawer.SetDrawerListener (drawerToggle);
+
+			SupportActionBar.SetDisplayHomeAsUpEnabled (true);
+			SupportActionBar.SetHomeButtonEnabled (true);
 
 			Hubway.Instance.Subscribe (this);
 			FavoriteManager.FavoritesChanged += (sender, e) => aroundAdapter.Refresh ();
@@ -171,13 +139,12 @@ namespace Moyeu
 				break;
 			case 2:
 				if (rentalFragment == null)
-					rentalFragment = AndroidExtensions.IsMaterial ? new RentalMaterialFragment () : new RentalFragment ();
+					rentalFragment = new RentalMaterialFragment ();
 				SwitchTo (rentalFragment);
 				break;
 			default:
 				return;
 			}
-			SetSelectedMenuIndex (position);
 			drawerMenu.SetItemChecked (position, true);
 			drawer.CloseDrawers ();
 		}
@@ -220,38 +187,21 @@ namespace Moyeu
 		internal void SwitchToMapAndShowStationWithId (long id)
 		{
 			SwitchToSectionPosition (0);
-			ActionBar.Title = mapFragment.Title;
+			SupportActionBar.Title = mapFragment.Title;
 			var animDuration = Android.Resource.Integer.ConfigLongAnimTime;
 			mapFragment.CenterAndOpenStationOnMap (id, zoom: 17, animDurationID: animDuration);
-		}
-
-		void SetSelectedMenuIndex (int pos)
-		{
-			if (AndroidExtensions.IsMaterial)
-				return;
-			for (int i = 0; i < 3; i++) {
-				var text = (TextView)drawerMenu.GetChildAt (i);
-				text.SetTypeface (text.Typeface,
-				                  i == pos ? TypefaceStyle.Bold : TypefaceStyle.Normal);
-			}
 		}
 
 		protected override void OnPostCreate (Bundle savedInstanceState)
 		{
 			base.OnPostCreate (savedInstanceState);
-			if (lollipopDrawerToggle != null)
-				lollipopDrawerToggle.SyncState ();
-			else
-				drawerToggle.SyncState ();
+			drawerToggle.SyncState ();
 		}
 
 		public override void OnConfigurationChanged (Android.Content.Res.Configuration newConfig)
 		{
 			base.OnConfigurationChanged (newConfig);
-			if (lollipopDrawerToggle != null)
-				lollipopDrawerToggle.OnConfigurationChanged (newConfig);
-			else
-				drawerToggle.OnConfigurationChanged (newConfig);
+			drawerToggle.OnConfigurationChanged (newConfig);
 		}
 
 		public override bool OnOptionsItemSelected (IMenuItem item)
@@ -263,8 +213,6 @@ namespace Moyeu
 
 		bool DrawerToggleOnOptionsItemSelected (IMenuItem item)
 		{
-			if (lollipopDrawerToggle != null)
-				return lollipopDrawerToggle.OnOptionsItemSelected (item);
 			return drawerToggle.OnOptionsItemSelected (item);
 		}
 
@@ -331,7 +279,7 @@ namespace Moyeu
 			if (client == null)
 				client = CreateApiClient ();
 			SwitchTo (mapFragment = new HubwayMapFragment ());
-			ActionBar.Title = ((IMoyeuSection)mapFragment).Title;
+			SupportActionBar.Title = ((IMoyeuSection)mapFragment).Title;
 			CheckForSearchTermInIntent (Intent);
 		}
 
@@ -419,23 +367,15 @@ namespace Moyeu
 			var menuEntry = sections [position];
 			text.Text = menuEntry.Item2;
 
-			if (AndroidExtensions.IsMaterial) {
-				var colorList = text.Resources.GetColorStateList (Resource.Color.accent_color_list);
-				text.SetTextColor (colorList);
-				var icon = text.Resources.GetDrawable (menuEntry.Item1);
-				icon.SetTintList (colorList);
-				text.SetCompoundDrawablesWithIntrinsicBounds (icon, null, null, null);
-			} else {
-				text.SetCompoundDrawablesRelativeWithIntrinsicBounds (menuEntry.Item1, 0, 0, 0);
-			}
+			var colorList = text.Resources.GetColorStateList (Resource.Color.accent_color_list);
+			text.SetTextColor (colorList);
+			var icon = DrawableCompat.Wrap (text.Resources.GetDrawable (menuEntry.Item1));
+			DrawableCompat.SetTintList (icon, colorList);
+			text.SetCompoundDrawablesWithIntrinsicBounds (icon, null, null, null);
 
 			// Initial menu initialization, put the first item as selected
-			if (position == 0 && convertView == null) {
-				if (!AndroidExtensions.IsMaterial)
-					text.SetTypeface (text.Typeface, TypefaceStyle.Bold);
-				if (position == 0 && convertView == null)
-					text.Checked = true;
-			}
+			if (position == 0 && convertView == null)
+				text.Checked = true;
 
 			return text;
 		}
@@ -562,14 +502,13 @@ namespace Moyeu
 		}
 	}
 
-	class MoyeuActionBarToggle : ActionBarDrawerToggle
+	class MoyeuActionBarToggle : Android.Support.V7.App.ActionBarDrawerToggle
 	{
 		public MoyeuActionBarToggle (Activity activity,
 		                             DrawerLayout drawer,
-		                             int dImageRes,
 		                             int openDrawerContentRes,
 		                             int closeDrawerContentRest)
-			: base (activity, drawer, dImageRes, openDrawerContentRes, closeDrawerContentRest)
+			: base (activity, drawer, openDrawerContentRes, closeDrawerContentRest)
 		{
 		}
 

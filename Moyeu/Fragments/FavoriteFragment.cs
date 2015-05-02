@@ -17,6 +17,8 @@ using Android.Animation;
 using Android.Graphics.Drawables;
 using Android.Util;
 
+using Android.Gms.MapsSdk;
+
 using Rdio.TangoAndCache.Android.UI.Drawables;
 using Rdio.TangoAndCache.Android.Widget;
 
@@ -73,14 +75,12 @@ namespace Moyeu
 		public override void OnViewCreated (View view, Bundle savedInstanceState)
 		{
 			base.OnViewCreated (view, savedInstanceState);
-			view.SetBackgroundDrawable (AndroidExtensions.DefaultBackground);
+			view.Background = AndroidExtensions.DefaultBackground;
 			SetEmptyText ("You have no favorites yet");
 			ListView.ItemClick += (sender, e) => StationShower (e.Id);
-			if (AndroidExtensions.IsMaterial) {
-				ListView.DividerHeight = 0;
-				ListView.Divider = null;
-				ListView.SetSelector (Android.Resource.Color.Transparent);
-			}
+			ListView.DividerHeight = 0;
+			ListView.Divider = null;
+			ListView.SetSelector (Android.Resource.Color.Transparent);
 		}
 
 		void StationShower (long id)
@@ -96,8 +96,6 @@ namespace Moyeu
 		List<Station> stations;
 		Context context;
 		GoogleApis api;
-		XamSvg.PictureBitmapDrawable bikePicture;
-		XamSvg.PictureBitmapDrawable mapPlaceholder;
 
 		int mapWidth;
 		int mapHeight;
@@ -149,20 +147,8 @@ namespace Moyeu
 			var secondStationName = view.FindViewById<TextView> (Resource.Id.SecondStationName);
 			var bikeNumber = view.FindViewById<TextView> (Resource.Id.BikeNumber);
 			var slotNumber = view.FindViewById<TextView> (Resource.Id.SlotNumber);
-			var bikeImage = view.FindViewById<ImageView> (Resource.Id.bikeImageView);
-			if (bikeImage != null) {
-				if (bikePicture == null)
-					bikePicture = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.bike);
-				bikeImage.SetImageDrawable (bikePicture);
-			}
 
-			if (!AndroidExtensions.IsMaterial) {
-				if (mapPlaceholder == null)
-					mapPlaceholder = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.map_placeholder);
-				mapView.SetImageDrawable (mapPlaceholder);
-			} else {
-				mapView.SetImageDrawable (context.Resources.GetDrawable (Resource.Color.loading_background_color));
-			}
+			mapView.SetImageDrawable (context.Resources.GetDrawable (Resource.Color.loading_background_color));
 
 			var station = stations [position];
 			view.Station = station;
@@ -211,17 +197,6 @@ namespace Moyeu
 		{
 			var inflater = LayoutInflater.From (context);
 			inflater.Inflate (Resource.Layout.FavoriteItem, this, true);
-			if (!AndroidExtensions.IsMaterial) {
-				var mapView = FindViewById<ImageView> (Resource.Id.StationMap);
-				mapView.Focusable = false;
-				mapView.FocusableInTouchMode = false;
-				mapView.Click += (sender, e) => {
-					var uri = Android.Net.Uri.Parse (Station.GeoUrl);
-					Android.Util.Log.Info ("MapUri", uri.ToString ());
-					var intent = new Intent (Intent.ActionView, uri);
-					context.StartActivity (intent);
-				};
-			}
 		}
 
 		public long VersionNumber;

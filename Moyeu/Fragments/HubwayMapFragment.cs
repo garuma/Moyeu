@@ -18,10 +18,12 @@ using Android.Locations;
 using Android.Animation;
 using Android.Util;
 
-using Android.Gms.Maps;
-using Android.Gms.Maps.Model;
+using Android.Gms.MapsSdk;
+using Android.Gms.MapsSdk.Model;
 
 using XamSvg;
+using Android.Support.V4.View;
+using Android.Support.V4.Graphics.Drawable;
 
 namespace Moyeu
 {
@@ -45,8 +47,6 @@ namespace Moyeu
 		TextView lastUpdateText;
 		PinFactory pinFactory;
 		InfoPane pane;
-		PictureBitmapDrawable starOnDrawable;
-		PictureBitmapDrawable starOffDrawable;
 
 		const string SearchPinId = "SEARCH_PIN";
 		int currentShownID = -1;
@@ -111,10 +111,37 @@ namespace Moyeu
 			lastUpdateText = view.FindViewById<TextView> (Resource.Id.UpdateTimeText);
 			SetupInfoPane (view);
 			flashBar = new FlashBarController (view);
-			streetViewFragment = pane.FindViewById<StreetViewPanoramaView> (Resource.Id.streetViewPanorama);
+			streetViewFragment = view.FindViewById<StreetViewPanoramaView> (Resource.Id.streetViewPanorama);
 			streetViewFragment.OnCreate (savedInstanceState);
 
+			// For some reason, a recent version of GPS set their surfaceview to be drawn un-composited.
+			FixupStreetViewSurface (streetViewFragment);
+
 			return view;
+		}
+
+		void FixupStreetViewSurface (View baseView)
+		{
+			var surfaceView = FindSurfaceView (baseView);
+			if (surfaceView != null)
+				surfaceView.SetZOrderMediaOverlay (true);
+		}
+
+		SurfaceView FindSurfaceView (View baseView)
+		{
+			var surfaceView = baseView as SurfaceView;
+			if (surfaceView != null)
+				return surfaceView;
+			var viewGrp = baseView as ViewGroup;
+			if (viewGrp == null)
+				return null;
+			for (int i = 0; i < viewGrp.ChildCount; i++) {
+				surfaceView = FindSurfaceView (viewGrp.GetChildAt (i));
+				if (surfaceView != null)
+					return surfaceView;
+			}
+
+			return null;
 		}
 
 		void SetupInfoPane (View view)
@@ -128,19 +155,23 @@ namespace Moyeu
 		{
 			base.OnViewCreated (view, savedInstanceState);
 
-			view.SetBackgroundDrawable (AndroidExtensions.DefaultBackground);
+			view.Background = AndroidExtensions.DefaultBackground;
 
 			mapFragment.GetMapAsync (this);
 
 			// Setup info pane
-			SetSvgImage (pane, Resource.Id.bikeImageView, Resource.Raw.bike);
-			SetSvgImage (pane, Resource.Id.lockImageView, Resource.Raw.ic_lock);
-			SetSvgImage (pane, Resource.Id.stationLock, Resource.Raw.station_lock);
-			SetSvgImage (pane, Resource.Id.bikeNumberImg, Resource.Raw.bike_number);
-			SetSvgImage (pane, Resource.Id.clockImg, Resource.Raw.clock);
+			var bikes = pane.FindViewById<TextView> (Resource.Id.InfoViewBikeNumber);
+			var slots = pane.FindViewById<TextView> (Resource.Id.InfoViewSlotNumber);
+			if (!AndroidExtensions.IsMaterial) {
+				var bikeDrawable = DrawableCompat.Wrap (Resources.GetDrawable (Resource.Drawable.ic_bike));
+				var lockDrawable = DrawableCompat.Wrap (Resources.GetDrawable (Resource.Drawable.ic_lock));
+				bikes.SetCompoundDrawablesWithIntrinsicBounds (null, null, null, bikeDrawable);
+				slots.SetCompoundDrawablesWithIntrinsicBounds (null, null, null, lockDrawable);
+			} else {
+				bikes.SetCompoundDrawablesWithIntrinsicBounds (0, 0, 0, Resource.Drawable.ic_bike_vector);
+				slots.SetCompoundDrawablesWithIntrinsicBounds (0, 0, 0, Resource.Drawable.ic_racks_vector);
+			}
 
-			starOnDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.star_on);
-			starOffDrawable = SvgFactory.GetDrawable (Resources, Resource.Raw.star_off);
 			var starBtn = pane.FindViewById (Resource.Id.StarButton);
 			starBtn.Click += HandleStarButtonChecked;
 
@@ -221,10 +252,11 @@ namespace Moyeu
 		{
 			inflater.Inflate (Resource.Menu.map_menu, menu);
 			searchItem = menu.FindItem (Resource.Id.menu_search);
-			SetupSearchInput ((SearchView)searchItem.ActionView);
+			var searchView = MenuItemCompat.GetActionView (searchItem);
+			SetupSearchInput (searchView.JavaCast<Android.Support.V7.Widget.SearchView> ());
 		}
 
-		void SetupSearchInput (SearchView searchView)
+		void SetupSearchInput (Android.Support.V7.Widget.SearchView searchView)
 		{
 			var searchManager = Activity.GetSystemService (Context.SearchService).JavaCast<SearchManager> ();
 			searchView.SetIconifiedByDefault (false);
@@ -303,7 +335,7 @@ namespace Moyeu
 		void HandleMarkerClick (object sender, GoogleMap.MarkerClickEventArgs e)
 		{
 			e.Handled = true;
-			OpenStationWithMarker (e.Marker);
+			OpenStationWithMarker (e.P0);
 		}
 
 		void HandleStarButtonChecked (object sender, EventArgs e)
@@ -316,13 +348,6 @@ namespace Moyeu
 				favManager.RemoveFromFavorite (currentShownID);
 			} else {
 				favManager.AddToFavorite (currentShownID);
-			}
-
-			if (!AndroidExtensions.IsMaterial) {
-				var starButton = (ImageButton)sender;
-				starButton.SetImageDrawable (
-					contained ? starOffDrawable : starOnDrawable
-				);
 			}
 		}
 
@@ -382,9 +407,9 @@ namespace Moyeu
 				var pin = pins [station.Id];
 
 				var markerOptions = new MarkerOptions ()
-					.SetTitle (station.Id + "|" + station.Name)
-					.SetSnippet (station.Locked ? string.Empty : station.BikeCount + "|" + station.EmptySlotCount)
-					.SetPosition (new Android.Gms.Maps.Model.LatLng (station.Location.Lat, station.Location.Lon))
+					.InvokeTitle (station.Id + "|" + station.Name)
+					.InvokeSnippet (station.Locked ? string.Empty : station.BikeCount + "|" + station.EmptySlotCount)
+					.InvokePosition (new Android.Gms.MapsSdk.Model.LatLng (station.Location.Lat, station.Location.Lon))
 					.InvokeIcon (BitmapDescriptorFactory.FromBitmap (pin));
 				existingMarkers [station.Id] = map.AddMarker (markerOptions);
 			}
@@ -433,41 +458,48 @@ namespace Moyeu
 			var isLocked = string.IsNullOrEmpty (marker.Snippet);
 			pane.FindViewById (Resource.Id.stationStats).Visibility = isLocked ? ViewStates.Gone : ViewStates.Visible;
 			pane.FindViewById (Resource.Id.stationLock).Visibility = isLocked ? ViewStates.Visible : ViewStates.Gone;
+
 			if (!isLocked) {
 				var splitNumbers = marker.Snippet.Split ('|');
 				bikes.Text = splitNumbers [0];
 				slots.Text = splitNumbers [1];
 
-				if (AndroidExtensions.IsMaterial) {
-					var baseGreen = Color.Rgb (0x66, 0x99, 0x00);
-					var baseRed = Color.Rgb (0xcc, 0x00, 0x00);
-					var bikesNum = int.Parse (splitNumbers [0]);
-					var slotsNum = int.Parse (splitNumbers [1]);
-					var total = bikesNum + slotsNum;
-					var bikesColor = PinFactory.InterpolateColor (baseRed, baseGreen,
-					                                              ((float)bikesNum) / total);
-					var slotsColor = PinFactory.InterpolateColor (baseRed, baseGreen,
-					                                              ((float)slotsNum) / total);
-					bikes.SetTextColor (bikesColor);
-					bikes.GetCompoundDrawables ().Last ().SetTint (bikesColor.ToArgb ());
-					slots.SetTextColor (slotsColor);
-					slots.GetCompoundDrawables ().Last ().SetTint (slotsColor.ToArgb ());
-				}
+				var baseGreen = Color.Rgb (0x66, 0x99, 0x00);
+				var baseRed = Color.Rgb (0xcc, 0x00, 0x00);
+				var bikesNum = int.Parse (splitNumbers [0]);
+				var slotsNum = int.Parse (splitNumbers [1]);
+				var total = bikesNum + slotsNum;
+				var bikesColor = PinFactory.InterpolateColor (baseRed, baseGreen,
+				                                              ((float)bikesNum) / total);
+				var slotsColor = PinFactory.InterpolateColor (baseRed, baseGreen,
+				                                              ((float)slotsNum) / total);
+				bikes.SetTextColor (bikesColor);
+				slots.SetTextColor (slotsColor);
+
+				DrawableCompat.SetTint (bikes.GetCompoundDrawables ().Last (),
+				                        bikesColor.ToArgb ());
+				DrawableCompat.SetTint (slots.GetCompoundDrawables ().Last (),
+				                        slotsColor.ToArgb ());
 			}
 
 			var favs = favManager.LastFavorites ?? favManager.GetFavoriteStationIds ();
+			var starButton = pane.FindViewById<CheckedImageButton> (Resource.Id.StarButton);
 			bool activated = favs.Contains (currentShownID);
 			if (!AndroidExtensions.IsMaterial) {
-				var starButton = pane.FindViewById<ImageButton> (Resource.Id.StarButton);
-				starButton.SetImageDrawable (activated ? starOnDrawable : starOffDrawable);
+				var favIcon = DrawableCompat.Wrap (Resources.GetDrawable (Resource.Drawable.ic_favorite));
+				DrawableCompat.SetTintList (favIcon, Resources.GetColorStateList (Resource.Color.favorite_color_list));
+				starButton.SetImageDrawable (favIcon);
 			} else {
-				var starButton = pane.FindViewById<CheckedImageButton> (Resource.Id.StarButton);
-				starButton.Checked = activated;
-				starButton.Drawable.JumpToCurrentState ();
+				starButton.SetImageResource (Resource.Drawable.ic_favorite_selector);
 			}
+			starButton.Checked = activated;
+			starButton.Drawable.JumpToCurrentState ();
 
-			if (streetPanorama != null)
+			if (streetPanorama != null) {
 				streetPanorama.SetPosition (marker.Position);
+				streetViewFragment.BringToFront ();
+				streetViewFragment.Invalidate ();
+			}
 
 			LoadStationHistory (currentShownID);
 
@@ -695,8 +727,8 @@ namespace Moyeu
 
 			new Handler (Activity.MainLooper).PostDelayed (() => {
 				var opts = new MarkerOptions ()
-					.SetPosition (startLatLng)
-					.SetTitle (SearchPinId)
+					.InvokePosition (startLatLng)
+					.InvokeTitle (SearchPinId)
 					.InvokeIcon (BitmapDescriptorFactory.DefaultMarker (BitmapDescriptorFactory.HueViolet));
 				var marker = map.AddMarker (opts);
 				var animator = ObjectAnimator.OfObject (marker, "position", new LatLngEvaluator (), startLatLng, finalLatLng);

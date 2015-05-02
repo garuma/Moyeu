@@ -9,7 +9,7 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Content;
 
-using LatLng = Android.Gms.Maps.Model.LatLng;
+using LatLng = Android.Gms.MapsSdk.Model.LatLng;
 
 namespace Moyeu
 {
@@ -46,8 +46,7 @@ namespace Moyeu
 
 		BitmapCache LoadMapCache ()
 		{
-			var round = !AndroidExtensions.IsMaterial;
-			return BitmapCache.CreateCache (context, "MapsPictures", useRoundCorners: round);
+			return BitmapCache.CreateCache (context, "MapsPictures", useRoundCorners: false);
 		}
 
 		async Task<Drawable> LoadInternal (string url, BitmapCache cache)
@@ -91,8 +90,8 @@ namespace Moyeu
 
 		public static string MakeMapUrl (GeoPoint location, int width, int height)
 		{
-			var zoom = AndroidExtensions.IsMaterial ? "17" : "13";
-			var markerSize = AndroidExtensions.IsMaterial ? "size:med" : "size:tiny";
+			var zoom = "17";
+			var markerSize = "size:med";
 			var parameters = new Dictionary<string, string> {
 				{ "key", ApiKey },
 				{ "zoom", zoom },

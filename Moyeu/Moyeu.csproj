@@ -47,28 +47,37 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Net.Http" />
     <Reference Include="Xamarin.Insights">
-      <HintPath>..\packages\Xamarin.Insights.1.8.2.105\lib\MonoAndroid10\Xamarin.Insights.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Insights.1.9.1.107\lib\MonoAndroid10\Xamarin.Insights.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Base">
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Base.23.0.0.0-beta2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Maps">
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Maps.23.0.0.0-beta2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Maps.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Location">
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Location.23.0.0.0-beta2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Location.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Wearable">
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Wearable.23.0.0.0-beta2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Wearable.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v4">
-      <HintPath>..\packages\Xamarin.Android.Support.v4.21.0.3.0\lib\MonoAndroid10\Xamarin.Android.Support.v4.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v7.AppCompat">
-      <HintPath>..\packages\Xamarin.Android.Support.v7.AppCompat.21.0.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v7.MediaRouter">
-      <HintPath>..\packages\Xamarin.Android.Support.v7.MediaRouter.21.0.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
-    </Reference>
-    <Reference Include="GooglePlayServicesLib">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.22.0.0.0\lib\MonoAndroid41\GooglePlayServicesLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v7.RecyclerView">
-      <HintPath>..\packages\Xamarin.Android.Support.v7.RecyclerView.21.0.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.RecyclerView.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v7.CardView">
-      <HintPath>..\packages\Xamarin.Android.Support.v7.CardView.21.0.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.CardView.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Android.Support.v4.22.1.1.1\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v13">
-      <HintPath>..\packages\Xamarin.Android.Support.v13.21.0.3.0\lib\MonoAndroid32\Xamarin.Android.Support.v13.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Android.Support.v13.22.1.1.1\lib\MonoAndroid32\Xamarin.Android.Support.v13.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.AppCompat">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.AppCompat.22.1.1.1\lib\MonoAndroid403\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.MediaRouter">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.MediaRouter.22.1.1.1\lib\MonoAndroid403\Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.RecyclerView">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.RecyclerView.22.1.1.1\lib\MonoAndroid403\Xamarin.Android.Support.v7.RecyclerView.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.CardView">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.CardView.22.1.1.1\lib\MonoAndroid403\Xamarin.Android.Support.v7.CardView.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -82,7 +91,6 @@
     <Compile Include="Fragments\FavoriteFragment.cs" />
     <Compile Include="Fragments\HubwayMapFragment.cs" />
     <Compile Include="Fragments\LoginDialogFragment.cs" />
-    <Compile Include="Fragments\RentalFragment.cs" />
     <Compile Include="Helpers\AnalyticsHelper.cs" />
     <Compile Include="Helpers\AndroidExtensions.cs" />
     <Compile Include="Helpers\AnimationExtensions.cs" />
@@ -99,7 +107,6 @@
     <Compile Include="Visual\InfoPane.cs" />
     <Compile Include="Visual\PinFactory.cs" />
     <Compile Include="Visual\RoundCornerDrawable.cs" />
-    <Compile Include="Visual\LollipopDrawerToggle.cs" />
     <Compile Include="Visual\CheckedImageButton.cs" />
     <Compile Include="Fragments\RentalMaterialFragment.cs" />
     <Compile Include="Helpers\DoubleExtensions.cs" />
@@ -113,27 +120,13 @@
     <AndroidResource Include="Resources\values\Strings.xml" />
     <AndroidResource Include="Resources\menu\map_menu.xml" />
     <AndroidResource Include="Resources\drawable\flash_bar_background.xml" />
-    <AndroidResource Include="Resources\drawable-xhdpi\Icon.png" />
     <AndroidResource Include="Resources\xml\searchable.xml" />
     <AndroidResource Include="Resources\layout\FavoriteItem.axml" />
-    <AndroidResource Include="Resources\drawable-hdpi\Icon.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\Icon.png" />
     <AndroidResource Include="Resources\layout\RentalItem.axml" />
     <AndroidResource Include="Resources\layout\LoginDialogLayout.axml" />
-    <AndroidResource Include="Resources\raw\bike_separator.svg" />
-    <AndroidResource Include="Resources\raw\bike.svg" />
-    <AndroidResource Include="Resources\raw\ic_lock.svg" />
-    <AndroidResource Include="Resources\raw\star_off.svg" />
-    <AndroidResource Include="Resources\raw\star_on.svg" />
     <AndroidResource Include="Resources\raw\pin.svg" />
-    <AndroidResource Include="Resources\drawable-nodpi\pattern.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\texture_pattern.xml" />
     <AndroidResource Include="Resources\drawable-xhdpi\drawer_shadow.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\drawer_shadow.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\drawer_shadow.9.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_drawer.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\ic_drawer.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\ic_drawer.png" />
     <AndroidResource Include="Resources\layout\MapLayout.axml" />
     <AndroidResource Include="Resources\layout\DrawerItemLayout.axml" />
     <AndroidResource Include="Resources\animator\frag_slide_out.xml" />
@@ -141,22 +134,14 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_drawer_map.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_drawer_rentals.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_drawer_star.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\ic_drawer_map.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\ic_drawer_rentals.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\ic_drawer_star.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_drawer_map.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_drawer_rentals.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_drawer_star.png" />
     <AndroidResource Include="Resources\layout\DrawerAroundItem.axml" />
-    <AndroidResource Include="Resources\raw\star_depressed.svg" />
     <AndroidResource Include="Resources\values\style.xml" />
-    <AndroidResource Include="Resources\drawable-nodpi\info_pane_header_bg.xml" />
-    <AndroidResource Include="Resources\drawable-nodpi\info_pane_btn_bg.xml" />
     <AndroidResource Include="Resources\layout\InfoPaneLayout.axml" />
     <AndroidResource Include="Resources\drawable-nodpi\pane_item_bg_normal.9.png" />
     <AndroidResource Include="Resources\drawable-nodpi\pane_item_bg_selected.9.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\pane_item_bg.xml" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\Icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_action_mylocation.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_action_refresh.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_action_search.png" />
@@ -167,70 +152,73 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_drawer_map.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_drawer_rentals.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_drawer_star.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_drawer.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\ic_action_mylocation.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\ic_action_refresh.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\ic_action_search.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_mylocation.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_refresh.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_search.png" />
-    <AndroidResource Include="Resources\raw\map_placeholder.svg" />
     <AndroidResource Include="Resources\drawable\info_pane_underline.xml" />
-    <AndroidResource Include="Resources\raw\station_lock.svg" />
     <AndroidResource Include="Resources\raw\pin_locked.svg" />
     <AndroidResource Include="Resources\drawable\time_cell_bg.xml" />
-    <AndroidResource Include="Resources\raw\bike_number.svg" />
-    <AndroidResource Include="Resources\raw\clock.svg" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon.png" />
     <AndroidResource Include="Resources\layout\DrawerHeader.axml" />
     <AndroidResource Include="Resources\drawable\info_pane_vert_divider.xml" />
     <AndroidResource Include="Resources\drawable\drawer_header_underline.xml" />
     <AndroidResource Include="Resources\drawable\list_selector_bg.xml" />
-    <AndroidResource Include="Resources\xml\wearable_app_desc.xml" />
-    <AndroidResource Include="Resources\raw\wearable_app.apk" />
     <AndroidResource Include="Resources\drawable-nodpi\background.9.png" />
-    <AndroidResource Include="Resources\layout-v21\DrawerItemLayout.axml" />
     <AndroidResource Include="Resources\layout\DrawerLayout.axml" />
-    <AndroidResource Include="Resources\layout-v21\DrawerLayout.axml" />
     <AndroidResource Include="Resources\values-v21\style.xml" />
-    <AndroidResource Include="Resources\layout-v21\DrawerAroundItem.axml" />
-    <AndroidResource Include="Resources\drawable-xhdpi-v21\ic_action_mylocation.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi-v21\ic_action_refresh.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi-v21\ic_action_search.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi-v21\ic_action_mylocation.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi-v21\ic_action_refresh.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi-v21\ic_action_search.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi-v21\ic_action_mylocation.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi-v21\ic_action_refresh.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi-v21\ic_action_search.png" />
-    <AndroidResource Include="Resources\color-v21\accent_color_list.xml" />
-    <AndroidResource Include="Resources\layout-v21\FavoriteItem.axml" />
     <AndroidResource Include="Resources\anim-v21\paper_state_list_anim_material.xml" />
-    <AndroidResource Include="Resources\layout-v21\InfoPaneLayout.axml" />
-    <AndroidResource Include="Resources\color-v21\favorite_color_list.xml" />
-    <AndroidResource Include="Resources\drawable-xhdpi-v21\ic_favorite.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi-v21\ic_favorite.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi-v21\ic_favorite.png" />
     <AndroidResource Include="Resources\drawable-v21\ic_racks_vector.xml" />
     <AndroidResource Include="Resources\drawable-v21\ic_bike_vector.xml" />
-    <AndroidResource Include="Resources\drawable-v21\time_cell_bg.xml" />
-    <AndroidResource Include="Resources\drawable-v21\favorite_ripple_background.xml" />
-    <AndroidResource Include="Resources\drawable-xhdpi-v21\icon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi-v21\icon.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi-v21\icon.png" />
-    <AndroidResource Include="Resources\layout-v21\RentalItem.axml" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi-v21\ic_arrow_forward.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi-v21\ic_arrow_forward.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi-v21\ic_arrow_forward.png" />
-    <AndroidResource Include="Resources\layout-v21\RentalHeader.axml" />
-    <AndroidResource Include="Resources\drawable-v21\list_divider_material.xml" />
     <AndroidResource Include="Resources\drawable-nodpi\loading_graphic.png" />
-    <AndroidResource Include="Resources\layout-v21\RentalsLayout.axml" />
-    <AndroidResource Include="Resources\drawable-v21\ic_small_bike_vector.xml" />
     <AndroidResource Include="Resources\drawable-v21\ic_favorite_vector.xml" />
     <AndroidResource Include="Resources\anim-v21\favorite_reveal_anim.xml" />
     <AndroidResource Include="Resources\drawable-v21\ic_favorite_selector.xml" />
     <AndroidResource Include="Resources\anim-v21\favorite_color_anim.xml" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_mylocation.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_refresh.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_search.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
+    <AndroidResource Include="Resources\color\accent_color_list.xml" />
+    <AndroidResource Include="Resources\color\favorite_color_list.xml" />
+    <AndroidResource Include="Resources\drawable-v21\info_pane_btn_bg.xml" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_favorite.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_favorite.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_favorite.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_favorite.png" />
+    <AndroidResource Include="Resources\drawable\info_pane_btn_bg.xml" />
+    <AndroidResource Include="Resources\drawable\info_pane_header_bg.xml" />
+    <AndroidResource Include="Resources\drawable\pane_item_bg.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_bike.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_lock.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_bike.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_lock.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_bike.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_lock.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_bike.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_lock.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_bike_number.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_clock.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_station_lock.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_bike_number.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_clock.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_station_lock.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_bike_number.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_clock.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_station_lock.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_bike_number.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_clock.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_station_lock.png" />
+    <AndroidResource Include="Resources\layout\RentalHeader.axml" />
+    <AndroidResource Include="Resources\layout\RentalsLayout.axml" />
+    <AndroidResource Include="Resources\drawable\list_divider_material.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_bike_small.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_bike_small.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_bike_small.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_bike_small.png" />
+    <AndroidResource Include="Resources\drawable-v21\ic_bike_small.xml" />
+    <AndroidResource Include="Resources\raw\star_depressed.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
@@ -246,6 +234,11 @@
       <Project>{FB43CF84-E9A5-44EB-AF90-3C3544E1A251}</Project>
       <Name>TangoAndCache</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MoyeuWear\MoyeuWear.csproj">
+      <Project>{3B2CA08D-AF1C-4427-BB29-A6E0A5ECB064}</Project>
+      <Name>MoyeuWear</Name>
+      <IsAppExtension>True</IsAppExtension>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable-xhdpi\" />
@@ -253,7 +246,6 @@
     <Folder Include="Resources\xml\" />
     <Folder Include="Storage\" />
     <Folder Include="Resources\drawable-hdpi\" />
-    <Folder Include="Resources\drawable-mdpi\" />
     <Folder Include="Assets\" />
     <Folder Include="Resources\drawable-nodpi\" />
     <Folder Include="Resources\raw\" />
@@ -264,14 +256,10 @@
     <Folder Include="Helpers\" />
     <Folder Include="Data\" />
     <Folder Include="Visual\" />
-    <Folder Include="Resources\layout-v21\" />
     <Folder Include="Resources\values-v21\" />
-    <Folder Include="Resources\drawable-xhdpi-v21\" />
-    <Folder Include="Resources\drawable-xxhdpi-v21\" />
-    <Folder Include="Resources\drawable-xxxhdpi-v21\" />
-    <Folder Include="Resources\color-v21\" />
     <Folder Include="Resources\anim-v21\" />
     <Folder Include="Resources\drawable-v21\" />
+    <Folder Include="Resources\color\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidEnvironment Include="environment.txt" />

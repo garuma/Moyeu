@@ -49,7 +49,7 @@ namespace Moyeu
 
 		public static void SetupAutoSceneTransition (ViewGroup root)
 		{
-			if (Android.OS.Build.VERSION.SdkInt == Android.OS.BuildVersionCodes.Kitkat)
+			if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Kitkat)
 				TransitionManager.BeginDelayedTransition (root);
 		}
 	}

@@ -3,7 +3,7 @@
     <item android:state_checked="true" android:id="@+id/on_state">
     	<bitmap android:src="@drawable/ic_favorite" android:tint="@color/favorite_foreground" />
     </item>
-    <item android:id="@+id/off_state">
+    <item android:state_checked="false" android:id="@+id/off_state">
     	<bitmap android:src="@drawable/ic_favorite" android:tint="@color/dim_foreground" />
     </item>
 	<transition android:fromId="@id/off_state" android:toId="@id/on_state" android:reversible="true">

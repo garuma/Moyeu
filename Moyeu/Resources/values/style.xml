@@ -1,10 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<dimen name="gmap_preview_width">65dp</dimen>
-	<dimen name="gmap_preview_height">42dp</dimen>
+	<dimen name="gmap_preview_width">288dp</dimen>
+	<dimen name="gmap_preview_height">128dp</dimen>
 
-	<style name="MoyeuTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar" />
-	<style name="MoyeuDialog" parent="@android:style/Theme.DeviceDefault.Light.Dialog.NoActionBar" />
+	<color name="moyeu_primary">#2baf2b</color>
+	<color name="moyeu_primary_dark">#0a7e07</color>
+	<color name="moyeu_accent">#a6df00</color>
+
+	<color name="nav_drawer_background">#333333</color>
+	<color name="loading_background_color">#dddddd</color>
+	<color name="card_background">#fdfdfd</color>
+	<color name="dim_foreground">#cccccc</color>
+
+	<color name="favorite_foreground_dark">#600000</color>
+	<color name="favorite_foreground">#e00032</color>
+	<color name="favorite_background">#ff5252</color>
+
+	<color name="white_primary">#d6ffffff</color>
+	<color name="white_secondary">#89ffffff</color>
+	<color name="black_primary">#c6000000</color>
+	<color name="black_secondary">#89000000</color>
+
+	<style name="dialog_title" parent="@android:style/TextAppearance.Material.Title" />
+
+	<style name="MoyeuTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    	<item name="android:colorPrimary">@color/moyeu_primary</item>
+	    <item name="android:colorPrimaryDark">@color/moyeu_primary_dark</item>
+	    <item name="android:colorAccent">@color/moyeu_accent</item>
+	    <item name="colorPrimary">@color/moyeu_primary</item>
+	    <item name="colorPrimaryDark">@color/moyeu_primary_dark</item>
+	    <item name="colorAccent">@color/moyeu_accent</item>
+	    <item name="android:textColorPrimary">@color/black_primary</item>
+	    <item name="android:textColorSecondary">@color/black_secondary</item>
+	</style>
+
+	<style name="MoyeuDialog" parent="@style/Theme.AppCompat.Light.Dialog">
+		<item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+		<item name="android:colorPrimary">@color/moyeu_primary</item>
+	    <item name="android:colorPrimaryDark">@color/moyeu_primary_dark</item>
+	    <item name="android:colorAccent">@color/moyeu_primary_dark</item>
+	    <item name="colorPrimary">@color/moyeu_primary</item>
+	    <item name="colorPrimaryDark">@color/moyeu_primary_dark</item>
+	    <item name="colorAccent">@color/moyeu_primary_dark</item>
+	</style>
 
     <style name="drawer_item_shadow">
         <item name="android:shadowColor">#25222222</item>
@@ -13,7 +52,6 @@
         <item name="android:shadowRadius">0.1</item>
     </style>
 
-	<color name="pane_btn_bg_selected">#9099cc00</color>
 	<color name="swipe_refresh_color_main">#00C81C</color>
 	<color name="swipe_refresh_color_shade1">#00AE18</color>
 	<color name="swipe_refresh_color_shade2">#00D51E</color>
@@ -21,17 +59,10 @@
 	<color name="list_selector_bg_main">#20000000</color>
 	<string name="menu_item_fontFamily">sans-serif-light</string>
 
-	<style name="info_pane_section">
-		<item name="android:fontFamily">sans-serif-condensed</item>
-		<item name="android:textAllCaps">true</item>
-		<item name="android:textSize">9sp</item>
-		<item name="android:textColor">#666666</item>
-		<item name="android:layout_marginLeft">8dp</item>
-		<item name="android:background">@drawable/info_pane_underline</item>
-		<item name="android:layout_marginRight">12dp</item>
-		<item name="android:paddingBottom">2dp</item>
-		<item name="android:paddingLeft">4dp</item>
-		<item name="android:layout_marginTop">8dp</item>
+	<style name="info_pane_section" parent="@android:style/TextAppearance.Material.Caption">
+		<item name="android:gravity">left|center_vertical</item>
+		<item name="android:minHeight">48dp</item>
+		<item name="android:layout_marginLeft">16dp</item>
 	</style>
 
 	<style name="activity_time_entry">
@@ -52,11 +83,5 @@
 		<item name="android:gravity">center</item>
 		<item name="android:layout_gravity">center_vertical</item>
 		<item name="android:textSize">14sp</item>
-	</style>
-
-	<style name="dialog_title">
-		<item name="android:textAllCaps">true</item>
-		<item name="android:textColor">#444444</item>
-		<item name="android:textSize">13sp</item>
 	</style>
 </resources>
