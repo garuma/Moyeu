@@ -182,6 +182,7 @@ namespace Moyeu
 				section.RefreshData ();
 			}
 			t.Commit ();
+			SupportActionBar.Title = section.Title;
 		}
 
 		internal void SwitchToMapAndShowStationWithId (long id)
