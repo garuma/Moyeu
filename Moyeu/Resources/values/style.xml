@@ -23,7 +23,7 @@
 
 	<style name="dialog_title" parent="@android:style/TextAppearance.Material.Title" />
 
-	<style name="MoyeuTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+	<style name="MoyeuThemeBase" parent="@style/Theme.AppCompat.Light.NoActionBar">
     	<item name="android:colorPrimary">@color/moyeu_primary</item>
 	    <item name="android:colorPrimaryDark">@color/moyeu_primary_dark</item>
 	    <item name="android:colorAccent">@color/moyeu_accent</item>
@@ -34,23 +34,7 @@
 	    <item name="android:textColorSecondary">@color/black_secondary</item>
 	</style>
 
-	<style name="MoyeuDialog" parent="@style/Theme.AppCompat.Light.Dialog">
-		<item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
-		<item name="android:colorPrimary">@color/moyeu_primary</item>
-	    <item name="android:colorPrimaryDark">@color/moyeu_primary_dark</item>
-	    <item name="android:colorAccent">@color/moyeu_primary_dark</item>
-	    <item name="colorPrimary">@color/moyeu_primary</item>
-	    <item name="colorPrimaryDark">@color/moyeu_primary_dark</item>
-	    <item name="colorAccent">@color/moyeu_primary_dark</item>
-	</style>
-
-    <style name="drawer_item_shadow">
-        <item name="android:shadowColor">#25222222</item>
-        <item name="android:shadowDx">0</item>
-        <item name="android:shadowDy">-1</item>
-        <item name="android:shadowRadius">0.1</item>
-    </style>
+	<style name="MoyeuTheme" parent="@style/MoyeuThemeBase" />
 
 	<color name="swipe_refresh_color_main">#00C81C</color>
 	<color name="swipe_refresh_color_shade1">#00AE18</color>

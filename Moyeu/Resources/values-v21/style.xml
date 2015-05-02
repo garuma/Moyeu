@@ -7,4 +7,10 @@
 	<color name="vector_foreground_color">#000000</color>
 
 	<integer name="favorite_anim_time">250</integer>
+
+	<style name="MoyeuTheme" parent="@style/MoyeuThemeBase">
+		<item name="android:windowDrawsSystemBarBackgrounds">true</item>
+		<item name="android:statusBarColor">@android:color/transparent</item>
+		<item name="android:windowTranslucentStatus">true</item>
+	</style>
 </resources>
