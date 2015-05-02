@@ -93,10 +93,11 @@
                     android:gravity="center" />
             </LinearLayout>
         </LinearLayout>
-        <rdio.tangoandcache.android.widget.ManagedImageView
+        <com.google.android.gms.maps.MapView
             android:layout_width="match_parent"
             android:layout_height="@dimen/gmap_preview_height"
             android:id="@+id/StationMap"
-            android:scaleType="centerCrop" />
+            card_view:liteMode="true"
+            card_view:mapType="none" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

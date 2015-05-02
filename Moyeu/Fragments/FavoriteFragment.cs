@@ -18,9 +18,7 @@ using Android.Graphics.Drawables;
 using Android.Util;
 
 using Android.Gms.MapsSdk;
-
-using Rdio.TangoAndCache.Android.UI.Drawables;
-using Rdio.TangoAndCache.Android.Widget;
+using Android.Gms.MapsSdk.Model;
 
 namespace Moyeu
 {
@@ -81,6 +79,15 @@ namespace Moyeu
 			ListView.DividerHeight = 0;
 			ListView.Divider = null;
 			ListView.SetSelector (Android.Resource.Color.Transparent);
+			ListView.Recycler += HandleListRecycling;
+		}
+
+		void HandleListRecycling (object sender, AbsListView.RecyclerEventArgs e)
+		{
+			var favView = e.View as FavoriteView;
+			if (favView == null)
+				return;
+			favView.ClearMap ();
 		}
 
 		void StationShower (long id)
@@ -95,17 +102,10 @@ namespace Moyeu
 	{
 		List<Station> stations;
 		Context context;
-		GoogleApis api;
-
-		int mapWidth;
-		int mapHeight;
 
 		public FavoriteAdapter (Context context)
 		{
 			this.context = context;
-			this.api = GoogleApis.Obtain (context);
-			this.mapWidth = (int)context.Resources.GetDimension (Resource.Dimension.gmap_preview_width);
-			this.mapHeight = (int)context.Resources.GetDimension (Resource.Dimension.gmap_preview_height);
 		}
 
 		public async void SetStationIds (HashSet<int> ids)
@@ -139,39 +139,23 @@ namespace Moyeu
 
 		public override View GetView (int position, View convertView, ViewGroup parent)
 		{
-			var view = EnsureView (convertView);
-			var version = Interlocked.Increment (ref view.VersionNumber);
-
-			var mapView = view.FindViewById<ManagedImageView> (Resource.Id.StationMap);
-			var stationName = view.FindViewById<TextView> (Resource.Id.MainStationName);
-			var secondStationName = view.FindViewById<TextView> (Resource.Id.SecondStationName);
-			var bikeNumber = view.FindViewById<TextView> (Resource.Id.BikeNumber);
-			var slotNumber = view.FindViewById<TextView> (Resource.Id.SlotNumber);
-
-			mapView.SetImageDrawable (context.Resources.GetDrawable (Resource.Color.loading_background_color));
+			var view = convertView as FavoriteView;
+			if (view == null) {
+				view = new FavoriteView (context);
+				view.InitializeMapView ();
+			}
 
 			var station = stations [position];
 			view.Station = station;
+			view.RefreshMapLocation ();
 
 			string secondPart;
-			stationName.Text = StationUtils.CutStationName (station.Name, out secondPart);
-			secondStationName.Text = secondPart;
-			bikeNumber.Text = station.BikeCount.ToString ();
-			slotNumber.Text = station.Capacity.ToString ();
-
-			string mapUrl = GoogleApis.MakeMapUrl (station.Location, mapWidth, mapHeight);
-			SelfDisposingBitmapDrawable mapDrawable;
-			if (api.MapCache.TryGet (mapUrl, out mapDrawable))
-				mapView.SetImageDrawable (mapDrawable);
-			else
-				api.LoadMap (station.Location, view, mapView, version, mapWidth, mapHeight);
+			view.StationName.Text = StationUtils.CutStationName (station.Name, out secondPart);
+			view.SecondStationName.Text = secondPart;
+			view.BikeNumber.Text = station.BikeCount.ToString ();
+			view.SlotNumber.Text = station.Capacity.ToString ();
 
 			return view;
-		}
-
-		FavoriteView EnsureView (View convertView)
-		{
-			return (convertView as FavoriteView) ?? new FavoriteView (context);
 		}
 
 		public override int Count {
@@ -191,15 +175,80 @@ namespace Moyeu
 		}
 	}
 
-	class FavoriteView : FrameLayout
+	class FavoriteView : FrameLayout, IOnMapReadyCallback
 	{
+		GoogleMap map;
+
 		public FavoriteView (Context context) : base (context)
 		{
 			var inflater = LayoutInflater.From (context);
 			inflater.Inflate (Resource.Layout.FavoriteItem, this, true);
+
+			MapView = FindViewById<MapView> (Resource.Id.StationMap);
+			StationName = FindViewById<TextView> (Resource.Id.MainStationName);
+			SecondStationName = FindViewById<TextView> (Resource.Id.SecondStationName);
+			BikeNumber = FindViewById<TextView> (Resource.Id.BikeNumber);
+			SlotNumber = FindViewById<TextView> (Resource.Id.SlotNumber);
 		}
 
-		public long VersionNumber;
+		public void InitializeMapView ()
+		{
+			MapView.OnCreate (null);
+			MapView.GetMapAsync (this);
+		}
+
+		public void ClearMap ()
+		{
+			if (map == null)
+				return;
+			map.Clear ();
+			map.MapType = GoogleMap.MapTypeNone;
+		}
+
+		public void OnMapReady (GoogleMap map)
+		{
+			this.map = map;
+			RefreshMapLocation ();
+		}
+
+		public void RefreshMapLocation ()
+		{
+			if (map == null)
+				return;
+			var loc = Station.Location;
+			var latlng = new LatLng (loc.Lat, loc.Lon);
+			map.MoveCamera (CameraUpdateFactory.NewLatLngZoom (
+				latlng, 17
+			));
+			map.Clear ();
+			map.AddMarker (new MarkerOptions ().InvokePosition (latlng));
+			map.MapType = GoogleMap.MapTypeNormal;
+		}
+
+		public MapView MapView {
+			get;
+			private set;
+		}
+
+		public TextView StationName {
+			get;
+			private set;
+		}
+
+		public TextView SecondStationName {
+			get;
+			private set;
+		}
+
+		public TextView BikeNumber {
+			get;
+			private set;
+		}
+
+		public TextView SlotNumber {
+			get;
+			private set;
+		}
 
 		public Station Station {
 			get;

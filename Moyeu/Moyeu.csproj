@@ -84,13 +84,10 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storage\BitmapCache.cs" />
-    <Compile Include="Storage\DiskCache.cs" />
     <Compile Include="IMoyeuSection.cs" />
     <Compile Include="WearService.cs" />
     <Compile Include="Fragments\FavoriteFragment.cs" />
     <Compile Include="Fragments\HubwayMapFragment.cs" />
-    <Compile Include="Fragments\LoginDialogFragment.cs" />
     <Compile Include="Helpers\AnalyticsHelper.cs" />
     <Compile Include="Helpers\AndroidExtensions.cs" />
     <Compile Include="Helpers\AnimationExtensions.cs" />
@@ -106,7 +103,6 @@
     <Compile Include="Visual\FlashBarController.cs" />
     <Compile Include="Visual\InfoPane.cs" />
     <Compile Include="Visual\PinFactory.cs" />
-    <Compile Include="Visual\RoundCornerDrawable.cs" />
     <Compile Include="Visual\CheckedImageButton.cs" />
     <Compile Include="Fragments\RentalMaterialFragment.cs" />
     <Compile Include="Helpers\DoubleExtensions.cs" />
@@ -230,10 +226,6 @@
       <Project>{B70EDB4C-A85E-45BE-A180-5B0462020C6F}</Project>
       <Name>XamSvg</Name>
     </ProjectReference>
-    <ProjectReference Include="..\tangoandcache\TangoAndCache\TangoAndCache\TangoAndCache.csproj">
-      <Project>{FB43CF84-E9A5-44EB-AF90-3C3544E1A251}</Project>
-      <Name>TangoAndCache</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MoyeuWear\MoyeuWear.csproj">
       <Project>{3B2CA08D-AF1C-4427-BB29-A6E0A5ECB064}</Project>
       <Name>MoyeuWear</Name>
@@ -244,7 +236,6 @@
     <Folder Include="Resources\drawable-xhdpi\" />
     <Folder Include="Resources\menu\" />
     <Folder Include="Resources\xml\" />
-    <Folder Include="Storage\" />
     <Folder Include="Resources\drawable-hdpi\" />
     <Folder Include="Assets\" />
     <Folder Include="Resources\drawable-nodpi\" />
