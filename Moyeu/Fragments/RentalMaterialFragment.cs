@@ -36,7 +36,7 @@ namespace Moyeu
 
 		int currentPageId;
 		bool hasNextPage;
-		bool loading;
+		bool fetching;
 
 		SwipeRefreshLayout refreshLayout;
 		RecyclerView recycler;
@@ -110,6 +110,7 @@ namespace Moyeu
 			};
 			recycler.HasFixedSize = true;
 			recycler.SetLayoutManager (layoutManager);
+			recycler.SetOnScrollListener (new LoadingScrollListener (this));
 
 			loadingLayout = view.FindViewById (Resource.Id.loading_layout);
 
@@ -142,6 +143,7 @@ namespace Moyeu
 
 		async void DoFetch (bool forceRefresh = false)
 		{
+			fetching = true;
 			bool hadError = false;
 			do {
 				statusText.Visibility = hadError ? ViewStates.Visible : ViewStates.Invisible;
@@ -158,6 +160,7 @@ namespace Moyeu
 				if (hadError)
 					StoredCredentials = new RentalCrendentials ();
 			} while (hadError);
+			fetching = false;
 		}
 
 		Task<RentalCrendentials> AcceptUserInputAsync ()
@@ -228,13 +231,11 @@ namespace Moyeu
 
 		async Task<bool> GetRentals (bool forceRefresh = false)
 		{
-			loading = true;
 			var isFirst = currentPageId == 0;
 			var newRentals = await rentals.GetRentals (currentPageId++);
 			hasNextPage = newRentals != null && newRentals.Last ().Id != 1;
 			if (newRentals == null) {
 				currentPageId--;
-				loading = false;
 				return false;
 			}
 			SwitchLayoutPhase (LayoutPhase.List);
@@ -246,8 +247,18 @@ namespace Moyeu
 				if (firstVisible)
 					recycler.ScrollToPosition (0);
 			}
-			loading = false;
 			return true;
+		}
+
+		internal void HandleScroll ()
+		{
+			var lastVisible = layoutManager.FindLastVisibleItemPosition ();
+			var totalItem = adapter.ItemCount;
+			if (fetching
+			    || lastVisible + 1 < totalItem
+			    || !hasNextPage)
+				return;
+			DoFetch ();
 		}
 
 		public override void OnPause ()
@@ -523,6 +534,22 @@ namespace Moyeu
 					editor.PutString (Key, savedRentals);
 					editor.Commit ();
 				}
+			}
+		}
+
+		class LoadingScrollListener : RecyclerView.OnScrollListener
+		{
+			RentalMaterialFragment fragment;
+
+			public LoadingScrollListener (RentalMaterialFragment fragment)
+			{
+				this.fragment = fragment;
+			}
+
+			public override void OnScrolled (RecyclerView recyclerView, int dx, int dy)
+			{
+				base.OnScrolled (recyclerView, dx, dy);
+				fragment.HandleScroll ();
 			}
 		}
 	}
