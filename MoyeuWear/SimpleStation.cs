@@ -11,6 +11,8 @@ namespace MoyeuWear
 		public string Secondary { get; set; }
 
 		public double Distance { get; set; }
+		public double Lat { get; set; }
+		public double Lon { get; set; }
 
 		public bool IsFavorite { get; set; }
 

@@ -103,6 +103,8 @@ namespace Moyeu
 
 							var distance = GeoUtils.Distance (currentPoint, station.Location);
 							itemMap.PutDouble ("Distance", distance);
+							itemMap.PutDouble ("Lat", station.Location.Lat);
+							itemMap.PutDouble ("Lon", station.Location.Lon);
 
 							itemMap.PutInt ("Bikes", station.BikeCount);
 							itemMap.PutInt ("Racks", station.EmptySlotCount);
@@ -131,16 +133,6 @@ namespace Moyeu
 								else
 									favorites.RemoveFromFavorite (id);
 							});
-						} else if (action == NavigateAction) {
-							var stationIndex = Array.FindIndex (stations, s => s.Id == id);
-							if (stationIndex == -1)
-								return;
-							var station = stations [stationIndex];
-							var location = "google.navigation:ll=" + station.Location.Lat + "," + station.Location.Lon;
-							var geoUri = Android.Net.Uri.Parse (location);
-							var intent = new Intent (Intent.ActionView, geoUri);
-							intent.AddFlags (ActivityFlags.NewTask);
-							StartActivity (intent);
 						}
 					}
 				} finally {

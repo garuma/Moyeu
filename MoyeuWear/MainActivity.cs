@@ -132,6 +132,8 @@ namespace Moyeu
 					Bikes = d.GetInt ("Bikes", 0),
 					Racks = d.GetInt ("Racks", 0),
 					Distance = d.GetDouble ("Distance", 0),
+					Lat = d.GetDouble ("Lat", 0),
+					Lon = d.GetDouble ("Lon", 0),
 					IsFavorite = d.GetBoolean ("IsFavorite", false),
 				});
 			}
@@ -213,11 +215,17 @@ namespace Moyeu
 			                                      new byte[0]);
 		}
 
-		public void NavigateToStation (int stationId)
+		public void NavigateToStation (SimpleStation station)
 		{
-			var path = "/moyeu/Action/Navigate/" + stationId;
-			SendMessage (path);
 			Finish ();
+			var culture = System.Globalization.CultureInfo.InvariantCulture;
+			var req = string.Format ("google.navigation:///?q={0},{1}&mode=w",
+			                         station.Lat.ToString (culture),
+			                         station.Lon.ToString (culture));
+			var geoUri = Android.Net.Uri.Parse (req);
+			var intent = new Intent (Intent.ActionView, geoUri);
+			//intent.SetPackage ("com.google.android.apps.maps");
+			StartActivity (intent);
 		}
 
 		public void ToggleFavoriteStation (int stationId, bool cked)

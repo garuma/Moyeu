@@ -87,7 +87,7 @@ namespace Moyeu
 
 			if (column == 1)
 				return ActionButtonFragment.WithAction ("Navigate", Resource.Drawable.navigate_button,
-				                                        () => actions.NavigateToStation (id));
+				                                        () => actions.NavigateToStation (station));
 			if (column == 2)
 				return ActionButtonFragment.WithToggleAction (Tuple.Create ("Favorite", "Unfavorite"),
 				                                              Resource.Drawable.favorite_button,
