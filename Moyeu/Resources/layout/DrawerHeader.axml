@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:text="Around you"
-    android:background="@drawable/drawer_header_underline"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:fontFamily="sans-serif-condensed"
-    android:id="@+id/titleText"
-    android:textAllCaps="true"
-    android:textColor="@android:color/white"
-    android:textStyle="bold"
-    android:textSize="10sp"
-    android:layout_marginRight="8dp"
-    android:layout_marginLeft="4dp"
-    android:paddingLeft="4dp"
-    android:paddingBottom="2dp"
-    android:layout_marginBottom="4dp" />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="108dp">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/hero"
+        android:scaleType="centerCrop"
+        android:tint="@color/moyeu_dark_tint" />
+    <TextView
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Moyeu"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:gravity="bottom" />
+</FrameLayout>

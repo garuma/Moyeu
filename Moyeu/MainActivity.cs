@@ -27,6 +27,7 @@ using Android.Support.V4.App;
 using Android.Support.V4.Widget;
 using Android.Support.V4.Graphics.Drawable;
 using Android.Support.V4.View;
+using Android.Support.Design.Widget;
 using Android.Util;
 
 namespace Moyeu
@@ -50,8 +51,8 @@ namespace Moyeu
 
 		DrawerLayout drawer;
 		Android.Support.V7.App.ActionBarDrawerToggle drawerToggle;
-		ListView drawerMenu;
 		ListView drawerAround;
+		NavigationView drawerMenu;
 
 		DrawerAroundAdapter aroundAdapter;
 		IGoogleApiClient client;
@@ -94,15 +95,13 @@ namespace Moyeu
 			Hubway.Instance.Subscribe (this);
 			FavoriteManager.FavoritesChanged += (sender, e) => aroundAdapter.Refresh ();
 
-			drawerMenu = FindViewById<ListView> (Resource.Id.left_drawer);
-			drawerMenu.ItemClick += HandleSectionItemClick;
-			drawerMenu.Adapter = new DrawerMenuAdapter (this);
-
 			drawerAround = FindViewById<ListView> (Resource.Id.left_drawer_around);
 			drawerAround.ItemClick += HandleAroundItemClick;
 			drawerAround.Adapter = aroundAdapter = new DrawerAroundAdapter (this);
 
-			drawerMenu.SetItemChecked (0, true);
+			drawerMenu = FindViewById<NavigationView> (Resource.Id.left_drawer);
+			drawerMenu.NavigationItemSelected += HandlerNavigationItemSelected;
+
 			if (CheckGooglePlayServices ())
 				PostCheckGooglePlayServices ();
 		}
@@ -112,6 +111,13 @@ namespace Moyeu
 			return new GoogleApiClientBuilder (this, this, this)
 				.AddApi (LocationServices.Api)
 				.Build ();
+		}
+
+		void HandlerNavigationItemSelected (object sender, NavigationView.NavigationItemSelectedEventArgs e)
+		{
+			var item = e.P0;
+			SwitchToSectionPosition (item.Order);
+			e.Handled = true;
 		}
 
 		void HandleAroundItemClick (object sender, AdapterView.ItemClickEventArgs e)
@@ -145,7 +151,9 @@ namespace Moyeu
 			default:
 				return;
 			}
-			drawerMenu.SetItemChecked (position, true);
+			var item = drawerMenu.Menu.GetItem (position);
+			if (item != null)
+				item.SetChecked (true);
 			drawer.CloseDrawers ();
 		}
 
@@ -329,72 +337,6 @@ namespace Moyeu
 		public void OnConnectionSuspended (int reason)
 		{
 
-		}
-	}
-
-	class DrawerMenuAdapter : BaseAdapter
-	{
-		Tuple<int, string>[] sections = new Tuple<int, string>[] {
-			Tuple.Create (Resource.Drawable.ic_drawer_map, "Map"),
-			Tuple.Create (Resource.Drawable.ic_drawer_star, "Favorites"),
-			Tuple.Create (Resource.Drawable.ic_drawer_rentals, "Rental History"),
-		};
-
-		Context context;
-
-		public DrawerMenuAdapter (Context context)
-		{
-			this.context = context;
-		}
-
-		public override Java.Lang.Object GetItem (int position)
-		{
-			return new Java.Lang.String (sections [position - 1].Item2);
-		}
-
-		public override long GetItemId (int position)
-		{
-			return position;
-		}
-
-		public override View GetView (int position, View convertView, ViewGroup parent)
-		{
-			var text = convertView as CheckedTextView;
-			if (text == null) {
-				var inflater = context.GetSystemService (Context.LayoutInflaterService).JavaCast<LayoutInflater> ();
-				text = (CheckedTextView)inflater.Inflate (Resource.Layout.DrawerItemLayout, parent, false);
-			}
-
-			var menuEntry = sections [position];
-			text.Text = menuEntry.Item2;
-
-			var colorList = text.Resources.GetColorStateList (Resource.Color.accent_color_list);
-			text.SetTextColor (colorList);
-			var icon = DrawableCompat.Wrap (text.Resources.GetDrawable (menuEntry.Item1));
-			DrawableCompat.SetTintList (icon, colorList);
-			text.SetCompoundDrawablesWithIntrinsicBounds (icon, null, null, null);
-
-			// Initial menu initialization, put the first item as selected
-			if (position == 0 && convertView == null)
-				text.Checked = true;
-
-			return text;
-		}
-
-		public override int Count {
-			get {
-				return sections.Length;
-			}
-		}
-
-		public override bool IsEnabled (int position)
-		{
-			return true;
-		}
-
-		public override bool AreAllItemsEnabled ()
-		{
-			return false;
 		}
 	}
 

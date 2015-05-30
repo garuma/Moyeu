@@ -6,6 +6,7 @@
 	<color name="moyeu_primary">#2baf2b</color>
 	<color name="moyeu_primary_dark">#0a7e07</color>
 	<color name="moyeu_accent">#a6df00</color>
+	<color name="moyeu_dark_tint">#aa0a7e07</color>
 
 	<color name="nav_drawer_background">#333333</color>
 	<color name="loading_background_color">#dddddd</color>
@@ -35,6 +36,11 @@
 	</style>
 
 	<style name="MoyeuTheme" parent="@style/MoyeuThemeBase" />
+
+	<style name="MoyeuInvertedThemeOverlay">
+		<item name="android:textColorPrimary">@color/white_primary</item>
+	    <item name="android:textColorSecondary">@color/white_secondary</item>
+	</style>
 
 	<color name="swipe_refresh_color_main">#00C81C</color>
 	<color name="swipe_refresh_color_shade1">#00AE18</color>
