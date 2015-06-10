@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<group android:checkableBehavior="single">
+	    <item
+	        android:id="@+id/drawer_nav_map"
+	        android:checked="true"
+	        android:icon="@drawable/ic_drawer_map"
+	        android:title="Map"
+	        android:orderInCategory="0" />
+	    <item
+	        android:id="@+id/drawer_nav_favorites"
+	        android:icon="@drawable/ic_drawer_star"
+	        android:title="Favorites"
+	        android:orderInCategory="1" />
+	    <item
+	        android:id="@+id/drawer_nav_rentals"
+	        android:icon="@drawable/ic_drawer_rentals"
+	        android:title="Rental History"
+	        android:orderInCategory="2" />
+	</group>
+</menu>
