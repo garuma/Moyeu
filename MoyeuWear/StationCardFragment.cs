@@ -33,7 +33,7 @@ namespace Moyeu
 			SetCardGravity ((int)GravityFlags.Bottom);
 		}
 
-		protected override View OnCreateContentView (LayoutInflater inflater, ViewGroup container, Bundle state)
+		public override View OnCreateContentView (LayoutInflater inflater, ViewGroup container, Bundle state)
 		{
 			return inflater.Inflate (Resource.Layout.StationCardLayout, container, false);
 		}

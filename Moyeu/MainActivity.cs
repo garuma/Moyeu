@@ -15,9 +15,9 @@ using Android.Graphics.Drawables;
 using Android.Locations;
 using Android.Animation;
 
-using Android.Gms.MapsSdk;
-using Android.Gms.MapsSdk.Model;
-using Android.Gms.LocationSdk;
+using Android.Gms.Maps;
+using Android.Gms.Maps.Model;
+using Android.Gms.Location;
 using Android.Gms.Common;
 using Android.Gms.Common.Apis;
 using ConnectionCallbacks = Android.Gms.Common.Apis.IGoogleApiClientConnectionCallbacks;
@@ -109,13 +109,13 @@ namespace Moyeu
 		IGoogleApiClient CreateApiClient ()
 		{
 			return new GoogleApiClientBuilder (this, this, this)
-				.AddApi (LocationServices.Api)
+				.AddApi (LocationServices.API)
 				.Build ();
 		}
 
 		void HandlerNavigationItemSelected (object sender, NavigationView.NavigationItemSelectedEventArgs e)
 		{
-			var item = e.P0;
+			var item = e.MenuItem;
 			SwitchToSectionPosition (item.Order);
 			e.Handled = true;
 		}

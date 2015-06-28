@@ -15,9 +15,9 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 
-using Android.Gms.WearableSdk;
+using Android.Gms.Wearable;
 using Android.Gms.Common.Apis;
-using Android.Gms.LocationSdk;
+using Android.Gms.Location;
 
 namespace Moyeu
 {
@@ -56,7 +56,7 @@ namespace Moyeu
 			try {
 				Android.Util.Log.Info ("WearIntegration", "Received Message");
 				var client = new GoogleApiClientBuilder (this)
-					.AddApi (Wearable.Api)
+					.AddApi (WearableClass.API)
 					.AddApi (LocationServices.Api)
 					.Build ();
 
@@ -116,7 +116,7 @@ namespace Moyeu
 						map.PutDataMapArrayList ("Stations", stationMap);
 						map.PutLong ("UpdatedAt", DateTime.UtcNow.Ticks);
 
-						Wearable.DataApi.PutDataItem (client, request.AsPutDataRequest ());
+						WearableClass.DataApi.PutDataItem (client, request.AsPutDataRequest ());
 					} else {
 						var uri = new Uri ("wear://watch" + path);
 						var query = uri.GetComponents (UriComponents.Query, UriFormat.Unescaped);

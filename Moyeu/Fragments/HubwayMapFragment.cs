@@ -18,8 +18,9 @@ using Android.Locations;
 using Android.Animation;
 using Android.Util;
 
-using Android.Gms.MapsSdk;
-using Android.Gms.MapsSdk.Model;
+using Android.Gms.Maps;
+using Android.Gms.Maps.Model;
+using Android.Gms.Location;
 
 using XamSvg;
 using Android.Support.V4.View;
@@ -335,7 +336,7 @@ namespace Moyeu
 		void HandleMarkerClick (object sender, GoogleMap.MarkerClickEventArgs e)
 		{
 			e.Handled = true;
-			OpenStationWithMarker (e.P0);
+			OpenStationWithMarker (e.Marker);
 		}
 
 		void HandleStarButtonChecked (object sender, EventArgs e)
@@ -407,10 +408,10 @@ namespace Moyeu
 				var pin = pins [station.Id];
 
 				var markerOptions = new MarkerOptions ()
-					.InvokeTitle (station.Id + "|" + station.Name)
-					.InvokeSnippet (station.Locked ? string.Empty : station.BikeCount + "|" + station.EmptySlotCount)
-					.InvokePosition (new Android.Gms.MapsSdk.Model.LatLng (station.Location.Lat, station.Location.Lon))
-					.InvokeIcon (BitmapDescriptorFactory.FromBitmap (pin));
+					.SetTitle (station.Id + "|" + station.Name)
+					.SetSnippet (station.Locked ? string.Empty : station.BikeCount + "|" + station.EmptySlotCount)
+					.SetPosition (new Android.Gms.Maps.Model.LatLng (station.Location.Lat, station.Location.Lon))
+					.SetIcon (BitmapDescriptorFactory.FromBitmap (pin));
 				existingMarkers [station.Id] = map.AddMarker (markerOptions);
 			}
 		}
@@ -727,9 +728,9 @@ namespace Moyeu
 
 			new Handler (Activity.MainLooper).PostDelayed (() => {
 				var opts = new MarkerOptions ()
-					.InvokePosition (startLatLng)
-					.InvokeTitle (SearchPinId)
-					.InvokeIcon (BitmapDescriptorFactory.DefaultMarker (BitmapDescriptorFactory.HueViolet));
+					.SetPosition (startLatLng)
+					.SetTitle (SearchPinId)
+					.SetIcon (BitmapDescriptorFactory.DefaultMarker (BitmapDescriptorFactory.HueViolet));
 				var marker = map.AddMarker (opts);
 				var animator = ObjectAnimator.OfObject (marker, "position", new LatLngEvaluator (), startLatLng, finalLatLng);
 				animator.SetDuration (1000);

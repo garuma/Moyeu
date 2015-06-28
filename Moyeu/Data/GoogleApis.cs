@@ -9,7 +9,7 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Content;
 
-using LatLng = Android.Gms.MapsSdk.Model.LatLng;
+using LatLng = Android.Gms.Maps.Model.LatLng;
 
 namespace Moyeu
 {

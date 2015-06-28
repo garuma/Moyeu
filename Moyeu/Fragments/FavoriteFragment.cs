@@ -17,8 +17,8 @@ using Android.Animation;
 using Android.Graphics.Drawables;
 using Android.Util;
 
-using Android.Gms.MapsSdk;
-using Android.Gms.MapsSdk.Model;
+using Android.Gms.Maps;
+using Android.Gms.Maps.Model;
 
 namespace Moyeu
 {
@@ -221,7 +221,7 @@ namespace Moyeu
 				latlng, 17
 			));
 			map.Clear ();
-			map.AddMarker (new MarkerOptions ().InvokePosition (latlng));
+			map.AddMarker (new MarkerOptions ().SetPosition (latlng));
 			map.MapType = GoogleMap.MapTypeNormal;
 		}
 
