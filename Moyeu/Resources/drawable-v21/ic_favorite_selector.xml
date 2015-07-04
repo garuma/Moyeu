@@ -1,15 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <animated-selector xmlns:android="http://schemas.android.com/apk/res/android" android:constantSize="true">
     <item android:state_checked="true" android:id="@+id/on_state">
-    	<bitmap android:src="@drawable/ic_favorite" android:tint="@color/favorite_foreground" />
+		<bitmap android:src="@drawable/ic_favorite" android:tint="@android:color/white" />
     </item>
     <item android:state_checked="false" android:id="@+id/off_state">
-    	<bitmap android:src="@drawable/ic_favorite" android:tint="@color/dim_foreground" />
+		<bitmap android:src="@drawable/ic_add" android:tint="@android:color/white" />
     </item>
-	<transition android:fromId="@id/off_state" android:toId="@id/on_state" android:reversible="true">
-		<animated-vector android:drawable="@drawable/ic_favorite_vector">
-			<target android:name="heart_layer" android:animation="@anim/favorite_reveal_anim" />
-			<target android:name="heart_layer_path" android:animation="@anim/favorite_color_anim" />
-		</animated-vector>
-	</transition>
+	<transition
+		android:fromId="@id/off_state"
+		android:toId="@id/on_state"
+		android:drawable="@drawable/ic_favorite_offon_anim" />
+	<transition
+		android:fromId="@id/on_state"
+		android:toId="@id/off_state"
+		android:drawable="@drawable/ic_favorite_onoff_anim" />
 </animated-selector>

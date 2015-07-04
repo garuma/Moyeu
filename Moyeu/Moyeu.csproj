@@ -109,6 +109,7 @@
     <Compile Include="Visual\CheckedImageButton.cs" />
     <Compile Include="Fragments\RentalMaterialFragment.cs" />
     <Compile Include="Helpers\DoubleExtensions.cs" />
+    <Compile Include="Visual\SwitchableFab.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -168,9 +169,7 @@
     <AndroidResource Include="Resources\drawable-v21\ic_bike_vector.xml" />
     <AndroidResource Include="Resources\drawable-nodpi\loading_graphic.png" />
     <AndroidResource Include="Resources\drawable-v21\ic_favorite_vector.xml" />
-    <AndroidResource Include="Resources\anim-v21\favorite_reveal_anim.xml" />
     <AndroidResource Include="Resources\drawable-v21\ic_favorite_selector.xml" />
-    <AndroidResource Include="Resources\anim-v21\favorite_color_anim.xml" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_mylocation.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_refresh.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_search.png" />
@@ -219,6 +218,17 @@
     <AndroidResource Include="Resources\raw\star_depressed.svg" />
     <AndroidResource Include="Resources\menu\drawer_menu.xml" />
     <AndroidResource Include="Resources\drawable-nodpi\hero.jpg" />
+    <AndroidResource Include="Resources\anim-v21\favorite_add_sign_out.xml" />
+    <AndroidResource Include="Resources\anim-v21\favorite_heart_sign_in.xml" />
+    <AndroidResource Include="Resources\values\attrs.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_add.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_add.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_add.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_add.png" />
+    <AndroidResource Include="Resources\drawable-v21\ic_favorite_offon_anim.xml" />
+    <AndroidResource Include="Resources\drawable-v21\ic_favorite_onoff_anim.xml" />
+    <AndroidResource Include="Resources\anim-v21\favorite_add_sign_in.xml" />
+    <AndroidResource Include="Resources\anim-v21\favorite_heart_sign_out.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>

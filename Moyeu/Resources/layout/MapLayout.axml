@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
+    <com.google.android.gms.maps.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        map:cameraZoom="13"
-        map:cameraTargetLat="42.366031"
-        map:cameraTargetLng="-71.071405"
-        map:mapType="normal"
-        map:uiTiltGestures="false"
-        map:uiRotateGestures="false"
-        map:uiZoomControls="false"
-        map:uiCompass="false" />
+        app:cameraZoom="13"
+        app:cameraTargetLat="42.366031"
+        app:cameraTargetLng="-71.071405"
+        app:mapType="normal"
+        app:uiTiltGestures="false"
+        app:uiRotateGestures="false"
+        app:uiZoomControls="false"
+        app:uiCompass="false" />
     <FrameLayout
         android:background="@drawable/flash_bar_background"
         android:layout_width="wrap_content"
@@ -51,4 +52,15 @@
         android:textSize="8sp" />
     <include
         layout="@layout/InfoPaneLayout" />
-</FrameLayout>
+    <moyeu.SwitchableFab
+        android:id="@+id/fabButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_action_mylocation"
+        app:layout_behavior="md55d31ab91effba0f9ed7ec79c59c38391.InfoPaneFabBehavior"
+        app:srcSecond="@drawable/ic_favorite_selector"
+        app:backgroundTintSecond="@color/favorite_background" />
+</android.support.design.widget.CoordinatorLayout>

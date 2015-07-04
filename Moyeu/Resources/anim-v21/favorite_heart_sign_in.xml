@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+	android:ordering="sequentially">
+	<objectAnimator
+		android:duration="0"
+		android:propertyName="scaleX"
+		android:valueTo="0.1" />
+	<objectAnimator
+		android:duration="0"
+		android:propertyName="scaleY"
+		android:valueTo="0.1" />
+	<set>
+		<objectAnimator
+			android:duration="@integer/favorite_anim_time"
+			android:startOffset="@integer/favorite_anim_time"
+			android:propertyName="scaleX"
+			android:valueFrom="0.1"
+			android:valueTo="1"
+			android:interpolator="@android:anim/overshoot_interpolator" />
+		<objectAnimator
+			android:duration="@integer/favorite_anim_time"
+			android:propertyName="scaleY"
+			android:valueFrom="0.1"
+			android:valueTo="1"
+			android:interpolator="@android:anim/overshoot_interpolator" />
+	</set>
+</set>

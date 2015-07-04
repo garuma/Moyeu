@@ -36,6 +36,22 @@ namespace Moyeu
 				};
 			}
 		}
+
+		static bool UseMiles {
+			get { return System.Globalization.CultureInfo.CurrentCulture.Name == "en-US"; }
+		}
+
+		public static string GetUnitForDistance (double distance)
+		{
+			return UseMiles ? "mi" : (distance >= 1000 ? "km" : "m");
+		}
+
+		public static string GetDisplayDistance (double distance, bool strictValue = false)
+		{
+			var isMiles = UseMiles;
+			var display = (isMiles ? distance * 0.00062137 : (distance >= 1000 ? (distance / 1000) : distance)).ToString (isMiles ? "N1" : "N0");
+			return display == "0" && !strictValue ? "<1" : display;
+		}
 	}
 }
 

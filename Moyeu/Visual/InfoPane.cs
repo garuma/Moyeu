@@ -31,7 +31,6 @@ namespace Moyeu
 		int contentOffsetY;
 		bool isAnimating;
 		IInterpolator smoothInterpolator = new SmoothInterpolator ();
-		IInterpolator overInterpolator = new Android.Views.Animations.OvershootInterpolator ();
 		VelocityTracker velocityTracker;
 		GestureDetector paneGestureDetector;
 		State stateBeforeTracking;
@@ -90,7 +89,7 @@ namespace Moyeu
 
 		public void SetState (State newState, bool animated = true)
 		{
-			var interpolator = state == State.Closed && newState == State.Opened ? overInterpolator : smoothInterpolator;
+			var interpolator = smoothInterpolator;
 			this.state = newState;
 			if (newState != State.Closed)
 				Visibility = ViewStates.Visible;

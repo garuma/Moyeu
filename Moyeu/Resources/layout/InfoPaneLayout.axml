@@ -6,88 +6,107 @@
     android:layout_width="match_parent"
     android:layout_gravity="bottom"
     android:paddingTop="4dp">
-    <LinearLayout
-        android:orientation="horizontal"
+    <FrameLayout
         android:layout_height="72dp"
         android:layout_width="match_parent"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
         android:background="@color/card_background"
         android:id="@+id/PaneHeaderView">
-        <moyeu.CheckedImageButton
-            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-            android:paddingEnd="?android:attr/listPreferredItemPaddingStart"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/StarButton"
-            android:background="@drawable/info_pane_btn_bg"
-            android:layout_gravity="center" />
         <LinearLayout
             android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:layout_width="0px"
-            android:layout_gravity="center"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="4dp"
-            android:layout_weight="1">
-            <TextView
-                android:id="@+id/InfoViewName"
-                android:text="Union Square"
+            android:layout_width="match_parent"
+            android:layout_gravity="center">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:paddingRight="72dp">
+                <TextView
+                    android:id="@+id/InfoViewName"
+                    android:text="Union Square"
+                    android:layout_width="0px"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:lines="1"
+                    android:ellipsize="end" />
+                <TextView
+                    android:text="8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right|center_vertical"
+                    android:minWidth="32dp"
+                    android:id="@+id/InfoViewBikeNumber"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:baselineAlignBottom="true"
+                    android:src="@android:color/transparent"
+                    android:id="@+id/InfoViewBikeNumberImg" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black_primary"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:lines="1"
-                android:ellipsize="end" />
-            <TextView
-                android:id="@+id/InfoViewSecondName"
-                android:text="Somerville"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black_primary"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:lines="1"
-                android:ellipsize="end" />
+                android:baselineAligned="true">
+                <TextView
+                    android:id="@+id/InfoViewSecondName"
+                    android:text="Somerville"
+                    android:layout_width="0px"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:lines="1"
+                    android:ellipsize="end" />
+                <TextView
+                    android:text="6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:minWidth="32dp"
+                    android:id="@+id/InfoViewSlotNumber"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:baselineAlignBottom="true"
+                    android:src="@android:color/transparent"
+                    android:id="@+id/InfoViewSlotNumberImg" />
+                <TextView
+                    android:id="@+id/InfoViewDistance"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:lines="1"
+                    android:ellipsize="end"
+                    android:text="6 miles"
+                    android:gravity="center_horizontal"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                <ImageView
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:id="@+id/stationLock"
+                    android:src="@drawable/ic_station_lock"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginRight="17dp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="gone" />
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:paddingBottom="3dp"
-            android:id="@+id/stationStats">
-            <TextView
-                android:text="8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/InfoViewBikeNumber"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="#000000"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:drawablePadding="4dp"
-                android:layout_marginRight="8dp" />
-            <TextView
-                android:text="6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/InfoViewSlotNumber"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="#000000"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:drawablePadding="4dp"
-                android:layout_marginLeft="8dp" />
-        </LinearLayout>
-        <ImageView
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:id="@+id/stationLock"
-            android:src="@drawable/ic_station_lock"
-            android:layout_marginLeft="17dp"
-            android:layout_marginRight="17dp"
-            android:scaleType="fitXY"
-            android:layout_gravity="center_vertical"
-            android:visibility="gone" />
-    </LinearLayout>
+    </FrameLayout>
     <LinearLayout
         android:background="@color/card_background"
         android:orientation="vertical"

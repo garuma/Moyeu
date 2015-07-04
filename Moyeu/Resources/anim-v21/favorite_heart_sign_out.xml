@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+	android:ordering="together">
+	<objectAnimator
+		android:duration="@integer/favorite_anim_time"
+		android:propertyName="scaleX"
+		android:valueFrom="1"
+		android:valueTo="0.1"
+		android:interpolator="@android:anim/anticipate_interpolator" />
+	<objectAnimator
+		android:duration="@integer/favorite_anim_time"
+		android:propertyName="scaleY"
+		android:valueFrom="1"
+		android:valueTo="0.1"
+		android:interpolator="@android:anim/anticipate_interpolator" />
+</set>

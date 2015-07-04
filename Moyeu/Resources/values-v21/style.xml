@@ -6,7 +6,7 @@
 
 	<color name="vector_foreground_color">#000000</color>
 
-	<integer name="favorite_anim_time">250</integer>
+	<integer name="favorite_anim_time">400</integer>
 
 	<style name="MoyeuTheme" parent="@style/MoyeuThemeBase">
 		<item name="android:windowDrawsSystemBarBackgrounds">true</item>

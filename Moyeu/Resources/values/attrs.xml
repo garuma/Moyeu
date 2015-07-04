@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+	<declare-styleable name="SwitchableFab">
+		<attr name="srcSecond" format="reference" />
+		<attr name="backgroundTintSecond" format="color|reference" />
+	</declare-styleable>
+</resources>

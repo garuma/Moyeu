@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="108dp">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/hero"
-        android:scaleType="centerCrop"
-        android:tint="@color/moyeu_dark_tint" />
-    <TextView
-        android:padding="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Moyeu"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:gravity="bottom" />
-</FrameLayout>
+    android:layout_height="108dp"
+    android:src="@drawable/hero"
+    android:scaleType="centerCrop" />

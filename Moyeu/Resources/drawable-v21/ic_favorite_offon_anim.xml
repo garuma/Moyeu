@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android" android:drawable="@drawable/ic_favorite_vector">
+	<target android:name="add_sign" android:animation="@anim/favorite_add_sign_out" />
+	<target android:name="heart_sign" android:animation="@anim/favorite_heart_sign_in" />
+</animated-vector>

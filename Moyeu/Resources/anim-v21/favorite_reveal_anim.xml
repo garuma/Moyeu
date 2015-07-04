@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
-	android:duration="@integer/favorite_anim_time"
-	android:propertyName="scaleX"
-	android:valueFrom="0"
-	android:valueTo="1"
-	android:valueType="floatType" />

@@ -3,9 +3,9 @@
 	<dimen name="gmap_preview_width">288dp</dimen>
 	<dimen name="gmap_preview_height">128dp</dimen>
 
-	<color name="moyeu_primary">#2baf2b</color>
-	<color name="moyeu_primary_dark">#0a7e07</color>
-	<color name="moyeu_accent">#a6df00</color>
+	<color name="moyeu_primary">#2BAF2B</color>
+	<color name="moyeu_primary_dark">#424242</color>
+	<color name="moyeu_accent">#A5DE00</color>
 	<color name="moyeu_dark_tint">#aa0a7e07</color>
 
 	<color name="nav_drawer_background">#333333</color>
@@ -13,9 +13,7 @@
 	<color name="card_background">#fdfdfd</color>
 	<color name="dim_foreground">#cccccc</color>
 
-	<color name="favorite_foreground_dark">#600000</color>
-	<color name="favorite_foreground">#e00032</color>
-	<color name="favorite_background">#ff5252</color>
+	<color name="favorite_background">#E00056</color>
 
 	<color name="white_primary">#d6ffffff</color>
 	<color name="white_secondary">#89ffffff</color>

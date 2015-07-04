@@ -25,6 +25,7 @@ using Android.Gms.Location;
 using XamSvg;
 using Android.Support.V4.View;
 using Android.Support.V4.Graphics.Drawable;
+using Android.Support.Design.Widget;
 
 namespace Moyeu
 {
@@ -48,11 +49,18 @@ namespace Moyeu
 		TextView lastUpdateText;
 		PinFactory pinFactory;
 		InfoPane pane;
+		SwitchableFab fab;
 
 		const string SearchPinId = "SEARCH_PIN";
 		int currentShownID = -1;
 		Marker currentShownMarker;
 		CameraPosition oldPosition;
+
+		// Info pane views
+		TextView ipName, ipName2, ipBikes, ipSlots, ipDistance;
+		View ipStationLock;
+		ImageView ipSlotsImg, ipBikesImg;
+		Drawable bikeDrawable, rackDrawable;
 
 		public HubwayMapFragment ()
 		{
@@ -161,22 +169,29 @@ namespace Moyeu
 			mapFragment.GetMapAsync (this);
 
 			// Setup info pane
-			var bikes = pane.FindViewById<TextView> (Resource.Id.InfoViewBikeNumber);
-			var slots = pane.FindViewById<TextView> (Resource.Id.InfoViewSlotNumber);
+			ipName = pane.FindViewById<TextView> (Resource.Id.InfoViewName);
+			ipName2 = pane.FindViewById<TextView> (Resource.Id.InfoViewSecondName);
+			ipBikes = pane.FindViewById<TextView> (Resource.Id.InfoViewBikeNumber);
+			ipSlots = pane.FindViewById<TextView> (Resource.Id.InfoViewSlotNumber);
+			ipDistance = pane.FindViewById<TextView> (Resource.Id.InfoViewDistance);
+			ipBikesImg = pane.FindViewById<ImageView> (Resource.Id.InfoViewBikeNumberImg);
+			ipSlotsImg = pane.FindViewById<ImageView> (Resource.Id.InfoViewSlotNumberImg);
+
 			if (!AndroidExtensions.IsMaterial) {
-				var bikeDrawable = DrawableCompat.Wrap (Resources.GetDrawable (Resource.Drawable.ic_bike));
-				var lockDrawable = DrawableCompat.Wrap (Resources.GetDrawable (Resource.Drawable.ic_lock));
-				bikes.SetCompoundDrawablesWithIntrinsicBounds (null, null, null, bikeDrawable);
-				slots.SetCompoundDrawablesWithIntrinsicBounds (null, null, null, lockDrawable);
+				bikeDrawable = DrawableCompat.Wrap (Resources.GetDrawable (Resource.Drawable.ic_bike));
+				rackDrawable = DrawableCompat.Wrap (Resources.GetDrawable (Resource.Drawable.ic_lock));
 			} else {
-				bikes.SetCompoundDrawablesWithIntrinsicBounds (0, 0, 0, Resource.Drawable.ic_bike_vector);
-				slots.SetCompoundDrawablesWithIntrinsicBounds (0, 0, 0, Resource.Drawable.ic_racks_vector);
+				bikeDrawable = Resources.GetDrawable (Resource.Drawable.ic_bike_vector);
+				rackDrawable = Resources.GetDrawable (Resource.Drawable.ic_racks_vector);
 			}
 
-			var starBtn = pane.FindViewById (Resource.Id.StarButton);
-			starBtn.Click += HandleStarButtonChecked;
+			ipBikesImg.SetImageDrawable (bikeDrawable);
+			ipSlotsImg.SetImageDrawable (rackDrawable);
 
 			streetViewFragment.GetStreetViewPanoramaAsync (this);
+
+			fab = view.FindViewById<SwitchableFab> (Resource.Id.fabButton);
+			fab.Click += HandleFabClicked;
 		}
 
 		void SetSvgImage (View baseView, int viewId, int resId)
@@ -249,6 +264,14 @@ namespace Moyeu
 			StartActivity (intent);
 		}
 
+		void HandleFabClicked (object sender, EventArgs e)
+		{
+			if (pane.Opened)
+				HandleStarButtonChecked (sender, e);
+			else
+				CenterMapOnUser ();
+		}
+
 		public override void OnCreateOptionsMenu (IMenu menu, MenuInflater inflater)
 		{
 			inflater.Inflate (Resource.Menu.map_menu, menu);
@@ -269,9 +292,6 @@ namespace Moyeu
 		{
 			if (item.ItemId == Resource.Id.menu_refresh) {
 				FillUpMap (forceRefresh: true);
-				return true;
-			} else if (item.ItemId == Resource.Id.menu_mylocation) {
-				CenterMapOnUser ();
 				return true;
 			}
 			return base.OnOptionsItemSelected (item);
@@ -442,65 +462,56 @@ namespace Moyeu
 			if (string.IsNullOrEmpty (marker.Title) || marker.Title == SearchPinId)
 				return;
 
-			var name = pane.FindViewById<TextView> (Resource.Id.InfoViewName);
-			var name2 = pane.FindViewById<TextView> (Resource.Id.InfoViewSecondName);
-			var bikes = pane.FindViewById<TextView> (Resource.Id.InfoViewBikeNumber);
-			var slots = pane.FindViewById<TextView> (Resource.Id.InfoViewSlotNumber);
-
 			var splitTitle = marker.Title.Split ('|');
 			string displayNameSecond;
 			var displayName = StationUtils.CutStationName (splitTitle [1], out displayNameSecond);
-			name.Text = displayName;
-			name2.Text = displayNameSecond;
+			ipName.Text = displayName;
+			ipName2.Text = displayNameSecond;
 
 			currentShownID = int.Parse (splitTitle [0]);
 			currentShownMarker = marker;
 
 			var isLocked = string.IsNullOrEmpty (marker.Snippet);
-			pane.FindViewById (Resource.Id.stationStats).Visibility = isLocked ? ViewStates.Gone : ViewStates.Visible;
-			pane.FindViewById (Resource.Id.stationLock).Visibility = isLocked ? ViewStates.Visible : ViewStates.Gone;
+			if (ipStationLock == null)
+				ipStationLock = pane.FindViewById (Resource.Id.stationLock);
+			ipStationLock.Visibility = isLocked ? ViewStates.Visible : ViewStates.Gone;
 
 			if (!isLocked) {
 				var splitNumbers = marker.Snippet.Split ('|');
-				bikes.Text = splitNumbers [0];
-				slots.Text = splitNumbers [1];
+				ipBikes.Text = splitNumbers [0];
+				ipSlots.Text = splitNumbers [1];
 
 				var baseGreen = Color.Rgb (0x66, 0x99, 0x00);
 				var baseRed = Color.Rgb (0xcc, 0x00, 0x00);
 				var bikesNum = int.Parse (splitNumbers [0]);
 				var slotsNum = int.Parse (splitNumbers [1]);
 				var total = bikesNum + slotsNum;
+				var distance = GeoUtils.Distance (
+					new GeoPoint { Lat = marker.Position.Latitude, Lon = marker.Position.Longitude },
+					new GeoPoint { Lat = map.MyLocation.Latitude, Lon = map.MyLocation.Longitude }
+				) * 1000;
 				var bikesColor = PinFactory.InterpolateColor (baseRed, baseGreen,
 				                                              ((float)bikesNum) / total);
 				var slotsColor = PinFactory.InterpolateColor (baseRed, baseGreen,
 				                                              ((float)slotsNum) / total);
-				bikes.SetTextColor (bikesColor);
-				slots.SetTextColor (slotsColor);
+				ipBikes.SetTextColor (bikesColor);
+				ipSlots.SetTextColor (slotsColor);
 
-				DrawableCompat.SetTint (bikes.GetCompoundDrawables ().Last (),
+				DrawableCompat.SetTint (bikeDrawable,
 				                        bikesColor.ToArgb ());
-				DrawableCompat.SetTint (slots.GetCompoundDrawables ().Last (),
+				DrawableCompat.SetTint (rackDrawable,
 				                        slotsColor.ToArgb ());
+				ipDistance.Text = GeoUtils.GetDisplayDistance (distance)
+					+ " " + GeoUtils.GetUnitForDistance (distance);
 			}
 
 			var favs = favManager.LastFavorites ?? favManager.GetFavoriteStationIds ();
-			var starButton = pane.FindViewById<CheckedImageButton> (Resource.Id.StarButton);
 			bool activated = favs.Contains (currentShownID);
-			if (!AndroidExtensions.IsMaterial) {
-				var favIcon = DrawableCompat.Wrap (Resources.GetDrawable (Resource.Drawable.ic_favorite));
-				DrawableCompat.SetTintList (favIcon, Resources.GetColorStateList (Resource.Color.favorite_color_list));
-				starButton.SetImageDrawable (favIcon);
-			} else {
-				starButton.SetImageResource (Resource.Drawable.ic_favorite_selector);
-			}
-			starButton.Checked = activated;
-			starButton.Drawable.JumpToCurrentState ();
+			fab.Checked = activated;
+			fab.JumpDrawablesToCurrentState ();
 
-			if (streetPanorama != null) {
+			if (streetPanorama != null)
 				streetPanorama.SetPosition (marker.Position);
-				streetViewFragment.BringToFront ();
-				streetViewFragment.Invalidate ();
-			}
 
 			LoadStationHistory (currentShownID);
 
@@ -776,6 +787,39 @@ namespace Moyeu
 		{
 			var power = Math.Pow (10, digitNumber);
 			return Math.Truncate (d * power) / power;
+		}
+	}
+
+	public class InfoPaneFabBehavior : CoordinatorLayout.Behavior
+	{
+		int minMarginBottom;
+		bool wasOpened = false;
+
+		public InfoPaneFabBehavior (Context context, IAttributeSet attrs) : base (context, attrs)
+		{
+			minMarginBottom = (int)TypedValue.ApplyDimension (ComplexUnitType.Dip, 16, context.Resources.DisplayMetrics);
+		}
+
+		public override bool LayoutDependsOn (CoordinatorLayout parent, Java.Lang.Object child, View dependency)
+		{
+			return dependency is InfoPane;
+		}
+
+		public override bool OnDependentViewChanged (CoordinatorLayout parent, Java.Lang.Object child, View dependency)
+		{
+			// Move the fab vertically to place correctly wrt the info pane
+			var fab = child.JavaCast<SwitchableFab> ();
+			var currentInfoPaneY = ViewCompat.GetTranslationY (dependency);
+			var newTransY = (int)Math.Max (0, dependency.Height - currentInfoPaneY - minMarginBottom - fab.Height / 2);
+			ViewCompat.SetTranslationY (fab, -newTransY);
+
+			// If alternating between open/closed state, change the FAB face
+			if (wasOpened ^ ((InfoPane)dependency).Opened) {
+				fab.Switch ();
+				wasOpened = !wasOpened;
+			}
+
+			return true;
 		}
 	}
 }
