@@ -196,14 +196,16 @@ namespace Moyeu
 
 		void GetStations ()
 		{
-			WearableClass.NodeApi.GetConnectedNodes (client)
+			WearableClass.CapabilityApi.GetCapability (client,
+			                                           "hubway_station_fetcher",
+			                                           CapabilityApi.FilterReachable)
 				.SetResultCallback (this);
 		}
 
 		public void OnResult (Java.Lang.Object result)
 		{
-			var apiResult = result.JavaCast<INodeApiGetConnectedNodesResult> ();
-			var nodes = apiResult.Nodes;
+			var apiResult = result.JavaCast<ICapabilityApiGetCapabilityResult> ();
+			var nodes = apiResult.Capability.Nodes;
 			phoneNode = nodes.FirstOrDefault ();
 			if (phoneNode == null) {
 				DisplayError ();
