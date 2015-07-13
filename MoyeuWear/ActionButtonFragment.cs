@@ -51,33 +51,31 @@ namespace Moyeu
 
 		public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
-			return inflater.Inflate (Resource.Layout.ActionButtonLayout, container, false);
+			return new ActionPage (inflater.Context) {
+				Background = null
+			};
 		}
 
 		public override void OnViewCreated (View view, Bundle savedInstanceState)
 		{
 			base.OnViewCreated (view, savedInstanceState);
-			var label = view.FindViewById<TextView> (Resource.Id.actionText);
-			var icon = view.FindViewById<ImageView> (Resource.Id.actionButton);
-			var toggle = view.FindViewById<ToggleButton> (Resource.Id.toggleActionButton);
+			var page = (ActionPage)view;
 
 			if (texts == null) {
-				toggle.Visibility = ViewStates.Gone;
-				icon.SetImageResource (buttonDrawableId);
+				page.SetImageResource (buttonDrawableId);
 				if (callback != null)
-					icon.Click += (sender, e) => callback ();
-				label.Text = text;
+					page.Click += (sender, e) => callback ();
+				page.SetText (text);
 			} else {
-				icon.Visibility = ViewStates.Gone;
-				toggle.SetButtonDrawable (buttonDrawableId);
-				label.Text = initialState ? texts.Item2 : texts.Item1;
-				toggle.Checked = initialState;
-				if (toggleCallback != null) {
+				page.SetImageResource (buttonDrawableId);
+				page.SetText (initialState ? texts.Item2 : texts.Item1);
+				//toggle.Checked = initialState;
+				/*if (toggleCallback != null) {
 					toggle.CheckedChange += (sender, e) => {
 						toggle.Text = e.IsChecked ? texts.Item2 : texts.Item1;
 						toggleCallback (e.IsChecked);
 					};
-				}
+				}*/
 			}
 		}
 	}

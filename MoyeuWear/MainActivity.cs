@@ -90,16 +90,16 @@ namespace Moyeu
 
 		void HandlePageScrolled (object sender, GridViewPager.PageScrolledEventArgs e)
 		{
-			var col = e.P1;
+			var col = e.Column;
 
 			if (col == 0) {
-				var offset = e.P3;
+				var offset = e.ColOffset;
 				var w = pager.Width;
 
 				countSwitch.TranslationX = -(w * offset);
 
 				if (adapter != null) {
-					var bg = (ShadowedBitmapDrawable)adapter.GetBackgroundForRow (e.P0);
+					var bg = (ShadowedBitmapDrawable)adapter.GetBackgroundForRow (e.RowValue);
 					bg.SetShadowLevel (offset);
 				}
 			}
