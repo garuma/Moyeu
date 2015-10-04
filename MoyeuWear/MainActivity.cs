@@ -59,7 +59,7 @@ namespace Moyeu
 			base.OnCreate (savedInstanceState);
 			handler = new Handler ();
 			client = new GoogleApiClientBuilder (this, this, this)
-				.AddApi (WearableClass.Api)
+				.AddApi (WearableClass.API)
 				.Build ();
 
 			SetContentView (Resource.Layout.Main);

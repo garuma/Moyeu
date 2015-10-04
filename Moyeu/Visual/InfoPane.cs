@@ -73,6 +73,8 @@ namespace Moyeu
 			};
 			this.shadowDrawable = new GradientDrawable (GradientDrawable.Orientation.BottomTop,
 			                                            shadowColors);
+			var elevation = Resources.GetDimension (Resource.Dimension.design_fab_elevation);
+			Android.Support.V4.View.ViewCompat.SetElevation (this, elevation);
 		}
 
 		public bool Opened {

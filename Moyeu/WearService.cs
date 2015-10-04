@@ -116,7 +116,7 @@ namespace Moyeu
 						map.PutDataMapArrayList ("Stations", stationMap);
 						map.PutLong ("UpdatedAt", DateTime.UtcNow.Ticks);
 
-						WearableClass.DataApi.PutDataItem (client, request.AsPutDataRequest ());
+						await WearableClass.DataApi.PutDataItem (client, request.AsPutDataRequest ());
 					} else {
 						var uri = new Uri ("wear://watch" + path);
 						var query = uri.GetComponents (UriComponents.Query, UriFormat.Unescaped);

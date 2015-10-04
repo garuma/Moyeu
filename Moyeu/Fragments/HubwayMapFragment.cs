@@ -26,6 +26,7 @@ using XamSvg;
 using Android.Support.V4.View;
 using Android.Support.V4.Graphics.Drawable;
 using Android.Support.Design.Widget;
+using ResCompat = Android.Support.V4.Content.Res.ResourcesCompat;
 
 namespace Moyeu
 {
@@ -178,11 +179,11 @@ namespace Moyeu
 			ipSlotsImg = pane.FindViewById<ImageView> (Resource.Id.InfoViewSlotNumberImg);
 
 			if (!AndroidExtensions.IsMaterial) {
-				bikeDrawable = DrawableCompat.Wrap (Resources.GetDrawable (Resource.Drawable.ic_bike));
-				rackDrawable = DrawableCompat.Wrap (Resources.GetDrawable (Resource.Drawable.ic_lock));
+				bikeDrawable = DrawableCompat.Wrap (ResCompat.GetDrawable (Resources, Resource.Drawable.ic_bike, null));
+				rackDrawable = DrawableCompat.Wrap (ResCompat.GetDrawable (Resources, Resource.Drawable.ic_lock, null));
 			} else {
-				bikeDrawable = Resources.GetDrawable (Resource.Drawable.ic_bike_vector);
-				rackDrawable = Resources.GetDrawable (Resource.Drawable.ic_racks_vector);
+				bikeDrawable = ResCompat.GetDrawable (Resources, Resource.Drawable.ic_bike_vector, null);
+				rackDrawable = ResCompat.GetDrawable (Resources, Resource.Drawable.ic_racks_vector, null);
 			}
 
 			ipBikesImg.SetImageDrawable (bikeDrawable);
