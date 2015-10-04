@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.neteril.Moyeu" android:versionCode="18" android:versionName="1.5">
-	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="21" />
+	<uses-sdk android:minSdkVersion="17" android:targetSdkVersion="23" />
 	<uses-feature android:glEsVersion="0x00020000" android:required="true" />
 	<permission android:name="org.neteril.Moyeu.permission.MAPS_RECEIVE" android:protectionLevel="signature" />
 	<application android:label="Moyeu" android:icon="@drawable/icon">
