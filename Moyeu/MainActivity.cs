@@ -44,6 +44,8 @@ namespace Moyeu
 		: Android.Support.V7.App.AppCompatActivity, IObserver<Station[]>, ConnectionCallbacks, ConnectionFailedListener
 	{
 		const int ConnectionFailureResolutionRequest = 9000;
+		const int GpsNotAvailableResolutionRequest = 90001;
+		const string DialogError = "dialog_error";
 
 		HubwayMapFragment mapFragment;
 		FavoriteFragment favoriteFragment;
@@ -56,6 +58,7 @@ namespace Moyeu
 
 		DrawerAroundAdapter aroundAdapter;
 		IGoogleApiClient client;
+		bool apiClientResolvingError;
 
 		Android.Support.V4.App.Fragment CurrentFragment {
 			get {
@@ -240,7 +243,7 @@ namespace Moyeu
 
 		protected override void OnStart ()
 		{
-			if (client != null)
+			if (client != null && !apiClientResolvingError)
 				client.Connect ();
 			base.OnStart ();
 		}
@@ -255,10 +258,15 @@ namespace Moyeu
 		protected override void OnActivityResult (int requestCode, Result resultCode, Intent data)
 		{
 			if (requestCode == ConnectionFailureResolutionRequest) {
-				if (resultCode == Result.Ok && CheckGooglePlayServices ()) {
+				apiClientResolvingError = false;
+				if (resultCode == Result.Ok) {
+					if (!client.IsConnecting && !client.IsConnected)
+						client.Connect ();
+				}
+			} else if (requestCode == GpsNotAvailableResolutionRequest) {
+				if (resultCode == Result.Ok && CheckGooglePlayServices ())
 					PostCheckGooglePlayServices ();
-					client.Connect ();
-				} else
+				else
 					Finish ();
 			} else {
 				base.OnActivityResult (requestCode, resultCode, data);
@@ -267,19 +275,15 @@ namespace Moyeu
 
 		bool CheckGooglePlayServices ()
 		{
-			var result = GooglePlayServicesUtil.IsGooglePlayServicesAvailable (this);
+			var result = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable (this);
 			if (result == ConnectionResult.Success)
 				return true;
-			var dialog = GooglePlayServicesUtil.GetErrorDialog (result,
-			                                                    this,
-			                                                    ConnectionFailureResolutionRequest);
-			if (dialog != null) {
-				var errorDialog = new ErrorDialogFragment { Dialog = dialog };
-				errorDialog.Show (SupportFragmentManager, "Google Services Updates");
-				return false;
-			}
-
-			Finish ();
+			var shown = GoogleApiAvailability.Instance.ShowErrorDialogFragment (this,
+			                                                                    result,
+			                                                                    GpsNotAvailableResolutionRequest);
+			if (!shown)
+				Finish ();
+			
 			return false;
 		}
 
@@ -306,6 +310,9 @@ namespace Moyeu
 		{
 			if (client == null || !client.IsConnected)
 				return;
+			var locPerm = ActivityCompat.CheckSelfPermission (this, Android.Manifest.Permission.AccessFineLocation);
+			if (locPerm != (int)RequestedPermission.Granted)
+				return;
 			var location = LocationServices.FusedLocationApi.GetLastLocation (client);
 			if (location == null)
 				return;
@@ -318,25 +325,60 @@ namespace Moyeu
 
 		#endregion
 
-		public void OnConnected (Bundle p0)
+		public void OnConnected (Bundle connectionHint)
 		{
 			if (Hubway.Instance.LastStations != null)
 				OnNext (Hubway.Instance.LastStations);
 		}
 
-		public void OnDisconnected ()
+		public void OnConnectionSuspended (int cause)
 		{
-			
+
 		}
 
-		public void OnConnectionFailed (Android.Gms.Common.ConnectionResult p0)
+		public void OnConnectionFailed (Android.Gms.Common.ConnectionResult result)
 		{
+			if (apiClientResolvingError)
+				return;
 			
+			if (result.HasResolution) {
+				try {
+					apiClientResolvingError = true;
+					result.StartResolutionForResult (this, ConnectionFailureResolutionRequest);
+				} catch (Android.Content.IntentSender.SendIntentException) {
+					client.Connect ();
+				}
+			} else {
+				var args = new Bundle ();
+				args.PutInt (DialogError, result.ErrorCode);
+				var dialogFragment = new ErrorDialogFragment () {
+					Arguments = args
+				};
+				dialogFragment.Show (SupportFragmentManager, "errordialog");
+			}
 		}
 
-		public void OnConnectionSuspended (int reason)
+		void OnGpsDialogDismissed ()
 		{
+			apiClientResolvingError = false;
+		}
 
+		class ErrorDialogFragment : Android.Support.V4.App.DialogFragment
+		{
+			public ErrorDialogFragment () {}
+
+			public override Dialog OnCreateDialog (Bundle savedInstanceState)
+			{
+				int errorCode = Arguments.GetInt (DialogError);
+				return GoogleApiAvailability.Instance.GetErrorDialog (Activity,
+				                                                      errorCode,
+				                                                      ConnectionFailureResolutionRequest);
+			}
+
+			public override void OnDismiss (IDialogInterface dialog)
+			{
+				((MainActivity)Activity).OnGpsDialogDismissed ();
+			}
 		}
 	}
 
@@ -429,19 +471,6 @@ namespace Moyeu
 		public override bool AreAllItemsEnabled ()
 		{
 			return false;
-		}
-	}
-
-	class ErrorDialogFragment : Android.Support.V4.App.DialogFragment
-	{
-		public new Dialog Dialog {
-			get;
-			set;
-		}
-
-		public override Dialog OnCreateDialog (Bundle savedInstanceState)
-		{
-			return Dialog;
 		}
 	}
 
