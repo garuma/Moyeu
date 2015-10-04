@@ -273,6 +273,14 @@ namespace Moyeu
 			}
 		}
 
+		public override void OnBackPressed ()
+		{
+			var currentSection = CurrentFragment as IMoyeuSection;
+			if (currentSection != null && currentSection.OnBackPressed ())
+				return;
+			base.OnBackPressed ();
+		}
+
 		bool CheckGooglePlayServices ()
 		{
 			var result = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable (this);

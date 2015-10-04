@@ -77,6 +77,11 @@ namespace Moyeu
 			}
 		}
 
+		public bool OnBackPressed ()
+		{
+			return false;
+		}
+
 		public void RefreshData ()
 		{
 			if ((DateTime.Now - lastLoadingTime) > TimeSpan.FromMinutes (5)) {

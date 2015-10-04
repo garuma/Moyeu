@@ -58,6 +58,11 @@ namespace Moyeu
 			}
 		}
 
+		public bool OnBackPressed ()
+		{
+			return false;
+		}
+
 		public async void RefreshData ()
 		{
 			if (favManager == null) {

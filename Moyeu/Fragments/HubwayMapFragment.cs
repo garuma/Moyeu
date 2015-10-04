@@ -81,6 +81,15 @@ namespace Moyeu
 			}
 		}
 
+		public bool OnBackPressed ()
+		{
+			if (pane != null && pane.Opened) {
+				pane.SetState (InfoPane.State.Closed);
+				return true;
+			}
+			return false;
+		}
+
 		internal int CurrentShownId {
 			get {
 				return currentShownID;

@@ -7,6 +7,7 @@ namespace Moyeu
 		string Name { get; }
 		string Title { get; }
 		void RefreshData ();
+		bool OnBackPressed ();
 	}
 }
 
