@@ -123,8 +123,6 @@
     <AndroidResource Include="Resources\xml\searchable.xml" />
     <AndroidResource Include="Resources\layout\FavoriteItem.axml" />
     <AndroidResource Include="Resources\layout\RentalItem.axml" />
-    <AndroidResource Include="Resources\layout\LoginDialogLayout.axml" />
-    <AndroidResource Include="Resources\raw\pin.svg" />
     <AndroidResource Include="Resources\drawable-xhdpi\drawer_shadow.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\drawer_shadow.9.png" />
     <AndroidResource Include="Resources\layout\MapLayout.axml" />
@@ -155,14 +153,11 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_refresh.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_search.png" />
     <AndroidResource Include="Resources\drawable\info_pane_underline.xml" />
-    <AndroidResource Include="Resources\raw\pin_locked.svg" />
     <AndroidResource Include="Resources\drawable\time_cell_bg.xml" />
-    <AndroidResource Include="Resources\layout\DrawerHeader.axml" />
     <AndroidResource Include="Resources\drawable\info_pane_vert_divider.xml" />
     <AndroidResource Include="Resources\drawable\drawer_header_underline.xml" />
     <AndroidResource Include="Resources\drawable\list_selector_bg.xml" />
     <AndroidResource Include="Resources\drawable-nodpi\background.9.png" />
-    <AndroidResource Include="Resources\layout\DrawerLayout.axml" />
     <AndroidResource Include="Resources\values-v21\style.xml" />
     <AndroidResource Include="Resources\anim-v21\paper_state_list_anim_material.xml" />
     <AndroidResource Include="Resources\drawable-v21\ic_racks_vector.xml" />
@@ -215,7 +210,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_bike_small.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_bike_small.png" />
     <AndroidResource Include="Resources\drawable-v21\ic_bike_small.xml" />
-    <AndroidResource Include="Resources\raw\star_depressed.svg" />
     <AndroidResource Include="Resources\menu\drawer_menu.xml" />
     <AndroidResource Include="Resources\drawable-nodpi\hero.jpg" />
     <AndroidResource Include="Resources\values\wear.xml" />
@@ -230,6 +224,19 @@
     <AndroidResource Include="Resources\drawable-v21\ic_favorite_onoff_anim.xml" />
     <AndroidResource Include="Resources\anim-v21\favorite_add_sign_in.xml" />
     <AndroidResource Include="Resources\anim-v21\favorite_heart_sign_out.xml" />
+    <AndroidResource Include="Resources\drawable\ic_favorite_selector.xml" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_drawer_map.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_drawer_rentals.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_drawer_star.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_small_star.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_small_star.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_small_star.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_small_star.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_near_me.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_near_me.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_near_me.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_near_me.png" />
+    <AndroidResource Include="Resources\layout\DrawerHeader.axml" />
   </ItemGroup>
   <Import Project="..\packages\Xamarin.Insights.1.11.1\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.1\build\MonoAndroid10\Xamarin.Insights.targets')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

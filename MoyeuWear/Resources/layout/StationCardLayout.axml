@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp">
         <TextView
-            style="@style/TextView.Medium.Light"
+            android:fontFamily="sans-serif-condensed"
+            android:textSize="18sp"
             android:text="Union Square"
             android:layout_width="0px"
             android:layout_height="wrap_content"
@@ -24,7 +25,8 @@
             android:layout_gravity="right|center_vertical"
             android:layout_marginLeft="4dp">
             <TextView
-                style="@style/TextView.Small.Light"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="14sp"
                 android:text="4"
                 android:layout_gravity="center"
                 android:id="@+id/count"
@@ -34,14 +36,18 @@
         </FrameLayout>
     </LinearLayout>
     <TextView
-        style="@style/TextView.Small.Light"
+        android:fontFamily="sans-serif-condensed"
+        android:textSize="16sp"
         android:text="Somerville Ave"
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:id="@+id/stationSecondary"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:lines="1"
+        android:ellipsize="end" />
     <TextView
-        style="@style/TextView.Small.Light"
+        android:fontFamily="sans-serif-condensed"
+        android:textSize="14sp"
         android:text="0.4 miles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

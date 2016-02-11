@@ -47,9 +47,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:baselineAlignBottom="true"
                     android:src="@android:color/transparent"
-                    android:id="@+id/InfoViewBikeNumberImg" />
+                    android:id="@+id/InfoViewBikeNumberImg"
+                    android:baseline="15dp" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -80,9 +80,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:baselineAlignBottom="true"
                     android:src="@android:color/transparent"
-                    android:id="@+id/InfoViewSlotNumberImg" />
+                    android:id="@+id/InfoViewSlotNumberImg"
+                    android:layout_gravity="center_vertical" />
                 <TextView
                     android:id="@+id/InfoViewDistance"
                     android:layout_width="56dp"
@@ -95,15 +95,17 @@
                     android:textColor="?android:attr/textColorSecondary"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
                 <ImageView
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
                     android:id="@+id/stationLock"
                     android:src="@drawable/ic_station_lock"
-                    android:layout_marginLeft="17dp"
-                    android:layout_marginRight="17dp"
-                    android:scaleType="fitXY"
-                    android:layout_gravity="center_vertical"
-                    android:visibility="gone" />
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="19dp"
+                    android:tint="@color/lock_icon_tint"
+                    android:scaleType="center"
+                    android:adjustViewBounds="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_gravity="center_vertical" />
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>
@@ -131,12 +133,15 @@
                 android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">
                 <ImageView
                     android:src="@drawable/ic_clock"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:id="@+id/clockImg"
-                    android:scaleType="fitXY"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="8dp" />
+                    android:layout_marginRight="8dp"
+                    android:tint="@color/black_tint_primary"
+                    android:adjustViewBounds="true"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp" />
                 <TextView
                     android:id="@+id/historyTime1"
                     style="@style/activity_time_entry" />
@@ -161,12 +166,15 @@
                 android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">
                 <ImageView
                     android:src="@drawable/ic_bike_number"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:id="@+id/bikeNumberImg"
-                    android:scaleType="fitXY"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="8dp" />
+                    android:layout_marginRight="8dp"
+                    android:adjustViewBounds="true"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:tint="@color/black_tint_primary" />
                 <TextView
                     android:id="@+id/historyValue1"
                     style="@style/activity_number_entry" />

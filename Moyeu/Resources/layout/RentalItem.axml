@@ -53,6 +53,7 @@
             android:lines="1"
             android:ellipsize="end"
             android:drawableLeft="@drawable/ic_bike_small"
+            android:drawableTint="@color/black_tint_primary"
             android:drawablePadding="4dp" />
     </LinearLayout>
     <TextView

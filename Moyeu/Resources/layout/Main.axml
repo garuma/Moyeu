@@ -32,12 +32,16 @@
         app:headerLayout="@layout/drawerheader"
         app:menu="@menu/drawer_menu">
         <LinearLayout
+            android:id="@+id/aroundLayout"
             android:orientation="vertical"
             android:layout_gravity="bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
                 android:text="Around you"
+                android:drawableLeft="@drawable/ic_near_me"
+                android:drawablePadding="24dp"
+                android:drawableTint="@color/white_secondary"
                 android:layout_width="fill_parent"
                 android:layout_height="48dp"
                 android:gravity="start|center_vertical"

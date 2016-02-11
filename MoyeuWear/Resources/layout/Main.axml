@@ -28,11 +28,12 @@
         android:layout_gravity="top|center_horizontal"
         android:textOn=""
         android:textOff=""
+        android:showText="false"
         android:track="@drawable/switch_track"
         android:thumb="@drawable/switch_thumb"
         android:switchMinWidth="64dp"
-        android:thumbTextPadding="16dp"
         android:switchPadding="0px"
+        android:thumbTextPadding="16dp"
         android:layout_marginTop="16dp"
         android:checked="true" />
     <android.support.wearable.view.DotsPageIndicator xmlns:wear="http://schemas.android.com/apk/res-auto"

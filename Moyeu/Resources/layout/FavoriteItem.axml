@@ -99,6 +99,7 @@
             android:layout_height="@dimen/gmap_preview_height"
             android:id="@+id/StationMap"
             android:focusable="false"
+            android:clickable="false"
             card_view:liteMode="true"
             card_view:mapType="none" />
     </LinearLayout>

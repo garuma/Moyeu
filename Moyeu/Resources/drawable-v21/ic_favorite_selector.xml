@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <animated-selector xmlns:android="http://schemas.android.com/apk/res/android" android:constantSize="true">
     <item android:state_checked="true" android:id="@+id/on_state">
-		<bitmap android:src="@drawable/ic_favorite" android:tint="@android:color/white" />
+		<bitmap android:src="@drawable/ic_favorite" />
     </item>
     <item android:state_checked="false" android:id="@+id/off_state">
-		<bitmap android:src="@drawable/ic_add" android:tint="@android:color/white" />
+		<bitmap android:src="@drawable/ic_add" />
     </item>
 	<transition
 		android:fromId="@id/off_state"

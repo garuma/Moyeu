@@ -19,6 +19,9 @@
 	<color name="white_secondary">#89ffffff</color>
 	<color name="black_primary">#c6000000</color>
 	<color name="black_secondary">#89000000</color>
+	<color name="black_tint_primary">#757575</color>
+	<color name="white_tint_secondary">#fafafa</color>
+	<color name="lock_icon_tint">#1565C0</color>
 
 	<style name="dialog_title" parent="@android:style/TextAppearance.Material.Title" />
 
