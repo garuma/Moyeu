@@ -46,41 +46,44 @@
     <Reference Include="Mono.Android" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="Xamarin.Insights">
-      <HintPath>..\packages\Xamarin.Insights.1.11.1\lib\MonoAndroid10\Xamarin.Insights.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v4">
-      <HintPath>..\packages\Xamarin.Android.Support.v4.23.0.1.1\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
+    <Reference Include="Xamarin.GooglePlayServices.Basement">
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Basement.27.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Basement.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Base">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Base.26.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v7.RecyclerView">
-      <HintPath>..\packages\Xamarin.Android.Support.v7.RecyclerView.23.0.1.1\lib\MonoAndroid403\Xamarin.Android.Support.v7.RecyclerView.dll</HintPath>
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Base.27.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Wearable">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Wearable.26.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Wearable.dll</HintPath>
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Wearable.27.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Wearable.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Maps">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Maps.26.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Maps.dll</HintPath>
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Maps.27.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Maps.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Location">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Location.26.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Location.dll</HintPath>
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Location.27.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Location.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v4">
+      <HintPath>..\packages\Xamarin.Android.Support.v4.23.1.1.0\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.RecyclerView">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.RecyclerView.23.1.1.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.RecyclerView.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.AppCompat">
-      <HintPath>..\packages\Xamarin.Android.Support.v7.AppCompat.23.0.1.1\lib\MonoAndroid403\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Android.Support.v7.AppCompat.23.1.1.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.MediaRouter">
-      <HintPath>..\packages\Xamarin.Android.Support.v7.MediaRouter.23.0.1.1\lib\MonoAndroid403\Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Android.Support.v7.MediaRouter.23.1.1.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.CardView">
-      <HintPath>..\packages\Xamarin.Android.Support.v7.CardView.23.0.1.1\lib\MonoAndroid403\Xamarin.Android.Support.v7.CardView.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Android.Support.v7.CardView.23.1.1.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.CardView.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v13">
-      <HintPath>..\packages\Xamarin.Android.Support.v13.23.0.1.1\lib\MonoAndroid403\Xamarin.Android.Support.v13.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Android.Support.v13.23.1.1.0\lib\MonoAndroid403\Xamarin.Android.Support.v13.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Design">
-      <HintPath>..\packages\Xamarin.Android.Support.Design.23.0.1.1\lib\MonoAndroid403\Xamarin.Android.Support.Design.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Android.Support.Design.23.1.1.0\lib\MonoAndroid403\Xamarin.Android.Support.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Insights">
+      <HintPath>..\packages\Xamarin.Insights.1.11.4\lib\MonoAndroid10\Xamarin.Insights.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -238,8 +241,8 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_near_me.png" />
     <AndroidResource Include="Resources\layout\DrawerHeader.axml" />
   </ItemGroup>
-  <Import Project="..\packages\Xamarin.Insights.1.11.1\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.1\build\MonoAndroid10\Xamarin.Insights.targets')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <Import Project="..\packages\Xamarin.Insights.1.11.4\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.4\build\MonoAndroid10\Xamarin.Insights.targets')" />
   <ItemGroup>
     <ProjectReference Include="..\xamsvg\XamSvg.csproj">
       <Project>{B70EDB4C-A85E-45BE-A180-5B0462020C6F}</Project>
