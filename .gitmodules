@@ -1,6 +1,0 @@
-[submodule "xamsvg"]
-	path = xamsvg
-	url = git://github.com/garuma/xamsvg.git
-[submodule "tangoandcache"]
-	path = tangoandcache
-	url = https://github.com/rdio/tangoandcache.git

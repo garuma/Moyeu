@@ -244,10 +244,6 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Insights.1.11.4\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.4\build\MonoAndroid10\Xamarin.Insights.targets')" />
   <ItemGroup>
-    <ProjectReference Include="..\xamsvg\XamSvg.csproj">
-      <Project>{B70EDB4C-A85E-45BE-A180-5B0462020C6F}</Project>
-      <Name>XamSvg</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MoyeuWear\MoyeuWear.csproj">
       <Project>{3B2CA08D-AF1C-4427-BB29-A6E0A5ECB064}</Project>
       <Name>MoyeuWear</Name>
@@ -265,7 +261,6 @@
     <Folder Include="Resources\drawable-hdpi\" />
     <Folder Include="Assets\" />
     <Folder Include="Resources\drawable-nodpi\" />
-    <Folder Include="Resources\raw\" />
     <Folder Include="Resources\animator\" />
     <Folder Include="Resources\drawable-xxhdpi\" />
     <Folder Include="Resources\drawable-xxxhdpi\" />
