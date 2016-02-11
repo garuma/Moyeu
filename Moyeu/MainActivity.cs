@@ -20,13 +20,14 @@ using Android.Gms.Maps.Model;
 using Android.Gms.Location;
 using Android.Gms.Common;
 using Android.Gms.Common.Apis;
-using ConnectionCallbacks = Android.Gms.Common.Apis.IGoogleApiClientConnectionCallbacks;
-using ConnectionFailedListener = Android.Gms.Common.Apis.IGoogleApiClientOnConnectionFailedListener;
+using ConnectionCallbacks = Android.Gms.Common.Apis.GoogleApiClient.IConnectionCallbacks;
+using ConnectionFailedListener = Android.Gms.Common.Apis.GoogleApiClient.IOnConnectionFailedListener;
 
 using Android.Support.V4.App;
 using Android.Support.V4.Widget;
 using Android.Support.V4.Graphics.Drawable;
 using Android.Support.V4.View;
+using Android.Support.V4.Content;
 using Android.Support.Design.Widget;
 using Android.Util;
 
@@ -45,6 +46,7 @@ namespace Moyeu
 	{
 		const int ConnectionFailureResolutionRequest = 9000;
 		const int GpsNotAvailableResolutionRequest = 90001;
+		const int LocationPermissionRequest = 101;
 		const string DialogError = "dialog_error";
 
 		HubwayMapFragment mapFragment;
@@ -57,7 +59,7 @@ namespace Moyeu
 		NavigationView drawerMenu;
 
 		DrawerAroundAdapter aroundAdapter;
-		IGoogleApiClient client;
+		GoogleApiClient client;
 		bool apiClientResolvingError;
 
 		Android.Support.V4.App.Fragment CurrentFragment {
@@ -109,9 +111,9 @@ namespace Moyeu
 				PostCheckGooglePlayServices ();
 		}
 
-		IGoogleApiClient CreateApiClient ()
+		GoogleApiClient CreateApiClient ()
 		{
-			return new GoogleApiClientBuilder (this, this, this)
+			return new GoogleApiClient.Builder (this, this, this)
 				.AddApi (LocationServices.API)
 				.Build ();
 		}
@@ -273,6 +275,19 @@ namespace Moyeu
 			}
 		}
 
+		public override void OnRequestPermissionsResult (int requestCode, string[] permissions, Permission[] grantResults)
+		{
+			if (requestCode == LocationPermissionRequest) {
+				if (grantResults.Length == 0 || grantResults [0] == Permission.Denied) {
+					FindViewById (Resource.Id.aroundLayout).Visibility = ViewStates.Invisible;
+					return;
+				} else if (Hubway.Instance.LastStations != null) {
+					OnNext (Hubway.Instance.LastStations);
+				}
+			} else
+				base.OnRequestPermissionsResult (requestCode, permissions, grantResults);
+		}
+
 		public override void OnBackPressed ()
 		{
 			var currentSection = CurrentFragment as IMoyeuSection;
@@ -319,8 +334,12 @@ namespace Moyeu
 			if (client == null || !client.IsConnected)
 				return;
 			var locPerm = ActivityCompat.CheckSelfPermission (this, Android.Manifest.Permission.AccessFineLocation);
-			if (locPerm != (int)RequestedPermission.Granted)
+			if (locPerm != (int)Permission.Granted) {
+				ActivityCompat.RequestPermissions (this,
+				                                   new[] { Android.Manifest.Permission.AccessFineLocation },
+				                                   LocationPermissionRequest);
 				return;
+			}
 			var location = LocationServices.FusedLocationApi.GetLastLocation (client);
 			if (location == null)
 				return;
