@@ -407,6 +407,16 @@ namespace Moyeu
 				((MainActivity)Activity).OnGpsDialogDismissed ();
 			}
 		}
+
+		public override void ReportFullyDrawn ()
+		{
+			// We hijack this method that is only used during instrumentation
+			// to add a bunch of favorites so that we can use UITest to assess
+			// favorites are correctly displayed
+			var manager = FavoriteManager.Obtain (this);
+			manager.AddToFavorite (78); // Union Square - Somerville
+			manager.AddToFavorite (42); // Boylston St / Arlington St
+		}
 	}
 
 	class DrawerAroundAdapter : BaseAdapter
