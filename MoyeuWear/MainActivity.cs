@@ -16,6 +16,8 @@ using Android.Support.Wearable.Views;
 
 using Android.Gms.Common.Apis;
 using Android.Gms.Wearable;
+using ConnectionCallbacks = Android.Gms.Common.Apis.GoogleApiClient.IConnectionCallbacks;
+using ConnectionFailedListener = Android.Gms.Common.Apis.GoogleApiClient.IOnConnectionFailedListener;
 
 using MoyeuWear;
 using Android.Graphics;
@@ -37,13 +39,13 @@ namespace Moyeu
 	               DataMimeType = "vnd.google.fitness.activity/biking",
 	               Categories = new string[] { "android.intent.category.DEFAULT" })]
 	public class MainActivity : Activity,
-	IDataApiDataListener, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, IResultCallback, IMoyeuActions
+	IDataApiDataListener, ConnectionCallbacks, ConnectionFailedListener, IResultCallback, IMoyeuActions
 	{
 		const string SearchStationPath = "/moyeu/SearchNearestStations";
 		const string StationBackgroundsPath = "/moyeu/StationBackgrounds";
 		const string BackgroundImageKey = "background-";
 
-		IGoogleApiClient client;
+		GoogleApiClient client;
 		INode phoneNode;
 
 		GridViewPager pager;
@@ -58,7 +60,7 @@ namespace Moyeu
 		{
 			base.OnCreate (savedInstanceState);
 			handler = new Handler ();
-			client = new GoogleApiClientBuilder (this, this, this)
+			client = new GoogleApiClient.Builder (this, this, this)
 				.AddApi (WearableClass.API)
 				.Build ();
 
@@ -120,15 +122,20 @@ namespace Moyeu
 				return;
 			var dataMapItem = DataMapItem.FromDataItem (dataEvent.DataItem);
 			var map = dataMapItem.DataMap;
-
-			var stations = new List<SimpleStation> ();
 			var data = map.GetDataMapArrayList ("Stations");
+
+			ProcessRawStationData (data);
+		}
+
+		async void ProcessRawStationData (IList<DataMap> data)
+		{
+			var stations = new List<SimpleStation> ();
 			foreach (var d in data) {
 				stations.Add (new SimpleStation {
 					Id = d.GetInt ("Id", 0),
 					Primary = d.GetString ("Primary", "<no name>"),
 					Secondary = d.GetString ("Secondary", "<no name>"),
-					Background = GetBitmapForAsset (d.GetAsset ("Background")),
+					Background = await GetBitmapForAsset (d.GetAsset ("Background")),
 					Bikes = d.GetInt ("Bikes", 0),
 					Racks = d.GetInt ("Racks", 0),
 					Distance = d.GetDouble ("Distance", 0),
@@ -139,25 +146,23 @@ namespace Moyeu
 			}
 
 			if (stations.Any ()) {
-				handler.Post (() => {
-					adapter = new StationGridAdapter (FragmentManager,
-					                                  stations,
-					                                  this);
-					pager.Adapter = adapter;
-					pager.OffscreenPageCount = 5;
-					loading.Visibility = ViewStates.Invisible;
-					pager.Visibility = ViewStates.Visible;
-					countSwitch.Visibility = ViewStates.Visible;
-					dotsIndicator.Visibility = ViewStates.Visible;
-				});
+				adapter = new StationGridAdapter (FragmentManager,
+				                                  stations,
+				                                  this);
+				pager.Adapter = adapter;
+				pager.OffscreenPageCount = 5;
+				loading.Visibility = ViewStates.Invisible;
+				pager.Visibility = ViewStates.Visible;
+				countSwitch.Visibility = ViewStates.Visible;
+				dotsIndicator.Visibility = ViewStates.Visible;
 			}
 		}
 
-		Bitmap GetBitmapForAsset (Asset asset)
+		async Task<Bitmap> GetBitmapForAsset (Asset asset)
 		{
-			var result = WearableClass.DataApi.GetFdForAsset (client, asset)
-				.Await ()
-				.JavaCast<IDataApiGetFdForAssetResult> ();
+			var result = await WearableClass.DataApi.GetFdForAsset (client, asset)
+											.AsAsync<IDataApiGetFdForAssetResult> ()
+			                                .ConfigureAwait (false);
 			var stream = result.InputStream;
 			return BitmapFactory.DecodeStream (stream);
 		}
