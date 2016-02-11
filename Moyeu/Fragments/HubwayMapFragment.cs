@@ -22,7 +22,6 @@ using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
 using Android.Gms.Location;
 
-using XamSvg;
 using Android.Support.V4.View;
 using Android.Support.V4.Graphics.Drawable;
 using Android.Support.Design.Widget;
@@ -106,7 +105,7 @@ namespace Moyeu
 			base.OnActivityCreated (savedInstanceState);
 
 			var context = Activity;
-			this.pinFactory = new PinFactory (context);
+			this.pinFactory = new PinFactory ();
 			this.favManager = FavoriteManager.Obtain (context);
 		}
 
@@ -202,15 +201,6 @@ namespace Moyeu
 
 			fab = view.FindViewById<SwitchableFab> (Resource.Id.fabButton);
 			fab.Click += HandleFabClicked;
-		}
-
-		void SetSvgImage (View baseView, int viewId, int resId)
-		{
-			var view = baseView.FindViewById<ImageView> (viewId);
-			if (view == null)
-				return;
-			var img = SvgFactory.GetDrawable (Resources, resId);
-			view.SetImageDrawable (img);
 		}
 
 		public void OnMapReady (GoogleMap googleMap)
@@ -420,11 +410,12 @@ namespace Moyeu
 					marker.Remove ();
 				}
 				return true;
-			}).ToArray ();
+			}).ToList ();
+
+			var w = (int)Math.Round (TypedValue.ApplyDimension (ComplexUnitType.Dip, 32, Resources.DisplayMetrics));
+			var h = (int)Math.Round (TypedValue.ApplyDimension (ComplexUnitType.Dip, 34, Resources.DisplayMetrics));
 
 			var pins = await Task.Run (() => stationsToUpdate.ToDictionary (station => station.Id, station => {
-				var w = 24.ToPixels ();
-				var h = 40.ToPixels ();
 				if (station.Locked)
 					return pinFactory.GetClosedPin (w, h);
 				var ratio = (float)TruncateDigit (station.BikeCount / ((float)station.Capacity), 2);
@@ -497,9 +488,9 @@ namespace Moyeu
 				var slotsNum = int.Parse (splitNumbers [1]);
 				var total = bikesNum + slotsNum;
 				var distance = GeoUtils.Distance (
-					new GeoPoint { Lat = marker.Position.Latitude, Lon = marker.Position.Longitude },
-					new GeoPoint { Lat = map.MyLocation.Latitude, Lon = map.MyLocation.Longitude }
-				) * 1000;
+					               new GeoPoint { Lat = marker.Position.Latitude, Lon = marker.Position.Longitude },
+					               new GeoPoint { Lat = map.MyLocation.Latitude, Lon = map.MyLocation.Longitude }
+				               ) * 1000;
 				var bikesColor = PinFactory.InterpolateColor (baseRed, baseGreen,
 				                                              ((float)bikesNum) / total);
 				var slotsColor = PinFactory.InterpolateColor (baseRed, baseGreen,
@@ -513,6 +504,18 @@ namespace Moyeu
 				                        slotsColor.ToArgb ());
 				ipDistance.Text = GeoUtils.GetDisplayDistance (distance)
 					+ " " + GeoUtils.GetUnitForDistance (distance);
+
+				ipDistance.Visibility = ViewStates.Visible;
+				ipBikes.Visibility = ViewStates.Visible;
+				ipSlots.Visibility = ViewStates.Visible;
+				ipBikesImg.Visibility = ViewStates.Visible;
+				ipSlotsImg.Visibility = ViewStates.Visible;
+			} else {
+				ipDistance.Visibility = ViewStates.Gone;
+				ipBikes.Visibility = ViewStates.Invisible;
+				ipSlots.Visibility = ViewStates.Invisible;
+				ipBikesImg.Visibility = ViewStates.Invisible;
+				ipSlotsImg.Visibility = ViewStates.Invisible;
 			}
 
 			var favs = favManager.LastFavorites ?? favManager.GetFavoriteStationIds ();
@@ -555,12 +558,12 @@ namespace Moyeu
 				v.Text = "-";
 				v.SetTextColor (Color.Rgb (0x90, 0x90, 0x90));
 			}
-			var history = (await hubwayHistory.GetStationHistory (stationID)).ToArray ();
-			if (stationID != currentShownID || history.Length == 0)
+			var history = (await hubwayHistory.GetStationHistory (stationID)).ToList ();
+			if (stationID != currentShownID || history.Count == 0)
 				return;
 
 			var previousValue = history [0].Value;
-			for (int i = 0; i < Math.Min (historyTimes.Length, history.Length - 1); i++) {
+			for (int i = 0; i < Math.Min (historyTimes.Length, history.Count - 1); i++) {
 				var h = history [i + 1];
 
 				var timeText = pane.FindViewById<TextView> (historyTimes [i]);

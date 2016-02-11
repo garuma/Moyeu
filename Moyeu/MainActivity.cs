@@ -423,7 +423,8 @@ namespace Moyeu
 		{
 			this.context = context;
 			this.manager = FavoriteManager.Obtain (context);
-			this.starDrawable = XamSvg.SvgFactory.GetDrawable (context.Resources, Resource.Raw.star_depressed);
+			this.starDrawable = DrawableCompat.Wrap (ContextCompat.GetDrawable (context, Resource.Drawable.ic_small_star));
+			DrawableCompat.SetTint (starDrawable, ContextCompat.GetColor (context, Resource.Color.white_tint_secondary));
 			this.favorites = new HashSet<Int32> ();
 			LoadFavorites ();
 		}

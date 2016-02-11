@@ -7,8 +7,6 @@ using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 
-using XamSvg;
-
 namespace Moyeu
 {
 	public class PinFactory
@@ -21,23 +19,60 @@ namespace Moyeu
 		readonly Color baseDarkGreenColor;
 		readonly Color baseDarkRedColor;
 
-		readonly Color fillColor = Color.Rgb (0x01, 0x02, 0x03);
-		readonly Color bottomFillColor = Color.Rgb (0xaa, 0xbb, 0xcc);
-		readonly Color borderColor = Color.Rgb (0xcf, 0xcf, 0xcf);
+		Paint textPaint, pinPaint, lockPaint;
+		Path pinPath, lockPath;
 
-		Context context;
+		readonly int textSizeOneDigit, textSizeTwoDigits;
+		RectF pathBounds = new RectF ();
 
-		Paint textPaint;
-
-		public PinFactory (Context context)
+		public PinFactory ()
 		{
-			this.context = context;
 			this.textPaint = new Paint {
-				TextSize = 12.ToPixels (),
 				AntiAlias = true,
 				TextAlign = Paint.Align.Center,
-				Color = Color.White
+				Color = Color.White,
 			};
+			textSizeOneDigit = 13.ToPixels ();
+			textSizeTwoDigits = 12.ToPixels ();
+			this.pinPaint = new Paint { AntiAlias = true };
+			this.lockPaint = new Paint {
+				AntiAlias = true,
+				Color = Color.White,
+			};
+			lockPaint.SetStyle (Paint.Style.Fill);
+
+			pinPath = new Path ();
+			pinPath.MoveTo (12, 1);
+			pinPath.RCubicTo (-4.246f, 0, -7.7f, 3.454f, -7.7f, 7.7f);
+			pinPath.RCubicTo (0, 5.775f, 7.7f, 14.3f, 7.7f, 14.3f);
+			pinPath.RCubicTo (0, 0, 7.7f, -8.525f, 7.7f, -14.3f);
+			pinPath.RCubicTo (0, -4.246f, -3.454f, -7.7f, -7.7f, -7.7f);
+			pinPath.Close ();
+
+			lockPath = new Path ();
+			lockPath.MoveTo (18, 8);
+			lockPath.RLineTo (-1, 0);
+			lockPath.RLineTo (0, -2);
+			lockPath.RCubicTo (0, -2.76f, -2.24f, -5, -5, -5);
+			lockPath.RCubicTo (-2.76f, 0, - 5, 2.24f, -5, 5);
+			lockPath.RLineTo (0, 2);
+			lockPath.RLineTo (-1, 0);
+			lockPath.RCubicTo (-1.1f, 0, -2, 0.9f, -2, 2);
+			lockPath.RLineTo (0, 10);
+			lockPath.RCubicTo (0,1.1f, 0.9f,2, 2,2);
+			lockPath.RLineTo (12,0);
+			lockPath.RCubicTo (1.1f,0, 2,-0.9f, 2,-2);
+			lockPath.RLineTo (0,-10);
+			lockPath.RCubicTo (0,-1.1f, -0.9f,-2, -2,-2);
+			lockPath.Close ();
+			lockPath.MoveTo (12,2.9f);
+			lockPath.RCubicTo (1.71f,0, 3.1f,1.39f, 3.1f,3.1f);
+			lockPath.RLineTo (0,2);
+			lockPath.RLineTo (-6.1f,0);
+			lockPath.RLineTo (0,-2);
+			lockPath.RCubicTo (0,-1.71f, 1.29f,-3.1f, 3,-3.1f);
+			lockPath.RLineTo (0, 0);
+			lockPath.Close ();
 
 			baseLightGreenColor = Color.Rgb (0x99, 0xcc, 0x00);
 			baseLightRedColor = Color.Rgb (0xff, 0x44, 0x44);
@@ -57,14 +92,29 @@ namespace Moyeu
 			if (pinCache.TryGetValue (key, out bmp))
 				return bmp;
 
-			var svg = SVGParser.ParseSVGFromResource (context.Resources,
-			                                          Resource.Raw.pin,
-			                                          SvgColorMapperFactory.FromFunc (c => ColorReplacer (c, ratio, alpha)));
+			Color tone = InterpolateColor (baseLightRedColor, baseLightGreenColor, ratio);
+			Color toneDark = InterpolateColor (baseDarkRedColor, baseDarkGreenColor, ratio);
+
 			bmp = Bitmap.CreateBitmap (width, height, Bitmap.Config.Argb8888);
 			using (var c = new Canvas (bmp)) {
-				var dst = new RectF (0, 0, width, height); 
-				c.DrawPicture (svg.Picture, dst);
-				c.DrawText (number.ToString (), width / 2 - 1, 16.ToPixels (), textPaint);
+				c.Save ();
+				c.Scale (width / 24f, height / 24f, 0, 0);
+				using (var gradient = new LinearGradient (0, 0, 0, height, tone, toneDark, Shader.TileMode.Clamp)) {
+					pinPaint.SetStyle (Paint.Style.Fill);
+					pinPaint.SetShader (gradient);
+					c.DrawPath (pinPath, pinPaint);
+					pinPaint.SetShader (null);
+				}
+				pinPaint.SetStyle (Paint.Style.Stroke);
+				pinPaint.StrokeWidth = .5f;
+				pinPaint.Color = toneDark;
+				c.DrawPath (pinPath, pinPaint);
+
+				c.Restore ();
+
+				var text = number.ToString ();
+				textPaint.TextSize = text.Length == 1 ? textSizeOneDigit : textSizeTwoDigits;
+				c.DrawText (text, width / 2f - .5f, 16.ToPixels (), textPaint);
 			}
 
 			pinCache [key] = bmp;
@@ -73,26 +123,38 @@ namespace Moyeu
 
 		public Bitmap GetClosedPin (int width, int height)
 		{
-			return closedPin ?? (closedPin = SvgFactory.GetBitmap (context.Resources, Resource.Raw.pin_locked, width, height));
-		}
+			if (closedPin != null)
+				return closedPin;
 
-		Color ColorReplacer (Color inColor, float variant, float alpha)
-		{
-			Color tone = InterpolateColor (baseLightRedColor, baseLightGreenColor, variant);
-			Color result = inColor;
+			Color borderColor = Color.Rgb (0, 0x71, 0x96);
+			Color bottomShade = Color.Rgb (0, 0x99, 0xCC);
+			Color topShade = Color.Rgb (0, 0xB6, 0xF4);
 
-			if (inColor == fillColor)
-				result = tone;
-			else if (inColor == borderColor)
-				result = Lighten (tone, 0x20);
-			else if (inColor == bottomFillColor)
-				result = InterpolateColor (baseDarkRedColor, baseDarkGreenColor, variant);
+			closedPin = Bitmap.CreateBitmap (width, height, Bitmap.Config.Argb8888);
+			using (var c = new Canvas (closedPin)) {
+				c.Save ();
+				c.Scale (width / 24f, height / 24f, 0, 0);
+				using (var gradient = new LinearGradient (0, 0, 0, height, topShade, bottomShade, Shader.TileMode.Clamp)) {
+					pinPaint.SetStyle (Paint.Style.Fill);
+					pinPaint.SetShader (gradient);
+					c.DrawPath (pinPath, pinPaint);
+					pinPaint.SetShader (null);
+				}
+				pinPaint.SetStyle (Paint.Style.Stroke);
+				pinPaint.StrokeWidth = .5f;
+				pinPaint.Color = borderColor;
+				
+				c.DrawPath (pinPath, pinPaint);
 
-			if (alpha < 1)
-				return new Color ((byte)(result.R * alpha + 255 * (1 - alpha)),
-				                  (byte)(result.G * alpha + 255 * (1 - alpha)),
-				                  (byte)(result.B * alpha + 255 * (1 - alpha)));
-			return result;
+				c.Save ();
+				c.Scale (.5f, .5f, 0, 0);
+				c.Translate (12, 6);
+				c.DrawPath (lockPath, lockPaint);
+				c.Restore ();
+				c.Restore ();
+			}
+
+			return closedPin;
 		}
 
 		public static Color InterpolateColor (Color c1, Color c2, float ratio)

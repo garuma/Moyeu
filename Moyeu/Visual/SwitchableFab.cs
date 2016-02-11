@@ -16,6 +16,7 @@ using Android.Graphics.Drawables;
 using Android.Content.Res;
 using Android.Animation;
 using Android.Views.Animations;
+using DrawableCompat = Android.Support.V4.Graphics.Drawable.DrawableCompat;
 
 namespace Moyeu
 {
@@ -62,7 +63,8 @@ namespace Moyeu
 			if (attrs == null)
 				return;
 			var array = context.ObtainStyledAttributes (attrs, Resource.Styleable.SwitchableFab);
-			srcSecond = array.GetDrawable (Resource.Styleable.SwitchableFab_srcSecond);
+			srcSecond = DrawableCompat.Wrap (array.GetDrawable (Resource.Styleable.SwitchableFab_srcSecond));
+			DrawableCompat.SetTint (srcSecond, Android.Graphics.Color.White.ToArgb ());
 			backgroundTintSecond = array.GetColorStateList (Resource.Styleable.SwitchableFab_backgroundTintSecond);
 			array.Recycle ();
 		}

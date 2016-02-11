@@ -55,7 +55,7 @@ namespace Moyeu
 		{
 			try {
 				Android.Util.Log.Info ("WearIntegration", "Received Message");
-				var client = new GoogleApiClientBuilder (this)
+				var client = new GoogleApiClient.Builder (this)
 					.AddApi (LocationServices.API)
 					.AddApi (WearableClass.API)
 					.Build ();
