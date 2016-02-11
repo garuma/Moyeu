@@ -5,17 +5,20 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.Xml;
+using System.Xml.Linq;
 
-using HtmlAgilityPack;
+using HtmlParserSharp;
 
 using Log = Android.Util.Log;
 
 namespace Moyeu
 {
 	[Serializable]
-	public struct RentalCrendentials {
+	public class RentalCrendentials {
 		public string Username { get; set; }
 		public string Password { get; set; }
+		public string UserId { get; set; }
 	}
 
 	public struct Rental {
@@ -35,8 +38,10 @@ namespace Moyeu
 
 	public class HubwayRentals
 	{
-		const string HubwayLoginUrl = "https://www.thehubway.com/login";
-		const string HubwayRentalsUrl = "https://www.thehubway.com/member/rentals";
+		const string HubwayLoginUrl = "https://secure.thehubway.com/profile/login";
+		const string HubwayLoginCheckUrl = "https://secure.thehubway.com/profile/login_check";
+		const string HubwayProfileUrl = "https://secure.thehubway.com/profile/";
+		const string HubwayRentalsUrl = "https://secure.thehubway.com/profile/trips/";
 
 		CookieContainer cookies;
 		RentalCrendentials credentials;
@@ -64,44 +69,65 @@ namespace Moyeu
 
 		public async Task<Rental[]> GetRentals (int page)
 		{
+			const int ResultsPerPage = 10;
 			bool needsAuth = false;
-			var rentalsUrl = HubwayRentalsUrl;
-			if (page > 0)
-				rentalsUrl += "/" + (page * 20);
 
 			for (int i = 0; i < 4; i++) {
 				try {
 					if (needsAuth) {
-						var content = new FormUrlEncodedContent (new Dictionary<string, string> {
-							{ "username", credentials.Username },
-							{ "password", credentials.Password }
-						});
-						var login = await Client.PostAsync (HubwayLoginUrl, content).ConfigureAwait (false);
-						if (login.StatusCode == HttpStatusCode.Found)
+						if (await LoginToHubway ().ConfigureAwait (false))
 							needsAuth = false;
 						else
 							continue;
 					}
 
+					if (string.IsNullOrEmpty (credentials.UserId)) {
+						credentials.UserId = await GetHubwayUserId ().ConfigureAwait (false);
+						if (string.IsNullOrEmpty (credentials.UserId)) {
+							needsAuth = true;
+							continue;
+						}
+					}
+
+					var rentalsUrl = HubwayRentalsUrl + credentials.UserId;
+					if (page > 0)
+						rentalsUrl += "?pageNumber=" + page;
 					var answer = await Client.GetStringAsync (rentalsUrl).ConfigureAwait (false);
 
-					var doc = new HtmlDocument ();
-					doc.LoadHtml (answer);
-					var div = doc.GetElementById ("content");
-					var table = div.Element ("table");
-					return table.Element ("tbody").Elements ("tr").Select (row => {
-						var items = row.Elements ("td").ToArray ();
-						return new Rental {
-							Id = long.Parse (items[0].InnerText.Trim ()),
-							FromStationName = items [1].InnerText.Trim (),
-							ToStationName = items [3].InnerText.Trim (),
-							Duration = ParseRentalDuration (items [5].InnerText.Trim ()),
-							Price = ParseRentalPrice (items [6].InnerText.Trim ()),
-							DepartureTime = DateTime.Parse(items[2].InnerText,
-							                               System.Globalization.CultureInfo.InvariantCulture),
-							ArrivalTime = DateTime.Parse(items[4].InnerText,
-							                             System.Globalization.CultureInfo.InvariantCulture)
+					var parser = new SimpleHtmlParser ();
+					var doc = parser.ParseString (answer);
+					var div = doc.GetElementsByTagName ("section")
+						.OfType<XmlElement> ()
+						.First (s => s.GetAttribute ("class") == "ed-profile-page__content");
+					var rows = div.GetElementsByTagName ("div")
+						.OfType<XmlElement> ()
+						.Where (n => n.ContainsClass ("ed-table__item_trip"));
+					return rows.Select (row => {
+						var cells = row.GetElementsByTagName ("div").OfType<XmlElement> ().ToList ();
+						/* 0 <div>
+						 * 1   <div>time start
+						 * 2   <div>station start
+						 *   </div>
+						 * 3 <div>
+						 * 4   <div>time end
+						 * 5   <div>station end
+						 *   </div>
+						 * 6 <div>duration
+						 * 7 <div>billed
+						 */
+						var rental = new Rental {
+							FromStationName = cells[2].InnerText.Trim (),
+							ToStationName = cells[5].InnerText.Trim (),
+							Duration = ParseRentalDuration (cells[6].InnerText.Trim ()),
+							Price = ParseRentalPrice (cells[7].InnerText.Trim ()),
+							DepartureTime = DateTime.Parse (cells[1].InnerText,
+							                                System.Globalization.CultureInfo.InvariantCulture),
+							ArrivalTime = DateTime.Parse (cells[4].InnerText,
+							                              System.Globalization.CultureInfo.InvariantCulture)
 						};
+						rental.Id  = ((long)rental.DepartureTime.GetHashCode ()) << 32;
+						rental.Id |= (uint)rental.ArrivalTime.GetHashCode ();
+						return rental;
 					}).ToArray ();
 				} catch (HttpRequestException htmlException) {
 					// Super hacky but oh well
@@ -118,12 +144,54 @@ namespace Moyeu
 			return null;
 		}
 
+		/* This is a two steps process:
+		 *  1st: we need to visit the login form page to get two important pieces of data
+		 *    - the session ID cookie which will stay in our cache
+		 *    - the CSRF token that is generated on the fly in the form
+		 *  2nd: armed with those two things, we can then post to the login check page which
+		 *  will simply stamp our session ID as valid
+		 */
+		async Task<bool> LoginToHubway ()
+		{
+			var loginPage = await Client.GetStringAsync (HubwayLoginUrl).ConfigureAwait (false);
+			var parser = new SimpleHtmlParser ();
+			var doc = parser.ParseString (loginPage);
+			var form = doc.GetElementsByTagName ("form")
+				.OfType<XmlElement> ()
+				.FirstOrDefault (n => n.GetAttribute ("class") == "ed-popup-form_login__form");
+			var inputs = form.GetElementsByTagName ("input").OfType<XmlElement> (). ToList ();
+			var csrfToken = inputs
+				.OfType<XmlElement> ()
+				.First (n => n.GetAttribute ("name") == "_login_csrf_security_token")
+				.GetAttribute ("value");
+
+			var content = new FormUrlEncodedContent (new Dictionary<string, string> {
+				{ "_username", credentials.Username },
+				{ "_password", credentials.Password },
+				{ "_failure_path", "eightd_bike_profile__login" },
+				{ "ed_from_login_popup", "true" },
+				{ "_login_csrf_security_token", csrfToken }
+			});
+			var login = await Client.PostAsync (HubwayLoginCheckUrl, content).ConfigureAwait (false);
+			return login.StatusCode == HttpStatusCode.Found && login.Headers.Location == new Uri (HubwayProfileUrl);
+		}
+
+		async Task<string> GetHubwayUserId ()
+		{
+			// We have to visit the profile page so that we can get the
+			// right rentals link containing the user ID
+			const string BaseTripUrl = "/profile/trips/";
+			var loginPage = await Client.GetStringAsync (HubwayProfileUrl).ConfigureAwait (false);
+			var urlIndex = loginPage.IndexOf (BaseTripUrl);
+			return loginPage.Substring (urlIndex + BaseTripUrl.Length, 10);
+		}
+
 		TimeSpan ParseRentalDuration (string duration)
 		{
 			TimeSpan result = TimeSpan.Zero;
-			var components = duration.Split (new[] { ", " }, StringSplitOptions.RemoveEmptyEntries)
-				.Select (c => c.Split (' ').FirstOrDefault () ?? "0")
-				.Select (v => int.Parse (v));
+			var components = duration.Split (' ')
+				.Where ((e, i) => (i % 2) == 0)
+				.Select (int.Parse);
 			var access = new Stack<int> (components);
 			if (access.Count > 0)
 				result += TimeSpan.FromSeconds (access.Pop ());
@@ -139,7 +207,16 @@ namespace Moyeu
 
 		double ParseRentalPrice (string price)
 		{
-			return price.Substring ("$ ".Length).ToSafeDouble ();
+			return price.Substring (1).ToSafeDouble ();
+		}
+	}
+
+	public static class HtmlNodeExtensions
+	{
+		public static bool ContainsClass (this XmlElement node, string className)
+		{
+			var cls = node.GetAttribute ("class");
+			return cls != null && cls.Contains (className);
 		}
 	}
 }

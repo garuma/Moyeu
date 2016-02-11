@@ -27,6 +27,7 @@ namespace Moyeu
 	public class RentalMaterialFragment : Android.Support.V4.App.Fragment, IMoyeuSection
 	{
 		CookieContainer cookies;
+		RentalCrendentials credentials;
 
 		DateTime lastLoadingTime = DateTime.Now;
 
@@ -115,7 +116,7 @@ namespace Moyeu
 			};
 			recycler.HasFixedSize = true;
 			recycler.SetLayoutManager (layoutManager);
-			recycler.SetOnScrollListener (new LoadingScrollListener (this));
+			recycler.AddOnScrollListener (new LoadingScrollListener (this));
 
 			loadingLayout = view.FindViewById (Resource.Id.loading_layout);
 
@@ -135,13 +136,13 @@ namespace Moyeu
 			view.Background = AndroidExtensions.DefaultBackground;
 			var existingRentals = preloadedRentals.Result;
 			adapter = new RentalsRecyclerAdapter ();
-			recycler.SetAdapter (adapter);
 			adapter.AppendRentals (existingRentals);
+			recycler.SetAdapter (adapter);
 		}
 
-		public override void OnAttach (Android.App.Activity activity)
+		public override void OnAttach (Context context)
 		{
-			base.OnAttach (activity);
+			base.OnAttach (context);
 			storage = new PreferencesRentalStorage (Activity.GetPreferences (FileCreationMode.Private));
 			preloadedRentals = Task.Run ((Func<Rental[]>)storage.GetStoredRentals);
 		}
@@ -152,14 +153,13 @@ namespace Moyeu
 			bool hadError = false;
 			do {
 				statusText.Visibility = hadError ? ViewStates.Visible : ViewStates.Invisible;
-				var credentials = StoredCredentials;
-				if (string.IsNullOrEmpty (credentials.Username) || string.IsNullOrEmpty (credentials.Password))
+				if (string.IsNullOrEmpty (StoredCredentials.Username) || string.IsNullOrEmpty (StoredCredentials.Password))
 					SwitchLayoutPhase (LayoutPhase.Login);
 				if (currentLayoutPhase == LayoutPhase.Login) {
 					password.Text = string.Empty;
-					StoredCredentials = credentials = await AcceptUserInputAsync ();
+					StoredCredentials = await AcceptUserInputAsync ();
 				}
-				rentals = new HubwayRentals (StoredCookies, credentials);
+				rentals = new HubwayRentals (StoredCookies, StoredCredentials);
 				SwitchLayoutPhase (LayoutPhase.Loading);
 				hadError = !(await GetRentals (forceRefresh));
 				if (hadError)
@@ -181,7 +181,8 @@ namespace Moyeu
 
 				newCredentials.SetResult (new RentalCrendentials {
 					Username = username.Text,
-					Password = password.Text
+					Password = password.Text,
+					UserId = credentials?.UserId
 				});
 			};
 			loginBtn.Click += handler;
@@ -277,6 +278,11 @@ namespace Moyeu
 				serializer.Serialize (buffer, cookies);
 				editor.PutString ("cookies", buffer.ToString ());
 			}
+			if (credentials != null) {
+				editor.PutString ("hubwayUsername", credentials.Username ?? string.Empty);
+				editor.PutString ("hubwayPass", credentials.Password ?? string.Empty);
+				editor.PutString ("hubwayUserId", credentials.UserId ?? string.Empty);
+			}
 
 			editor.Commit ();
 		}
@@ -297,18 +303,18 @@ namespace Moyeu
 
 		RentalCrendentials StoredCredentials {
 			get {
-				var prefs = Activity.GetPreferences (FileCreationMode.Private);
-				return new RentalCrendentials {
-					Username = prefs.GetString ("hubwayUsername", null),
-					Password = prefs.GetString ("hubwayPass", null),
-				};
+				if (credentials == null) {
+					var prefs = Activity.GetPreferences (FileCreationMode.Private);
+					credentials = new RentalCrendentials {
+						Username = prefs.GetString ("hubwayUsername", null),
+						Password = prefs.GetString ("hubwayPass", null),
+						UserId = prefs.GetString ("hubwayUserId", null)
+					};
+				}
+				return credentials;
 			}
 			set {
-				var prefs = Activity.GetPreferences (FileCreationMode.Private);
-				var editor = prefs.Edit ();
-				editor.PutString ("hubwayUsername", value.Username ?? string.Empty);
-				editor.PutString ("hubwayPass", value.Password ?? string.Empty);
-				editor.Commit ();
+				credentials = value;
 			}
 		}
 

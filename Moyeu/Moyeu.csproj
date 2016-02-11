@@ -234,10 +234,6 @@
   <Import Project="..\packages\Xamarin.Insights.1.11.1\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.1\build\MonoAndroid10\Xamarin.Insights.targets')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\MobileHtmlAgilityPack\MobileHtmlAgilityPack.csproj">
-      <Project>{D91DC8A9-454E-4CB9-96BE-19652A67D0A4}</Project>
-      <Name>MobileHtmlAgilityPack</Name>
-    </ProjectReference>
     <ProjectReference Include="..\xamsvg\XamSvg.csproj">
       <Project>{B70EDB4C-A85E-45BE-A180-5B0462020C6F}</Project>
       <Name>XamSvg</Name>
@@ -246,6 +242,10 @@
       <Project>{3B2CA08D-AF1C-4427-BB29-A6E0A5ECB064}</Project>
       <Name>MoyeuWear</Name>
       <IsAppExtension>True</IsAppExtension>
+    </ProjectReference>
+    <ProjectReference Include="..\HtmlParserSharp\HtmlParserSharp.csproj">
+      <Project>{63AFF4BB-171A-4295-A87E-C5A7D6A06E10}</Project>
+      <Name>HtmlParserSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
