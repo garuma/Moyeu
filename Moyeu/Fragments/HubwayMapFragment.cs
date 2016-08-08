@@ -173,8 +173,6 @@ namespace Moyeu
 		{
 			base.OnViewCreated (view, savedInstanceState);
 
-			view.Background = AndroidExtensions.DefaultBackground;
-
 			mapFragment.GetMapAsync (this);
 
 			// Setup info pane

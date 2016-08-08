@@ -133,7 +133,6 @@ namespace Moyeu
 
 		public override void OnViewCreated (View view, Bundle savedInstanceState)
 		{
-			view.Background = AndroidExtensions.DefaultBackground;
 			var existingRentals = preloadedRentals.Result;
 			adapter = new RentalsRecyclerAdapter ();
 			adapter.AppendRentals (existingRentals);
