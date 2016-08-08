@@ -9,11 +9,11 @@ namespace Moyeu
 {
 	public class Hubway : IObservable<Station[]>
 	{
-		const string HubwayApiEndpoint = "http://thehubway.com/data/stations/bikeStations.xml";
+		const string HubwayApiEndpoint = "https://www.thehubway.com/data/stations/bikeStations.xml";
 
 		public static readonly Func<Station, bool> AvailableBikeStationPredicate = s => s.BikeCount > 1 && s.EmptySlotCount > 1;
 
-		HttpClient client = new HttpClient ();
+		HttpClient client;
 		TimeSpan freshnessTimeout;
 
 		List<HubwaySubscriber> subscribers = new List<HubwaySubscriber> ();
@@ -28,6 +28,7 @@ namespace Moyeu
 		public Hubway (TimeSpan freshnessTimeout)
 		{
 			this.freshnessTimeout = freshnessTimeout;
+			this.client = new HttpClient (new Xamarin.Android.Net.AndroidClientHandler ());
 		}
 
 		public DateTime LastUpdateTime {

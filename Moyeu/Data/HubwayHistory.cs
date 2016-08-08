@@ -12,7 +12,7 @@ namespace Moyeu
 	{
 		const string HistoryApiEndpoint = "http://api.moyeuapp.net/history";
 
-		HttpClient client = new HttpClient ();
+		HttpClient client = new HttpClient (new Xamarin.Android.Net.AndroidClientHandler ());
 		Dictionary<int, IEnumerable<KeyValuePair<DateTime, int>>> historyCache;
 		DateTime lastFetch = DateTime.MinValue;
 

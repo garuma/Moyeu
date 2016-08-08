@@ -56,8 +56,7 @@ namespace Moyeu
 		HttpClient Client {
 			get {
 				if (client == null) {
-					ServicePointManager.ServerCertificateValidationCallback = (a, b, c, d) => true;
-					client = new HttpClient (new HttpClientHandler {
+					client = new HttpClient (new Xamarin.Android.Net.AndroidClientHandler {
 						AllowAutoRedirect = false,
 						CookieContainer = cookies,
 						UseCookies = true,

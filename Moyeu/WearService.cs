@@ -154,7 +154,7 @@ namespace Moyeu
 			try {
 				if (!File.Exists (file)) {
 					if (client == null)
-						client = new HttpClient ();
+						client = new HttpClient (new Xamarin.Android.Net.AndroidClientHandler ());
 					content = await client.GetByteArrayAsync (url);
 					Directory.CreateDirectory (Path.GetDirectoryName (file));
 					File.WriteAllBytes (file, content);
