@@ -14,19 +14,19 @@ namespace Moyeu
 
 		public static void Initialize (Context context)
 		{
-			if (!initialized) {
+			/*if (!initialized) {
 				try {
 					Insights.Initialize (ApiKey, context);
 				} catch {}
 			}
-			initialized = true;
+			initialized = true;*/
 		}
 
 		public static void LogException (string tag, Exception e)
 		{
-			try {
+			/*try {
 				Insights.Report (e, "Tag", tag);
-			} catch {}
+			} catch {}*/
 		}
 	}
 }
