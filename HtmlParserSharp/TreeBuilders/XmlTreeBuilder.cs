@@ -104,6 +104,8 @@ namespace HtmlParserSharp
 			XmlElement rv = document.CreateElement(name, ns);
 			for (int i = 0; i < attributes.Length; i++)
 			{
+				if (attributes.GetLocalName (i) == "xmlns")
+					continue;
 				rv.SetAttribute(attributes.GetLocalName(i), attributes.GetURI(i), attributes.GetValue(i));
 				if (attributes.GetType(i) == "ID")
 				{
