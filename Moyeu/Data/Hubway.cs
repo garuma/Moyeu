@@ -1,22 +1,30 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace Moyeu
 {
+	using GbfsStationInformationResponse = GbfsResponse<GbfsStationInformationData>;
+	using GbfsStationStatusResponse = GbfsResponse<GbfsStationStatusData>;
+
 	public class Hubway : IObservable<Station[]>
 	{
-		const string HubwayApiEndpoint = "https://www.thehubway.com/data/stations/bikeStations.xml";
+		const string HubwayStationInfoUrl = "https://gbfs.thehubway.com/gbfs/en/station_information.json";
+		const string HubwayStationStatusUrl = "https://gbfs.thehubway.com/gbfs/en/station_status.json";
 
 		public static readonly Func<Station, bool> AvailableBikeStationPredicate = s => s.BikeCount > 1 && s.EmptySlotCount > 1;
 
 		HttpClient client;
+		JsonSerializer serializer;
 		TimeSpan freshnessTimeout;
 
 		List<HubwaySubscriber> subscribers = new List<HubwaySubscriber> ();
+		Dictionary<int, GbfsStationInformation> stationDescriptions;
 
 		public static readonly Hubway Instance = new Hubway ();
 
@@ -29,6 +37,7 @@ namespace Moyeu
 		{
 			this.freshnessTimeout = freshnessTimeout;
 			this.client = new HttpClient (new Xamarin.Android.Net.AndroidClientHandler ());
+			this.serializer = JsonSerializer.CreateDefault ();
 		}
 
 		public DateTime LastUpdateTime {
@@ -74,7 +83,7 @@ namespace Moyeu
 
 		public bool HasCachedData {
 			get {
-				return LastStations != null && DateTime.Now < (LastUpdateTime + freshnessTimeout);
+				return LastStations != null && DateTime.UtcNow < (LastUpdateTime + freshnessTimeout);
 			}
 		}
 
@@ -85,9 +94,12 @@ namespace Moyeu
 			if (HasCachedData && !forceRefresh)
 				return LastStations;
 
+			if (stationDescriptions == null)
+				stationDescriptions = await GetStationDescriptions ().ConfigureAwait (false);
+
 			while (data == null) {
 				try {
-					data = await client.GetStringAsync (HubwayApiEndpoint).ConfigureAwait (false);
+					data = await client.GetStringAsync (HubwayStationStatusUrl).ConfigureAwait (false);
 				} catch (Exception e) {
 					AnalyticsHelper.LogException ("HubwayDownloader", e);
 					Android.Util.Log.Error ("HubwayDownloader", e.ToString ());
@@ -99,39 +111,52 @@ namespace Moyeu
 			if (dataCacher != null)
 				dataCacher (data);
 
-			var stations = ParseStationsFromXml (data);
+			var stations = ParseStationsFromContent (data);
 			if (subscribers.Any ())
 				foreach (var sub in subscribers)
 					sub.Observer.OnNext (stations);
 			return stations;
 		}
 
-		public Station[] ParseStationsFromXml (string data)
+		public Station[] ParseStationsFromContent (string data)
 		{
-			var doc = XDocument.Parse (data);
+			using (var reader = new JsonTextReader (new StringReader (data))) {
+				var response = serializer.Deserialize<GbfsStationStatusResponse> (reader);
+				LastUpdateTime = response.LastUpdated;
 
-			LastUpdateTime = FromUnixTime (long.Parse (((string)doc.Root.Attribute ("lastUpdate"))));
+				var stations = new List<Station> (response.Data.Stations.Length);
+				foreach (var gbfsStation in response.Data.Stations) {
+					GbfsStationInformation desc;
+					if (!stationDescriptions.TryGetValue (gbfsStation.Id, out desc))
+						continue;
+					var station = new Station {
+						Id = gbfsStation.Id,
+						Name = desc.Name,
+						Location = new GeoPoint {
+							Lat = desc.Latitude,
+							Lon = desc.Longitude
+						},
+						Installed = gbfsStation.IsInstalled,
+						Locked = !gbfsStation.IsRenting || !gbfsStation.IsReturning,
+						BikeCount = gbfsStation.BikesAvailable,
+						EmptySlotCount = gbfsStation.DocksAvailable,
+						LastUpdateTime = gbfsStation.LastReported
+					};
+					stations.Add (station);
+				}
+				var newStations = stations.ToArray ();
+				LastStations = newStations;
+				return newStations;
+			}
+		}
 
-			var stations = doc.Root.Elements ("station")
-				.Where (station => !string.IsNullOrEmpty (station.Element ("latestUpdateTime").Value))
-				.Select (station => new Station {
-					Id = int.Parse (station.Element ("id").Value),
-					Name = station.Element ("name").Value,
-					Location = new GeoPoint {
-					   Lat = station.Element ("lat").Value.ToSafeDouble (),
-					   Lon = station.Element ("long").Value.ToSafeDouble ()
-					},
-					Installed = station.Element ("installed").Value == "true",
-					Locked = station.Element ("locked").Value == "true",
-					Temporary = station.Element ("temporary").Value == "true",
-					Public = station.Element ("public").Value == "true",
-					BikeCount = int.Parse (station.Element ("nbBikes").Value),
-					EmptySlotCount = int.Parse (station.Element ("nbEmptyDocks").Value),
-					//LastUpdateTime = FromUnixTime (long.Parse (station.Element ("latestUpdateTime").Value)),
-				})
-				.ToArray ();
-			LastStations = stations;
-			return stations;
+		async Task<Dictionary<int, GbfsStationInformation>> GetStationDescriptions ()
+		{
+			var content = await client.GetStringAsync (HubwayStationInfoUrl).ConfigureAwait (false);
+			using (var reader = new JsonTextReader (new StringReader (content))) {
+				var response = serializer.Deserialize<GbfsStationInformationResponse> (reader);
+				return response.Data.Stations.ToDictionary (s => s.Id, s => s);
+			}
 		}
 
 		DateTime FromUnixTime (long secs)

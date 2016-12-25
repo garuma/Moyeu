@@ -2,6 +2,8 @@
 using System.Linq;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Moyeu
 {
@@ -18,12 +20,10 @@ namespace Moyeu
 		public GeoPoint Location { get; set; }
 		public bool Installed { get; set; }
 		public bool Locked { get; set; }
-		public bool Temporary { get; set; }
-		public bool Public { get; set; }
 		public int BikeCount { get; set; }
 		public int EmptySlotCount { get; set; }
 		public int Capacity { get { return BikeCount + EmptySlotCount; } }
-		//public DateTime LastUpdateTime { get; set; }
+		public DateTime LastUpdateTime { get; set; }
 
 		public override bool Equals (object obj)
 		{
@@ -46,6 +46,81 @@ namespace Moyeu
 				var location = "geo:" + pos + "?q=" + pos + "(" + Name.Replace (' ', '+') + ")";
 				return location;
 			}
+		}
+	}
+
+	public class GbfsResponse<TData>
+	{
+		[JsonProperty ("last_updated")]
+		[JsonConverter (typeof (PosixEpochConverter))]
+		public DateTime LastUpdated { get; set; }
+		[JsonProperty ("ttl")]
+		public int TimeToLive { get; set; }
+		public TData Data { get; set; }
+	}
+
+	public class GbfsStationInformationData
+	{
+		[JsonProperty ("stations")]
+		public GbfsStationInformation [] Stations { get; set; }
+	}
+
+	public class GbfsStationStatusData
+	{
+		[JsonProperty ("stations")]
+		public GbfsStationStatus [] Stations { get; set; }
+	}
+
+	public struct GbfsStationInformation
+	{
+		[JsonProperty ("station_id"), JsonRequired]
+		public int Id { get; set; }
+		public string Name { get; set; }
+		public int Capacity { get; set; }
+		[JsonProperty ("lat")]
+		public double Latitude { get; set; }
+		[JsonProperty ("lon")]
+		public double Longitude { get; set; }
+	}
+
+	public struct GbfsStationStatus
+	{
+		[JsonProperty ("station_id"), JsonRequired]
+		public int Id { get; set; }
+		[JsonProperty ("num_bikes_available")]
+		public int BikesAvailable { get; set; }
+		[JsonProperty ("num_bikes_disabled")]
+		public int BikesDisabled { get; set; }
+		[JsonProperty ("num_docks_available")]
+		public int DocksAvailable { get; set; }
+		[JsonProperty ("num_docks_disabled")]
+		public int DocksDisabled { get; set; }
+		[JsonProperty ("is_installed")]
+		public bool IsInstalled { get; set; }
+		[JsonProperty ("is_renting")]
+		public bool IsRenting { get; set; }
+		[JsonProperty ("is_returning")]
+		public bool IsReturning { get; set; }
+		[JsonProperty ("last_reported")]
+		[JsonConverter (typeof (PosixEpochConverter))]
+		public DateTime LastReported { get; set; }
+	}
+
+	class PosixEpochConverter : DateTimeConverterBase
+	{
+		static readonly DateTime PosixEpoch = new DateTime (1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+		public override object ReadJson (JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+		{
+			var seconds = Convert.ToInt64 (reader.Value);
+			return PosixEpoch + TimeSpan.FromSeconds (seconds);
+		}
+
+		public override void WriteJson (JsonWriter writer, object value, JsonSerializer serializer)
+		{
+			var dateTime = Convert.ToDateTime (value);
+			var seconds = (long)(dateTime - PosixEpoch).TotalSeconds;
+			writer.WriteValue (seconds);
 		}
 	}
 
@@ -79,8 +154,6 @@ namespace Moyeu
 					writer.Write (s.Location.Lon);
 					writer.Write (s.Installed);
 					writer.Write (s.Locked);
-					writer.Write (s.Temporary);
-					writer.Write (s.Public);
 					writer.Write (s.BikeCount);
 					writer.Write (s.EmptySlotCount);
 				}
@@ -99,8 +172,6 @@ namespace Moyeu
 						Location = new GeoPoint { Lat = reader.ReadDouble (), Lon = reader.ReadDouble () },
 						Installed = reader.ReadBoolean (),
 						Locked = reader.ReadBoolean (),
-						Temporary = reader.ReadBoolean (),
-						Public = reader.ReadBoolean (),
 						BikeCount = reader.ReadInt32 (),
 						EmptySlotCount = reader.ReadInt32 ()
 					};
