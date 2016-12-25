@@ -185,6 +185,8 @@ namespace Moyeu
 				googleMap.MyLocationEnabled = true;
 			googleMap.UiSettings.MyLocationButtonEnabled = false;
 
+			googleMap.SetMapStyle (MapStyleOptions.LoadRawResourceStyle (Context, Resource.Raw.GMapStyle));
+
 			googleMap.MarkerClick += HandleMarkerClick;
 			googleMap.MapClick += HandleMapClick;
 			var oldPosition = PreviousCameraPosition;

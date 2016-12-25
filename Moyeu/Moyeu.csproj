@@ -270,6 +270,7 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_near_me.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_near_me.png" />
     <AndroidResource Include="Resources\layout\DrawerHeader.axml" />
+    <AndroidResource Include="Resources\raw\GMapStyle.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ItemGroup>
@@ -301,6 +302,7 @@
     <Folder Include="Resources\anim-v21\" />
     <Folder Include="Resources\drawable-v21\" />
     <Folder Include="Resources\color\" />
+    <Folder Include="Resources\raw\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidEnvironment Include="environment.txt" />
