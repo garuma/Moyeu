@@ -132,34 +132,7 @@ namespace Moyeu
 			streetViewFragment = view.FindViewById<StreetViewPanoramaView> (Resource.Id.streetViewPanorama);
 			streetViewFragment.OnCreate (savedInstanceState);
 
-			// For some reason, a recent version of GPS set their surfaceview to be drawn un-composited.
-			FixupStreetViewSurface (streetViewFragment);
-
 			return view;
-		}
-
-		void FixupStreetViewSurface (View baseView)
-		{
-			var surfaceView = FindSurfaceView (baseView);
-			if (surfaceView != null)
-				surfaceView.SetZOrderMediaOverlay (true);
-		}
-
-		SurfaceView FindSurfaceView (View baseView)
-		{
-			var surfaceView = baseView as SurfaceView;
-			if (surfaceView != null)
-				return surfaceView;
-			var viewGrp = baseView as ViewGroup;
-			if (viewGrp == null)
-				return null;
-			for (int i = 0; i < viewGrp.ChildCount; i++) {
-				surfaceView = FindSurfaceView (viewGrp.GetChildAt (i));
-				if (surfaceView != null)
-					return surfaceView;
-			}
-
-			return null;
 		}
 
 		void SetupInfoPane (View view)
