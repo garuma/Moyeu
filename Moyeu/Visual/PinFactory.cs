@@ -11,7 +11,9 @@ namespace Moyeu
 {
 	public class PinFactory
 	{
-		Dictionary<int, Bitmap> pinCache = new Dictionary<int, Bitmap> ();
+		Context context;
+		Dictionary<int, string> pinCache = new Dictionary<int, string> ();
+		Bitmap pinSurface;
 		Bitmap closedPin;
 
 		readonly Color baseLightGreenColor;
@@ -23,10 +25,10 @@ namespace Moyeu
 		Path pinPath, lockPath;
 
 		readonly int textSizeOneDigit, textSizeTwoDigits;
-		RectF pathBounds = new RectF ();
 
-		public PinFactory ()
+		public PinFactory (Context context)
 		{
+			this.context = context;
 			this.textPaint = new Paint {
 				AntiAlias = true,
 				TextAlign = Paint.Align.Center,
@@ -80,22 +82,25 @@ namespace Moyeu
 			baseDarkRedColor = Color.Rgb (0xcc, 0x00, 0x00);
 		}
 
-		public Task<Bitmap> GetPinAsync (float ratio, int number, int width, int height, float alpha = 1)
-		{
-			return Task.Run (() => GetPin (ratio, number, width, height, alpha));
-		}
-
-		public Bitmap GetPin (float ratio, int number, int width, int height, float alpha = 1)
+		public string GetPin (float ratio, int number, int width, int height, float alpha = 1)
 		{
 			int key = number + ((int)(ratio * 10000)) << 6;
-			Bitmap bmp;
-			if (pinCache.TryGetValue (key, out bmp))
-				return bmp;
+			string bmpFileName;
+			if (pinCache.TryGetValue (key, out bmpFileName))
+				return bmpFileName;
+			bmpFileName = string.Format ("pin-{0}-v1.png", key);
+			var bmpPath = context.GetFileStreamPath (bmpFileName).AbsolutePath;
+			if (System.IO.File.Exists (bmpPath))
+				return bmpFileName;
 
 			Color tone = InterpolateColor (baseLightRedColor, baseLightGreenColor, ratio);
 			Color toneDark = InterpolateColor (baseDarkRedColor, baseDarkGreenColor, ratio);
 
-			bmp = Bitmap.CreateBitmap (width, height, Bitmap.Config.Argb8888);
+			Bitmap bmp = null;
+			if (pinSurface != null && pinSurface.Width == width && pinSurface.Height == height)
+				bmp = pinSurface;
+			else
+				pinSurface = bmp = Bitmap.CreateBitmap (width, height, Bitmap.Config.Argb8888);
 			using (var c = new Canvas (bmp)) {
 				c.Save ();
 				c.Scale (width / 24f, height / 24f, 0, 0);
@@ -117,8 +122,10 @@ namespace Moyeu
 				c.DrawText (text, width / 2f - .5f, 16.ToPixels (), textPaint);
 			}
 
-			pinCache [key] = bmp;
-			return bmp;
+			using (var stream = context.OpenFileOutput (bmpFileName, FileCreationMode.Private))
+				bmp.Compress (Bitmap.CompressFormat.Png, 100, stream);
+			pinCache [key] = bmpFileName;
+			return bmpFileName;
 		}
 
 		public Bitmap GetClosedPin (int width, int height)

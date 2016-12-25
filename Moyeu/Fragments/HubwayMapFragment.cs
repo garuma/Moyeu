@@ -106,7 +106,7 @@ namespace Moyeu
 			base.OnActivityCreated (savedInstanceState);
 
 			var context = Activity;
-			this.pinFactory = new PinFactory ();
+			this.pinFactory = new PinFactory (context);
 			this.favManager = FavoriteManager.Obtain (context);
 		}
 
@@ -398,12 +398,12 @@ namespace Moyeu
 
 			var pins = await Task.Run (() => stationsToUpdate.ToDictionary (station => station.Id, station => {
 				if (station.Locked)
-					return pinFactory.GetClosedPin (w, h);
+					return BitmapDescriptorFactory.FromBitmap (pinFactory.GetClosedPin (w, h));
 				var ratio = (float)TruncateDigit (station.BikeCount / ((float)station.Capacity), 2);
-				return pinFactory.GetPin (ratio,
-				                          station.BikeCount,
-				                          w, h,
-				                          alpha: alpha);
+				return BitmapDescriptorFactory.FromFile (pinFactory.GetPin (ratio,
+																			station.BikeCount,
+																			w, h,
+																			alpha: alpha));
 			}));
 
 			foreach (var station in stationsToUpdate) {
@@ -413,7 +413,7 @@ namespace Moyeu
 					.SetTitle (station.Id + "|" + station.Name)
 					.SetSnippet (station.Locked ? string.Empty : station.BikeCount + "|" + station.EmptySlotCount)
 					.SetPosition (new Android.Gms.Maps.Model.LatLng (station.Location.Lat, station.Location.Lon))
-					.SetIcon (BitmapDescriptorFactory.FromBitmap (pin));
+					.SetIcon (pin);
 				existingMarkers [station.Id] = map.AddMarker (markerOptions);
 			}
 		}
