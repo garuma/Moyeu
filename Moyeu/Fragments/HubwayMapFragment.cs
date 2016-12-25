@@ -386,7 +386,7 @@ namespace Moyeu
 		{
 			var stationsToUpdate = stations.Where (station => {
 				Marker marker;
-				var stats = station.BikeCount + "|" + station.EmptySlotCount;
+				var stats = station.Locked ? string.Empty : station.BikeCount + "|" + station.EmptySlotCount;
 				if (existingMarkers.TryGetValue (station.Id, out marker)) {
 					if (marker.Snippet == stats && !showedStale)
 						return false;
