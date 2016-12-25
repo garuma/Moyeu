@@ -26,6 +26,7 @@ using Android.Support.V4.View;
 using Android.Support.V4.Graphics.Drawable;
 using Android.Support.Design.Widget;
 using ResCompat = Android.Support.V4.Content.Res.ResourcesCompat;
+using ContextCompat = Android.Support.V4.Content.ContextCompat;
 
 namespace Moyeu
 {
@@ -180,7 +181,8 @@ namespace Moyeu
 			MapsInitializer.Initialize (Activity.ApplicationContext);
 
 			// Default map initialization
-			googleMap.MyLocationEnabled = true;
+			if (ContextCompat.CheckSelfPermission (Activity, Android.Manifest.Permission.AccessFineLocation) == Permission.Granted)
+				googleMap.MyLocationEnabled = true;
 			googleMap.UiSettings.MyLocationButtonEnabled = false;
 
 			googleMap.MarkerClick += HandleMarkerClick;
@@ -188,6 +190,14 @@ namespace Moyeu
 			var oldPosition = PreviousCameraPosition;
 			if (oldPosition != null)
 				googleMap.MoveCamera (CameraUpdateFactory.NewCameraPosition (oldPosition));
+		}
+
+		public override void OnRequestPermissionsResult (int requestCode, string[] permissions, Permission[] grantResults)
+		{
+			if (map != null && Enumerable.Range (0, permissions.Length).Any (i => permissions [i] == Android.Manifest.Permission.AccessFineLocation
+																			 && grantResults [i] == Permission.Granted)) {
+				map.MyLocationEnabled = true;
+			}
 		}
 
 		public void OnStreetViewPanoramaReady (StreetViewPanorama panorama)

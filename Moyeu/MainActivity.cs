@@ -280,10 +280,10 @@ namespace Moyeu
 			if (requestCode == LocationPermissionRequest) {
 				if (grantResults.Length == 0 || grantResults [0] == Permission.Denied) {
 					FindViewById (Resource.Id.aroundLayout).Visibility = ViewStates.Invisible;
-					return;
 				} else if (Hubway.Instance.LastStations != null) {
 					OnNext (Hubway.Instance.LastStations);
 				}
+				mapFragment?.OnRequestPermissionsResult (requestCode, permissions, grantResults);
 			} else
 				base.OnRequestPermissionsResult (requestCode, permissions, grantResults);
 		}
@@ -333,7 +333,7 @@ namespace Moyeu
 		{
 			if (client == null || !client.IsConnected)
 				return;
-			var locPerm = ActivityCompat.CheckSelfPermission (this, Android.Manifest.Permission.AccessFineLocation);
+			var locPerm = ContextCompat.CheckSelfPermission (this, Android.Manifest.Permission.AccessFineLocation);
 			if (locPerm != (int)Permission.Granted) {
 				ActivityCompat.RequestPermissions (this,
 				                                   new[] { Android.Manifest.Permission.AccessFineLocation },
