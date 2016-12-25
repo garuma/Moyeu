@@ -119,7 +119,7 @@ namespace Moyeu
 		public void OnGlobalLayout ()
 		{
 			Activity.RunOnUiThread (() => pane.SetState (InfoPane.State.Closed, animated: false));
-			View.ViewTreeObserver.RemoveGlobalOnLayoutListener (this);
+			View.ViewTreeObserver.RemoveOnGlobalLayoutListener (this);
 		}
 
 		public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -468,10 +468,15 @@ namespace Moyeu
 				var bikesNum = int.Parse (splitNumbers [0]);
 				var slotsNum = int.Parse (splitNumbers [1]);
 				var total = bikesNum + slotsNum;
-				var distance = GeoUtils.Distance (
-					               new GeoPoint { Lat = marker.Position.Latitude, Lon = marker.Position.Longitude },
-					               new GeoPoint { Lat = map.MyLocation.Latitude, Lon = map.MyLocation.Longitude }
-				               ) * 1000;
+
+				var currentLocation = ((MainActivity)Activity)?.CurrentUserLocation;
+				double distance = double.NaN;
+				if (currentLocation != null) {
+					distance = GeoUtils.Distance (
+						new GeoPoint { Lat = marker.Position.Latitude, Lon = marker.Position.Longitude },
+						new GeoPoint { Lat = currentLocation.Latitude, Lon = currentLocation.Longitude }
+					) * 1000;
+				}
 				var bikesColor = PinFactory.InterpolateColor (baseRed, baseGreen,
 				                                              ((float)bikesNum) / total);
 				var slotsColor = PinFactory.InterpolateColor (baseRed, baseGreen,
@@ -483,8 +488,12 @@ namespace Moyeu
 				                        bikesColor.ToArgb ());
 				DrawableCompat.SetTint (rackDrawable,
 				                        slotsColor.ToArgb ());
-				ipDistance.Text = GeoUtils.GetDisplayDistance (distance)
-					+ " " + GeoUtils.GetUnitForDistance (distance);
+
+				if (double.IsNaN (distance))
+					ipDistance.Text = string.Empty;
+				else
+					ipDistance.Text = GeoUtils.GetDisplayDistance (distance)
+						+ " " + GeoUtils.GetUnitForDistance (distance);
 
 				ipDistance.Visibility = ViewStates.Visible;
 				ipBikes.Visibility = ViewStates.Visible;
@@ -691,7 +700,7 @@ namespace Moyeu
 					.Build ();
 			}
 			set {
-				var position = map.CameraPosition;
+				var position = value;
 				var prefs = Activity.GetPreferences (FileCreationMode.Private);
 				using (var editor = prefs.Edit ()) {
 					editor.PutFloat ("lastPosition-bearing", position.Bearing);
@@ -706,13 +715,15 @@ namespace Moyeu
 
 		bool CenterMapOnUser ()
 		{
-			var location = map.MyLocation;
+			if (!map.MyLocationEnabled)
+				return false;
+			var location = ((MainActivity)Activity)?.CurrentUserLocation;
 			if (location == null)
 				return false;
 			var userPos = new LatLng (location.Latitude, location.Longitude);
 			var camPos = map.CameraPosition.Target;
-			var needZoom = TruncateDigit (camPos.Latitude, 4) == TruncateDigit (userPos.Latitude, 4)
-				&& TruncateDigit (camPos.Longitude, 4) == TruncateDigit (userPos.Longitude, 4);
+			var needZoom = ShallowDoubleEquals (TruncateDigit (camPos.Latitude, 4), TruncateDigit (userPos.Latitude, 4))
+				&& ShallowDoubleEquals (TruncateDigit (camPos.Longitude, 4), TruncateDigit (userPos.Longitude, 4));
 			var cameraUpdate = needZoom ?
 				CameraUpdateFactory.NewLatLngZoom (userPos, map.CameraPosition.Zoom + 2) :
 					CameraUpdateFactory.NewLatLng (userPos);
@@ -781,6 +792,11 @@ namespace Moyeu
 		{
 			var power = Math.Pow (10, digitNumber);
 			return Math.Truncate (d * power) / power;
+		}
+
+		bool ShallowDoubleEquals (double d1, double d2)
+		{
+			return Math.Abs (d1 - d2) < double.Epsilon;
 		}
 	}
 

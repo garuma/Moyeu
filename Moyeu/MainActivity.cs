@@ -72,6 +72,18 @@ namespace Moyeu
 			}
 		}
 
+		public Location CurrentUserLocation {
+			get {
+				if (client == null || !client.IsConnected)
+					return null;
+				var locPerm = ContextCompat.CheckSelfPermission (this, Android.Manifest.Permission.AccessFineLocation);
+				if (locPerm != (int)Permission.Granted)
+					return null;
+				var location = LocationServices.FusedLocationApi.GetLastLocation (client);
+				return location;
+			}
+		}
+
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
@@ -92,7 +104,7 @@ namespace Moyeu
 			                                                                 drawer,
 			                                                                 Resource.String.open_drawer,
 			                                                                 Resource.String.close_drawer);
-			drawer.SetDrawerListener (drawerToggle);
+			drawer.AddDrawerListener (drawerToggle);
 
 			SupportActionBar.SetDisplayHomeAsUpEnabled (true);
 			SupportActionBar.SetHomeButtonEnabled (true);

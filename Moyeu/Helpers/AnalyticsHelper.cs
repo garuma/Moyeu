@@ -10,7 +10,7 @@ namespace Moyeu
 	{
 		const string ApiKey = "...";
 
-		static bool initialized;
+		//static bool initialized;
 
 		public static void Initialize (Context context)
 		{
