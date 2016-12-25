@@ -56,7 +56,7 @@ namespace Moyeu
 		HttpClient Client {
 			get {
 				if (client == null) {
-					client = new HttpClient (new Xamarin.Android.Net.AndroidClientHandler {
+					client = new HttpClient (new HttpClientHandler {
 						AllowAutoRedirect = false,
 						CookieContainer = cookies,
 						UseCookies = true,
