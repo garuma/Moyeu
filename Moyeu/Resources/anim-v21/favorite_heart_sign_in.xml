@@ -4,11 +4,11 @@
 	<objectAnimator
 		android:duration="0"
 		android:propertyName="scaleX"
-		android:valueTo="0.1" />
+		android:valueTo="0.001" />
 	<objectAnimator
 		android:duration="0"
 		android:propertyName="scaleY"
-		android:valueTo="0.1" />
+		android:valueTo="0.001" />
 	<set>
 		<objectAnimator
 			android:duration="@integer/favorite_anim_time"
