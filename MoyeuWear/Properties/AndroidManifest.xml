@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.2.1" package="org.neteril.Moyeu" android:versionCode="4">
 	<uses-sdk android:minSdkVersion="21" />
-	<application android:label="MoyeuWear" android:icon="@drawable/icon">
+	<application android:label="Moyeu" android:icon="@drawable/icon">
 		<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 	</application>
 </manifest>

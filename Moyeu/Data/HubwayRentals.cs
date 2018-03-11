@@ -56,7 +56,7 @@ namespace Moyeu
 		HttpClient Client {
 			get {
 				if (client == null) {
-					client = new HttpClient (new HttpClientHandler {
+					client = new HttpClient (new Xamarin.Android.Net.AndroidClientHandler {
 						AllowAutoRedirect = false,
 						CookieContainer = cookies,
 						UseCookies = true,
@@ -68,7 +68,6 @@ namespace Moyeu
 
 		public async Task<Rental[]> GetRentals (int page)
 		{
-			const int ResultsPerPage = 10;
 			bool needsAuth = false;
 
 			for (int i = 0; i < 4; i++) {

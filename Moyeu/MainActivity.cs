@@ -20,8 +20,6 @@ using Android.Gms.Maps.Model;
 using Android.Gms.Location;
 using Android.Gms.Common;
 using Android.Gms.Common.Apis;
-using ConnectionCallbacks = Android.Gms.Common.Apis.GoogleApiClient.IConnectionCallbacks;
-using ConnectionFailedListener = Android.Gms.Common.Apis.GoogleApiClient.IOnConnectionFailedListener;
 
 using Android.Support.V4.App;
 using Android.Support.V4.Widget;
@@ -42,7 +40,7 @@ namespace Moyeu
 	[IntentFilter (new[] { "android.intent.action.SEARCH", "com.google.android.gms.actions.SEARCH_ACTION" }, Categories = new[] { "android.intent.category.DEFAULT" })]
 	[MetaData ("android.app.searchable", Resource = "@xml/searchable")]
 	public class MainActivity
-		: Android.Support.V7.App.AppCompatActivity, IObserver<Station[]>, ConnectionCallbacks, ConnectionFailedListener
+		: Android.Support.V7.App.AppCompatActivity, IObserver<Station[]>
 	{
 		const int ConnectionFailureResolutionRequest = 9000;
 		const int GpsNotAvailableResolutionRequest = 90001;
@@ -59,7 +57,6 @@ namespace Moyeu
 		NavigationView drawerMenu;
 
 		DrawerAroundAdapter aroundAdapter;
-		GoogleApiClient client;
 		bool apiClientResolvingError;
 
 		Android.Support.V4.App.Fragment CurrentFragment {
@@ -72,16 +69,15 @@ namespace Moyeu
 			}
 		}
 
-		public Location CurrentUserLocation {
-			get {
-				if (client == null || !client.IsConnected)
-					return null;
-				var locPerm = ContextCompat.CheckSelfPermission (this, Android.Manifest.Permission.AccessFineLocation);
-				if (locPerm != (int)Permission.Granted)
-					return null;
-				var location = LocationServices.FusedLocationApi.GetLastLocation (client);
-				return location;
-			}
+		public async Task<Location> GetCurrentUserLocationAsync ()
+		{
+			var locPerm = ContextCompat.CheckSelfPermission (this, Android.Manifest.Permission.AccessFineLocation);
+			if (locPerm != (int)Permission.Granted)
+				return null;
+			var locationClient = LocationServices.GetFusedLocationProviderClient (this);
+			if (locationClient == null)
+				return null;
+			return await locationClient.GetLastLocationAsync ();
 		}
 
 		protected override void OnCreate (Bundle bundle)
@@ -121,13 +117,6 @@ namespace Moyeu
 
 			if (CheckGooglePlayServices ())
 				PostCheckGooglePlayServices ();
-		}
-
-		GoogleApiClient CreateApiClient ()
-		{
-			return new GoogleApiClient.Builder (this, this, this)
-				.AddApi (LocationServices.API)
-				.Build ();
 		}
 
 		void HandlerNavigationItemSelected (object sender, NavigationView.NavigationItemSelectedEventArgs e)
@@ -255,28 +244,10 @@ namespace Moyeu
 				mapFragment.OnSearchIntent (intent);
 		}
 
-		protected override void OnStart ()
-		{
-			if (client != null && !apiClientResolvingError)
-				client.Connect ();
-			base.OnStart ();
-		}
-
-		protected override void OnStop ()
-		{
-			if (client != null)
-				client.Disconnect ();
-			base.OnStop ();
-		}
-
 		protected override void OnActivityResult (int requestCode, Result resultCode, Intent data)
 		{
 			if (requestCode == ConnectionFailureResolutionRequest) {
 				apiClientResolvingError = false;
-				if (resultCode == Result.Ok) {
-					if (!client.IsConnecting && !client.IsConnected)
-						client.Connect ();
-				}
 			} else if (requestCode == GpsNotAvailableResolutionRequest) {
 				if (resultCode == Result.Ok && CheckGooglePlayServices ())
 					PostCheckGooglePlayServices ();
@@ -324,8 +295,6 @@ namespace Moyeu
 
 		void PostCheckGooglePlayServices ()
 		{
-			if (client == null)
-				client = CreateApiClient ();
 			SwitchTo (mapFragment = new HubwayMapFragment ());
 			SupportActionBar.Title = ((IMoyeuSection)mapFragment).Title;
 			CheckForSearchTermInIntent (Intent);
@@ -343,8 +312,6 @@ namespace Moyeu
 
 		public void OnNext (Station[] value)
 		{
-			if (client == null || !client.IsConnected)
-				return;
 			var locPerm = ContextCompat.CheckSelfPermission (this, Android.Manifest.Permission.AccessFineLocation);
 			if (locPerm != (int)Permission.Granted) {
 				ActivityCompat.RequestPermissions (this,
@@ -352,7 +319,7 @@ namespace Moyeu
 				                                   LocationPermissionRequest);
 				return;
 			}
-			var location = LocationServices.FusedLocationApi.GetLastLocation (client);
+			var location = GetCurrentUserLocationAsync ().Result;
 			if (location == null)
 				return;
 			var stations = Hubway.GetStationsAround (value,
@@ -363,39 +330,6 @@ namespace Moyeu
 		}
 
 		#endregion
-
-		public void OnConnected (Bundle connectionHint)
-		{
-			if (Hubway.Instance.LastStations != null)
-				OnNext (Hubway.Instance.LastStations);
-		}
-
-		public void OnConnectionSuspended (int cause)
-		{
-
-		}
-
-		public void OnConnectionFailed (Android.Gms.Common.ConnectionResult result)
-		{
-			if (apiClientResolvingError)
-				return;
-			
-			if (result.HasResolution) {
-				try {
-					apiClientResolvingError = true;
-					result.StartResolutionForResult (this, ConnectionFailureResolutionRequest);
-				} catch (Android.Content.IntentSender.SendIntentException) {
-					client.Connect ();
-				}
-			} else {
-				var args = new Bundle ();
-				args.PutInt (DialogError, result.ErrorCode);
-				var dialogFragment = new ErrorDialogFragment () {
-					Arguments = args
-				};
-				dialogFragment.Show (SupportFragmentManager, "errordialog");
-			}
-		}
 
 		void OnGpsDialogDismissed ()
 		{

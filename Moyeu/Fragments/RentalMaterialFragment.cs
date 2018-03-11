@@ -22,6 +22,8 @@ using SwipeRefreshLayout = Android.Support.V4.Widget.SwipeRefreshLayout;
 using Android.Support.V4.View;
 using Android.Support.V7.Widget;
 
+using Neteril.Android;
+
 namespace Moyeu
 {
 	public class RentalMaterialFragment : Android.Support.V4.App.Fragment, IMoyeuSection
@@ -118,9 +120,9 @@ namespace Moyeu
 			recycler.SetLayoutManager (layoutManager);
 			recycler.AddOnScrollListener (new LoadingScrollListener (this));
 
-			loadingLayout = view.FindViewById (Resource.Id.loading_layout);
+			loadingLayout = view.FindViewById<View> (Resource.Id.loading_layout);
 
-			loginLayout = view.FindViewById (Resource.Id.login_layout);
+			loginLayout = view.FindViewById<View> (Resource.Id.login_layout);
 			loginBtn = loginLayout.FindViewById<Button> (Resource.Id.loginBtn);
 			statusText = loginLayout.FindViewById<TextView> (Resource.Id.loginStatusText);
 			username = loginLayout.FindViewById<EditText> (Resource.Id.username);
@@ -147,6 +149,12 @@ namespace Moyeu
 		}
 
 		async void DoFetch (bool forceRefresh = false)
+		{
+			using (var scope = ActivityScope.Of (Activity))
+				await DoFetchInternal (scope, forceRefresh);
+		}
+
+		async ActivityTask DoFetchInternal (ActivityScope scope, bool forceRefresh)
 		{
 			fetching = true;
 			bool hadError = false;

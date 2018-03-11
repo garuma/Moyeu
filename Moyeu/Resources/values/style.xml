@@ -22,6 +22,7 @@
 	<color name="black_tint_primary">#757575</color>
 	<color name="white_tint_secondary">#fafafa</color>
 	<color name="lock_icon_tint">#1565C0</color>
+	<color name="icon_layer_background">#ebebeb</color>
 
 	<style name="dialog_title" parent="@android:style/TextAppearance.Material.Title" />
 

@@ -55,11 +55,10 @@ namespace Moyeu
 		{
 			try {
 				Android.Util.Log.Info ("WearIntegration", "Received Message");
+				var locationClient = LocationServices.GetFusedLocationProviderClient (this);
 				var client = new GoogleApiClient.Builder (this)
-					.AddApi (LocationServices.API)
 					.AddApi (WearableClass.API)
 					.Build ();
-				
 				var result = client.BlockingConnect (30, Java.Util.Concurrent.TimeUnit.Seconds);
 				if (!result.IsSuccess)
 					return;
@@ -72,7 +71,9 @@ namespace Moyeu
 						stations = await Hubway.Instance.GetStations ();
 
 					if (path.StartsWith (SearchStationPath)) {
-						var lastLocation = LocationServices.FusedLocationApi.GetLastLocation (client);
+						if (locationClient == null)
+							return;
+						var lastLocation = await locationClient.GetLastLocationAsync ();
 						if (lastLocation == null)
 							return;
 

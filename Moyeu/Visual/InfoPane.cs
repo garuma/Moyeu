@@ -121,7 +121,7 @@ namespace Moyeu
 			case State.FullyOpened:
 				return 0;
 			case State.Opened:
-				return Height - FindViewById (Resource.Id.PaneHeaderView).Height - PaddingTop;
+				return Height - FindViewById<View> (Resource.Id.PaneHeaderView).Height - PaddingTop;
 			}
 		}
 

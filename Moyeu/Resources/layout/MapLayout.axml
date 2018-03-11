@@ -61,7 +61,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:src="@drawable/ic_action_mylocation"
-        app:layout_behavior="md55d31ab91effba0f9ed7ec79c59c38391.InfoPaneFabBehavior"
+        app:layout_behavior="md5bed1eba2499d8c032005c73fd288d4f3.InfoPaneFabBehavior"
         app:srcSecond="@drawable/ic_favorite_selector"
         app:backgroundTintSecond="@color/favorite_background" />
 </android.support.design.widget.CoordinatorLayout>

@@ -21,23 +21,28 @@ using Android.Util;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
 using Android.Gms.Location;
+using Android.Gms.Location.Places;
+using Android.Gms.Location.Places.UI;
+using Com.Google.Maps.Android.Clustering;
 
 using Android.Support.V4.View;
 using Android.Support.V4.Graphics.Drawable;
 using Android.Support.Design.Widget;
 using ResCompat = Android.Support.V4.Content.Res.ResourcesCompat;
 using ContextCompat = Android.Support.V4.Content.ContextCompat;
+using Neteril.Android;
 
 namespace Moyeu
 {
 	public class HubwayMapFragment: Android.Support.V4.App.Fragment, ViewTreeObserver.IOnGlobalLayoutListener, IMoyeuSection, IOnMapReadyCallback, IOnStreetViewPanoramaReadyCallback
 	{
-		Dictionary<int, Marker> existingMarkers = new Dictionary<int, Marker> ();
+		Dictionary<int, ClusterMarkerOptions> existingMarkers = new Dictionary<int, ClusterMarkerOptions> ();
 		Marker locationPin;
 		MapView mapFragment;
 		GoogleMap map;
 		StreetViewPanoramaView streetViewFragment;
 		StreetViewPanorama streetPanorama;
+		ClusterManager clusterManager;
 		Hubway hubway = Hubway.Instance;
 		HubwayHistory hubwayHistory = new HubwayHistory ();
 
@@ -45,16 +50,16 @@ namespace Moyeu
 		bool showedStale;
 		string pendingSearchTerm;
 		FlashBarController flashBar;
-		IMenuItem searchItem;
 		FavoriteManager favManager;
 		TextView lastUpdateText;
 		PinFactory pinFactory;
 		InfoPane pane;
 		SwitchableFab fab;
 
+		const int SearchRequestID = 1532;
 		const string SearchPinId = "SEARCH_PIN";
 		int currentShownID = -1;
-		Marker currentShownMarker;
+		MarkerOptions currentShownMarker;
 		CameraPosition oldPosition;
 
 		// Info pane views
@@ -179,6 +184,9 @@ namespace Moyeu
 		{
 			this.map = googleMap;
 			MapsInitializer.Initialize (Activity.ApplicationContext);
+			clusterManager = new ClusterManager (Context, map);
+			clusterManager.Renderer = new MoyeuClusterRenderer (Context, map, clusterManager);
+			map.SetOnCameraIdleListener (clusterManager);
 
 			// Default map initialization
 			if (ContextCompat.CheckSelfPermission (Activity, Android.Manifest.Permission.AccessFineLocation) == Permission.Granted)
@@ -252,32 +260,52 @@ namespace Moyeu
 			if (pane.Opened)
 				HandleStarButtonChecked (sender, e);
 			else
-				CenterMapOnUser ();
+				CenterMapOnUser ().IgnoreIfFaulted ();
 		}
 
 		public override void OnCreateOptionsMenu (IMenu menu, MenuInflater inflater)
 		{
 			inflater.Inflate (Resource.Menu.map_menu, menu);
-			searchItem = menu.FindItem (Resource.Id.menu_search);
-			var searchView = MenuItemCompat.GetActionView (searchItem);
-			SetupSearchInput (searchView.JavaCast<Android.Support.V7.Widget.SearchView> ());
 		}
 
-		void SetupSearchInput (Android.Support.V7.Widget.SearchView searchView)
-		{
-			var searchManager = Activity.GetSystemService (Context.SearchService).JavaCast<SearchManager> ();
-			searchView.SetIconifiedByDefault (false);
-			var searchInfo = searchManager.GetSearchableInfo (Activity.ComponentName);
-			searchView.SetSearchableInfo (searchInfo);
-		}
 
 		public override bool OnOptionsItemSelected (IMenuItem item)
 		{
 			if (item.ItemId == Resource.Id.menu_refresh) {
 				FillUpMap (forceRefresh: true);
 				return true;
+			} else if (item.ItemId == Resource.Id.menu_search) {
+				LaunchPlaceSearch ();
 			}
 			return base.OnOptionsItemSelected (item);
+		}
+
+		void LaunchPlaceSearch ()
+		{
+			const double LowerLeftLat = 42.343828;
+			const double LowerLeftLon = -71.169777;
+			const double UpperRightLat = 42.401150;
+			const double UpperRightLon = -71.017685;
+
+			try {
+				var intent = new PlaceAutocomplete.IntentBuilder (PlaceAutocomplete.ModeFullscreen)
+												  .SetBoundsBias (new LatLngBounds (new LatLng (LowerLeftLat, LowerLeftLon),
+																					new LatLng (UpperRightLat, UpperRightLon)))
+												  .Build (Activity);
+				StartActivityForResult (intent, SearchRequestID);
+			} catch (Exception e) {
+				AnalyticsHelper.LogException ("PlaceSearch", e);
+				Android.Util.Log.Debug ("PlaceSearch", e.ToString ());
+			}
+		}
+
+		public override void OnActivityResult (int requestCode, int resultCode, Intent data)
+		{
+			if (requestCode == SearchRequestID && resultCode == (int)Result.Ok) {
+				var place = PlaceAutocomplete.GetPlace (Context, data);
+				CenterMapOnLocation (place.LatLng);
+			}
+			base.OnActivityResult (requestCode, resultCode, data);
 		}
 
 		public override void OnViewStateRestored (Bundle savedInstanceState)
@@ -339,7 +367,12 @@ namespace Moyeu
 		void HandleMarkerClick (object sender, GoogleMap.MarkerClickEventArgs e)
 		{
 			e.Handled = true;
-			OpenStationWithMarker (e.Marker);
+			var marker = e.Marker;
+			using (var markerOptions = new MarkerOptions ()
+			       .SetTitle (marker.Title)
+			       .SetSnippet (marker.Title)
+			       .SetPosition (marker.Position))
+				OpenStationWithMarker (markerOptions).IgnoreIfFaulted ("Couldn't open station");
 		}
 
 		void HandleStarButtonChecked (object sender, EventArgs e)
@@ -364,14 +397,8 @@ namespace Moyeu
 				pane.SetState (InfoPane.State.Closed, animated: false);
 			flashBar.ShowLoading ();
 
-			try {
-				var stations = await hubway.GetStations (forceRefresh);
-				await SetMapStationPins (stations);
-				lastUpdateText.Text = "Last refreshed: " + DateTime.Now.ToShortTimeString ();
-			} catch (Exception e) {
-				AnalyticsHelper.LogException ("DataFetcher", e);
-				Android.Util.Log.Debug ("DataFetcher", e.ToString ());
-			}
+			using (var scope = ActivityScope.Of (Activity))
+				await DoFillUpMap (scope, forceRefresh);
 
 			flashBar.ShowLoaded ();
 			showedStale = false;
@@ -382,15 +409,27 @@ namespace Moyeu
 			loading = false;
 		}
 
+		async ActivityTask DoFillUpMap (ActivityScope scope, bool forceRefresh)
+		{
+			try {
+				var stations = await hubway.GetStations (forceRefresh);
+				await SetMapStationPins (stations);
+				lastUpdateText.Text = "Last refreshed: " + DateTime.Now.ToShortTimeString ();
+			} catch (Exception e) {
+				AnalyticsHelper.LogException ("DataFetcher", e);
+				Android.Util.Log.Debug ("DataFetcher", e.ToString ());
+			}
+		}
+
 		async Task SetMapStationPins (Station[] stations, float alpha = 1)
 		{
 			var stationsToUpdate = stations.Where (station => {
-				Marker marker;
+				ClusterMarkerOptions marker;
 				var stats = station.Locked ? string.Empty : station.BikeCount + "|" + station.EmptySlotCount;
 				if (existingMarkers.TryGetValue (station.Id, out marker)) {
-					if (marker.Snippet == stats && !showedStale)
+					if (marker.Options.Snippet == stats && !showedStale)
 						return false;
-					marker.Remove ();
+					clusterManager.RemoveItem (marker);
 				}
 				return true;
 			}).ToList ();
@@ -408,6 +447,7 @@ namespace Moyeu
 																			alpha: alpha));
 			}));
 
+			var clusterItems = new List<ClusterMarkerOptions> ();
 			foreach (var station in stationsToUpdate) {
 				var pin = pins [station.Id];
 
@@ -416,21 +456,25 @@ namespace Moyeu
 					.SetSnippet (station.Locked ? string.Empty : station.BikeCount + "|" + station.EmptySlotCount)
 					.SetPosition (new Android.Gms.Maps.Model.LatLng (station.Location.Lat, station.Location.Lon))
 					.SetIcon (pin);
-				existingMarkers [station.Id] = map.AddMarker (markerOptions);
+				var markerItem = new ClusterMarkerOptions (markerOptions);
+				existingMarkers [station.Id] = markerItem;
+				clusterItems.Add (markerItem);
 			}
+			clusterManager.AddItems (clusterItems);
+			clusterManager.Cluster ();
 		}
 
 		public void CenterAndOpenStationOnMap (long id,
 		                                       float zoom = 13,
 		                                       int animDurationID = Android.Resource.Integer.ConfigShortAnimTime)
 		{
-			Marker marker;
+			ClusterMarkerOptions marker;
 			if (!existingMarkers.TryGetValue ((int)id, out marker))
 				return;
-			CenterAndOpenStationOnMap (marker, zoom, animDurationID);
+			CenterAndOpenStationOnMap (marker.Options, zoom, animDurationID);
 		}
 
-		public void CenterAndOpenStationOnMap (Marker marker,
+		public void CenterAndOpenStationOnMap (MarkerOptions marker,
 		                                       float zoom = 13,
 		                                       int animDurationID = Android.Resource.Integer.ConfigShortAnimTime)
 		{
@@ -438,13 +482,15 @@ namespace Moyeu
 			var camera = CameraUpdateFactory.NewLatLngZoom (latLng, zoom);
 			var time = Resources.GetInteger (animDurationID);
 			if (map != null)
-				map.AnimateCamera (camera, time, new MapAnimCallback (() => OpenStationWithMarker (marker)));
+				map.AnimateCamera (camera, time, new MapAnimCallback (() => OpenStationWithMarker (marker).IgnoreIfFaulted ("Couldn't open station")));
 		}
 
-		public void OpenStationWithMarker (Marker marker)
+		public async Task OpenStationWithMarker (MarkerOptions marker)
 		{
 			if (string.IsNullOrEmpty (marker.Title) || marker.Title == SearchPinId)
 				return;
+
+			var currentLocation = await ((MainActivity)Activity)?.GetCurrentUserLocationAsync ();
 
 			var splitTitle = marker.Title.Split ('|');
 			string displayNameSecond;
@@ -457,7 +503,7 @@ namespace Moyeu
 
 			var isLocked = string.IsNullOrEmpty (marker.Snippet);
 			if (ipStationLock == null)
-				ipStationLock = pane.FindViewById (Resource.Id.stationLock);
+				ipStationLock = pane.FindViewById<View> (Resource.Id.stationLock);
 			ipStationLock.Visibility = isLocked ? ViewStates.Visible : ViewStates.Gone;
 
 			if (!isLocked) {
@@ -471,7 +517,6 @@ namespace Moyeu
 				var slotsNum = int.Parse (splitNumbers [1]);
 				var total = bikesNum + slotsNum;
 
-				var currentLocation = ((MainActivity)Activity)?.CurrentUserLocation;
 				double distance = double.NaN;
 				if (currentLocation != null) {
 					distance = GeoUtils.Distance (
@@ -524,6 +569,17 @@ namespace Moyeu
 		}
 
 		async void LoadStationHistory (int stationID)
+		{
+			try {
+				using (var scope = ActivityScope.Of (Activity))
+					await DoLoadStationHistory (scope, stationID);
+			} catch (Exception e) {
+				AnalyticsHelper.LogException ("HistoryFetcher", e);
+				Android.Util.Log.Debug ("HistoryFetcher", e.ToString ());
+			}
+		}
+
+		async ActivityTask DoLoadStationHistory (ActivityScope scope, int stationID)
 		{
 			const char DownArrow = '↘';
 			const char UpArrow = '↗';
@@ -588,9 +644,6 @@ namespace Moyeu
 
 		public void OnSearchIntent (Intent intent)
 		{
-			if (searchItem != null)
-				searchItem.CollapseActionView ();
-
 			// Either we are getting a lat/lng from an action bar search
 			var serial = (string)intent.GetStringExtra (SearchManager.ExtraDataKey);
 			// Or it comes from a general search
@@ -715,11 +768,11 @@ namespace Moyeu
 			}
 		}
 
-		bool CenterMapOnUser ()
+		async Task<bool> CenterMapOnUser ()
 		{
 			if (!map.MyLocationEnabled)
 				return false;
-			var location = ((MainActivity)Activity)?.CurrentUserLocation;
+			var location = await ((MainActivity)Activity)?.GetCurrentUserLocationAsync ();
 			if (location == null)
 				return false;
 			var userPos = new LatLng (location.Latitude, location.Longitude);
@@ -821,9 +874,9 @@ namespace Moyeu
 		{
 			// Move the fab vertically to place correctly wrt the info pane
 			var fab = child.JavaCast<SwitchableFab> ();
-			var currentInfoPaneY = ViewCompat.GetTranslationY (dependency);
+			var currentInfoPaneY = dependency.TranslationY;
 			var newTransY = (int)Math.Max (0, dependency.Height - currentInfoPaneY - minMarginBottom - fab.Height / 2);
-			ViewCompat.SetTranslationY (fab, -newTransY);
+			fab.TranslationY = -newTransY;
 
 			// If alternating between open/closed state, change the FAB face
 			if (wasOpened ^ ((InfoPane)dependency).Opened) {
@@ -832,6 +885,45 @@ namespace Moyeu
 			}
 
 			return true;
+		}
+	}
+
+	class ClusterMarkerOptions : Java.Lang.Object, IClusterItem
+	{
+		public MarkerOptions Options { get; }
+
+		public LatLng Position => Options.Position;
+		public string Snippet => Options.Snippet;
+		public string Title => Options.Title;
+
+		public ClusterMarkerOptions (MarkerOptions options)
+		{
+			Options = options;
+		}
+	}
+
+	class MoyeuClusterRenderer : Com.Google.Maps.Android.Clustering.View.DefaultClusterRenderer
+	{
+		Context context;
+
+		public MoyeuClusterRenderer (Context context, GoogleMap map, ClusterManager manager)
+			: base (context, map, manager)
+		{
+			this.context = context;
+		}
+
+		protected override int GetColor (int clusterCount)
+		{
+			return context.GetColor (Resource.Color.moyeu_primary);
+		}
+
+		protected override void OnBeforeClusterItemRendered (Java.Lang.Object item, MarkerOptions options)
+		{
+			var marker = item.JavaCast<ClusterMarkerOptions> ();
+			options
+				.SetTitle (marker.Options.Title)
+				.SetSnippet (marker.Options.Snippet)
+				.SetIcon (marker.Options.Icon);
 		}
 	}
 }
