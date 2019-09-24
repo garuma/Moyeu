@@ -41,8 +41,6 @@ namespace Moyeu
 
 		public static void SetupFragmentTransitions (Android.Support.V4.App.Fragment frag)
 		{
-			if (!AndroidExtensions.IsMaterial)
-				return;
 			frag.EnterTransition = new Slide (GravityFlags.Left);
 			frag.ExitTransition = new Fade (FadingMode.Out);
 		}

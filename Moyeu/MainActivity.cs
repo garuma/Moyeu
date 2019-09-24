@@ -10,16 +10,10 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Locations;
-using Android.Animation;
-
-using Android.Gms.Maps;
-using Android.Gms.Maps.Model;
 using Android.Gms.Location;
 using Android.Gms.Common;
-using Android.Gms.Common.Apis;
 
 using Android.Support.V4.App;
 using Android.Support.V4.Widget;
@@ -93,7 +87,7 @@ namespace Moyeu
 			ViewCompat.SetElevation (toolbar, TypedValue.ApplyDimension (ComplexUnitType.Dip, 2, Resources.DisplayMetrics));
 			SetSupportActionBar (toolbar);
 
-			this.drawer = FindViewById<DrawerLayout> (Resource.Id.drawer_layout);
+			drawer = FindViewById<DrawerLayout> (Resource.Id.drawer_layout);
 			drawer.SetDrawerShadow (Resource.Drawable.drawer_shadow, (int)GravityFlags.Start);
 
 			drawerToggle = new Android.Support.V7.App.ActionBarDrawerToggle (this,
@@ -131,11 +125,6 @@ namespace Moyeu
 			SwitchToMapAndShowStationWithId (e.Id);
 		}
 
-		void HandleSectionItemClick (object sender, AdapterView.ItemClickEventArgs e)
-		{
-			SwitchToSectionPosition (e.Position);
-		}
-
 		void SwitchToSectionPosition (int position)
 		{
 			switch (position) {
@@ -167,8 +156,7 @@ namespace Moyeu
 		{
 			if (fragment.IsVisible)
 				return;
-			var section = fragment as IMoyeuSection;
-			if (section == null)
+			if (!(fragment is IMoyeuSection section))
 				return;
 			var name = section.Name;
 			var t = SupportFragmentManager.BeginTransaction ();
@@ -177,17 +165,9 @@ namespace Moyeu
 				t.Add (Resource.Id.content_frame, fragment, name);
 			} else {
 				var existingFragment = SupportFragmentManager.FindFragmentByTag (name);
-				if (!AndroidExtensions.IsMaterial) {
-					t.SetCustomAnimations (Resource.Animator.frag_slide_in,
-					                       Resource.Animator.frag_slide_out);
-					if (existingFragment != null)
-						existingFragment.View.BringToFront ();
-					currentFragment.View.BringToFront ();
-				} else {
-					currentFragment.View.BringToFront ();
-					if (existingFragment != null)
-						existingFragment.View.BringToFront ();
-				}
+				currentFragment.View.BringToFront ();
+				if (existingFragment != null)
+					existingFragment.View.BringToFront ();
 				t.Hide (CurrentFragment);
 				if (existingFragment != null)
 					t.Show (existingFragment);
@@ -273,8 +253,7 @@ namespace Moyeu
 
 		public override void OnBackPressed ()
 		{
-			var currentSection = CurrentFragment as IMoyeuSection;
-			if (currentSection != null && currentSection.OnBackPressed ())
+			if (CurrentFragment is IMoyeuSection currentSection && currentSection.OnBackPressed())
 				return;
 			base.OnBackPressed ();
 		}
@@ -367,13 +346,12 @@ namespace Moyeu
 
 	class DrawerAroundAdapter : BaseAdapter
 	{
-		Context context;
+		readonly Context context;
+		readonly FavoriteManager manager;
+		readonly Drawable starDrawable;
 
 		Station[] stations = null;
-		FavoriteManager manager;
 		HashSet<int> favorites;
-
-		Drawable starDrawable;
 
 		public DrawerAroundAdapter (Context context)
 		{
@@ -381,7 +359,7 @@ namespace Moyeu
 			this.manager = FavoriteManager.Obtain (context);
 			this.starDrawable = DrawableCompat.Wrap (ContextCompat.GetDrawable (context, Resource.Drawable.ic_small_star));
 			DrawableCompat.SetTint (starDrawable, ContextCompat.GetColor (context, Resource.Color.white_tint_secondary));
-			this.favorites = new HashSet<Int32> ();
+			this.favorites = new HashSet<int> ();
 			LoadFavorites ();
 		}
 
@@ -481,15 +459,13 @@ namespace Moyeu
 		public override void OnDrawerOpened (View drawerView)
 		{
 			base.OnDrawerOpened (drawerView);
-			if (OpenCallback != null)
-				OpenCallback ();
+			OpenCallback?.Invoke();
 		}
 
 		public override void OnDrawerClosed (View drawerView)
 		{
 			base.OnDrawerClosed (drawerView);
-			if (CloseCallback != null)
-				CloseCallback ();
+			CloseCallback?.Invoke();
 		}
 	}
 }

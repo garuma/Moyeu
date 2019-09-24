@@ -38,10 +38,10 @@ namespace Moyeu
 
 	public class HubwayRentals
 	{
-		const string HubwayLoginUrl = "https://secure.thehubway.com/profile/login";
-		const string HubwayLoginCheckUrl = "https://secure.thehubway.com/profile/login_check";
-		const string HubwayProfileUrl = "https://secure.thehubway.com/profile/";
-		const string HubwayRentalsUrl = "https://secure.thehubway.com/profile/trips/";
+		const string HubwayLoginUrl = "https://member.bluebikes.com/profile/login";
+		const string HubwayLoginCheckUrl = "https://member.bluebikes.com/profile/login_check";
+		const string HubwayProfileUrl = "https://member.bluebikes.com/profile/";
+		const string HubwayRentalsUrl = "https://member.bluebikes.com/profile/trips/";
 
 		CookieContainer cookies;
 		RentalCrendentials credentials;

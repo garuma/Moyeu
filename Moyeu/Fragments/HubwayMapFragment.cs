@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Net.Http;
 
 using Android.App;
 using Android.Content;
@@ -14,18 +12,13 @@ using Android.Widget;
 using Android.OS;
 using Android.Graphics;
 using Android.Graphics.Drawables;
-using Android.Locations;
 using Android.Animation;
 using Android.Util;
 
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
-using Android.Gms.Location;
-using Android.Gms.Location.Places;
 using Android.Gms.Location.Places.UI;
 using Com.Google.Maps.Android.Clustering;
-
-using Android.Support.V4.View;
 using Android.Support.V4.Graphics.Drawable;
 using Android.Support.Design.Widget;
 using ResCompat = Android.Support.V4.Content.Res.ResourcesCompat;
@@ -58,7 +51,6 @@ namespace Moyeu
 
 		const int SearchRequestID = 1532;
 		const string SearchPinId = "SEARCH_PIN";
-		int currentShownID = -1;
 		MarkerOptions currentShownMarker;
 		CameraPosition oldPosition;
 
@@ -95,11 +87,7 @@ namespace Moyeu
 			return false;
 		}
 
-		internal int CurrentShownId {
-			get {
-				return currentShownID;
-			}
-		}
+		internal int CurrentShownId { get; private set; } = -1;
 
 		public void RefreshData ()
 		{
@@ -111,8 +99,8 @@ namespace Moyeu
 			base.OnActivityCreated (savedInstanceState);
 
 			var context = Activity;
-			this.pinFactory = new PinFactory (context);
-			this.favManager = FavoriteManager.Obtain (context);
+			pinFactory = new PinFactory (context);
+			favManager = FavoriteManager.Obtain (context);
 		}
 
 		public override void OnStart ()
@@ -163,13 +151,8 @@ namespace Moyeu
 			ipBikesImg = pane.FindViewById<ImageView> (Resource.Id.InfoViewBikeNumberImg);
 			ipSlotsImg = pane.FindViewById<ImageView> (Resource.Id.InfoViewSlotNumberImg);
 
-			if (!AndroidExtensions.IsMaterial) {
-				bikeDrawable = DrawableCompat.Wrap (ResCompat.GetDrawable (Resources, Resource.Drawable.ic_bike, null));
-				rackDrawable = DrawableCompat.Wrap (ResCompat.GetDrawable (Resources, Resource.Drawable.ic_lock, null));
-			} else {
-				bikeDrawable = ResCompat.GetDrawable (Resources, Resource.Drawable.ic_bike_vector, null);
-				rackDrawable = ResCompat.GetDrawable (Resources, Resource.Drawable.ic_racks_vector, null);
-			}
+			bikeDrawable = ResCompat.GetDrawable (Resources, Resource.Drawable.ic_bike_vector, null);
+			rackDrawable = ResCompat.GetDrawable (Resources, Resource.Drawable.ic_racks_vector, null);
 
 			ipBikesImg.SetImageDrawable (bikeDrawable);
 			ipSlotsImg.SetImageDrawable (rackDrawable);
@@ -182,7 +165,7 @@ namespace Moyeu
 
 		public void OnMapReady (GoogleMap googleMap)
 		{
-			this.map = googleMap;
+			map = googleMap;
 			MapsInitializer.Initialize (Activity.ApplicationContext);
 			clusterManager = new ClusterManager (Context, map);
 			clusterManager.Renderer = new MoyeuClusterRenderer (Context, map, clusterManager);
@@ -212,7 +195,7 @@ namespace Moyeu
 
 		public void OnStreetViewPanoramaReady (StreetViewPanorama panorama)
 		{
-			this.streetPanorama = panorama;
+			streetPanorama = panorama;
 			panorama.UserNavigationEnabled = false;
 			panorama.StreetNamesEnabled = false;
 			panorama.StreetViewPanoramaClick += HandleMapButtonClick;
@@ -242,10 +225,10 @@ namespace Moyeu
 		void HandleMapButtonClick (object sender, StreetViewPanorama.StreetViewPanoramaClickEventArgs e)
 		{
 			var stations = hubway.LastStations;
-			if (stations == null || currentShownID == -1)
+			if (stations == null || CurrentShownId == -1)
 				return;
 
-			var stationIndex = Array.FindIndex (stations, s => s.Id == currentShownID);
+			var stationIndex = Array.FindIndex (stations, s => s.Id == CurrentShownId);
 			if (stationIndex == -1)
 				return;
 			var station = stations [stationIndex];
@@ -295,7 +278,7 @@ namespace Moyeu
 				StartActivityForResult (intent, SearchRequestID);
 			} catch (Exception e) {
 				AnalyticsHelper.LogException ("PlaceSearch", e);
-				Android.Util.Log.Debug ("PlaceSearch", e.ToString ());
+				Log.Debug ("PlaceSearch", e.ToString ());
 			}
 		}
 
@@ -359,7 +342,7 @@ namespace Moyeu
 
 		void HandleMapClick (object sender, GoogleMap.MapClickEventArgs e)
 		{
-			currentShownID = -1;
+			CurrentShownId = -1;
 			currentShownMarker = null;
 			pane.SetState (InfoPane.State.Closed);
 		}
@@ -377,14 +360,14 @@ namespace Moyeu
 
 		void HandleStarButtonChecked (object sender, EventArgs e)
 		{
-			if (currentShownID == -1)
+			if (CurrentShownId == -1)
 				return;
 			var favorites = favManager.LastFavorites ?? favManager.GetFavoriteStationIds ();
-			bool contained = favorites.Contains (currentShownID);
+			bool contained = favorites.Contains (CurrentShownId);
 			if (contained) {
-				favManager.RemoveFromFavorite (currentShownID);
+				favManager.RemoveFromFavorite (CurrentShownId);
 			} else {
-				favManager.AddToFavorite (currentShownID);
+				favManager.AddToFavorite (CurrentShownId);
 			}
 		}
 
@@ -417,7 +400,7 @@ namespace Moyeu
 				lastUpdateText.Text = "Last refreshed: " + DateTime.Now.ToShortTimeString ();
 			} catch (Exception e) {
 				AnalyticsHelper.LogException ("DataFetcher", e);
-				Android.Util.Log.Debug ("DataFetcher", e.ToString ());
+				Log.Debug ("DataFetcher", e.ToString ());
 			}
 		}
 
@@ -454,7 +437,7 @@ namespace Moyeu
 				var markerOptions = new MarkerOptions ()
 					.SetTitle (station.Id + "|" + station.Name)
 					.SetSnippet (station.Locked ? string.Empty : station.BikeCount + "|" + station.EmptySlotCount)
-					.SetPosition (new Android.Gms.Maps.Model.LatLng (station.Location.Lat, station.Location.Lon))
+					.SetPosition (new LatLng (station.Location.Lat, station.Location.Lon))
 					.SetIcon (pin);
 				var markerItem = new ClusterMarkerOptions (markerOptions);
 				existingMarkers [station.Id] = markerItem;
@@ -498,7 +481,7 @@ namespace Moyeu
 			ipName.Text = displayName;
 			ipName2.Text = displayNameSecond;
 
-			currentShownID = int.Parse (splitTitle [0]);
+			CurrentShownId = int.Parse (splitTitle [0]);
 			currentShownMarker = marker;
 
 			var isLocked = string.IsNullOrEmpty (marker.Snippet);
@@ -556,14 +539,14 @@ namespace Moyeu
 			}
 
 			var favs = favManager.LastFavorites ?? favManager.GetFavoriteStationIds ();
-			bool activated = favs.Contains (currentShownID);
+			bool activated = favs.Contains (CurrentShownId);
 			fab.Checked = activated;
 			fab.JumpDrawablesToCurrentState ();
 
 			if (streetPanorama != null)
 				streetPanorama.SetPosition (marker.Position);
 
-			LoadStationHistory (currentShownID);
+			LoadStationHistory (CurrentShownId);
 
 			pane.SetState (InfoPane.State.Opened);
 		}
@@ -575,7 +558,7 @@ namespace Moyeu
 					await DoLoadStationHistory (scope, stationID);
 			} catch (Exception e) {
 				AnalyticsHelper.LogException ("HistoryFetcher", e);
-				Android.Util.Log.Debug ("HistoryFetcher", e.ToString ());
+				Log.Debug ("HistoryFetcher", e.ToString ());
 			}
 		}
 
@@ -607,7 +590,7 @@ namespace Moyeu
 				v.SetTextColor (Color.Rgb (0x90, 0x90, 0x90));
 			}
 			var history = (await hubwayHistory.GetStationHistory (stationID)).ToList ();
-			if (stationID != currentShownID || history.Count == 0)
+			if (stationID != CurrentShownId || history.Count == 0)
 				return;
 
 			var previousValue = history [0].Value;
@@ -645,9 +628,9 @@ namespace Moyeu
 		public void OnSearchIntent (Intent intent)
 		{
 			// Either we are getting a lat/lng from an action bar search
-			var serial = (string)intent.GetStringExtra (SearchManager.ExtraDataKey);
+			var serial = intent.GetStringExtra (SearchManager.ExtraDataKey);
 			// Or it comes from a general search
-			var searchTerm = (string)intent.GetStringExtra (SearchManager.Query);
+			var searchTerm = intent.GetStringExtra (SearchManager.Query);
 
 			if (serial != null) {
 				var latlng = serial.Split ('|');
@@ -794,7 +777,7 @@ namespace Moyeu
 			}
 			var proj = map.Projection;
 			var location = proj.ToScreenLocation (finalLatLng);
-			location.Offset (0, -(35.ToPixels ()));
+			location.Offset (0, -35.ToPixels ());
 			var startLatLng = proj.FromScreenLocation (location);
 
 			new Handler (Activity.MainLooper).PostDelayed (() => {
@@ -825,7 +808,7 @@ namespace Moyeu
 
 		class MapAnimCallback : Java.Lang.Object, GoogleMap.ICancelableCallback
 		{
-			Action callback;
+			readonly Action callback;
 
 			public MapAnimCallback (Action callback)
 			{
@@ -836,11 +819,7 @@ namespace Moyeu
 			{
 			}
 
-			public void OnFinish ()
-			{
-				if (callback != null)
-					callback ();
-			}
+			public void OnFinish () => callback?.Invoke ();
 		}
 
 		double TruncateDigit (double d, int digitNumber)

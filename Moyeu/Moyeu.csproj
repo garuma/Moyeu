@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Xamarin.Build.Download.0.4.7\build\Xamarin.Build.Download.props" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.7\build\Xamarin.Build.Download.props')" />
   <PropertyGroup>
@@ -16,12 +16,15 @@
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AssemblyName>Moyeu</AssemblyName>
-    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
     <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <AndroidHttpClientHandlerType>System.Net.Http.HttpClientHandler</AndroidHttpClientHandlerType>
-    <AndroidTlsProvider></AndroidTlsProvider>
+    <AndroidTlsProvider>
+    </AndroidTlsProvider>
+    <SupportLibraryVersion>28.0.0.1</SupportLibraryVersion>
+    <GooglePlayLibVersion>60.1142.1</GooglePlayLibVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,6 +36,7 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <ConsolePause>false</ConsolePause>
     <DebugType>full</DebugType>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -43,6 +47,7 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidLinkMode>Full</AndroidLinkMode>
     <DebugType>full</DebugType>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -56,34 +61,37 @@
     <PackageReference Include="Neteril.ActivityTask" Version="0.1.0" />
     <PackageReference Include="Xamarin.Android.Maps.Utils" Version="0.5.1-beta2" />
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat">
-      <Version>27.0.2</Version>
+      <Version>$(SupportLibraryVersion)</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v7.CardView">
-      <Version>27.0.2</Version>
+      <Version>$(SupportLibraryVersion)</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v7.RecyclerView">
-      <Version>27.0.2</Version>
+      <Version>$(SupportLibraryVersion)</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Vector.Drawable">
-      <Version>27.0.2</Version>
+      <Version>$(SupportLibraryVersion)</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Design">
-      <Version>27.0.2</Version>
+      <Version>$(SupportLibraryVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Android.Support.Media.Compat">
+      <Version>$(SupportLibraryVersion)</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.GooglePlayServices.Maps">
-      <Version>60.1142.1</Version>
+      <Version>$(GooglePlayLibVersion)</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.GooglePlayServices.Location">
-      <Version>60.1142.1</Version>
+      <Version>$(GooglePlayLibVersion)</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.GooglePlayServices.Places">
-      <Version>60.1142.1</Version>
+      <Version>$(GooglePlayLibVersion)</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.GooglePlayServices.Wearable">
-      <Version>60.1142.1</Version>
+      <Version>$(GooglePlayLibVersion)</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>11.0.1</Version>
+      <Version>12.0.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -254,23 +262,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\drawable-xhdpi\" />
-    <Folder Include="Resources\menu\" />
-    <Folder Include="Resources\xml\" />
-    <Folder Include="Resources\drawable-hdpi\" />
     <Folder Include="Assets\" />
-    <Folder Include="Resources\drawable-nodpi\" />
-    <Folder Include="Resources\animator\" />
-    <Folder Include="Resources\drawable-xxhdpi\" />
-    <Folder Include="Resources\drawable-xxxhdpi\" />
-    <Folder Include="Fragments\" />
-    <Folder Include="Helpers\" />
-    <Folder Include="Data\" />
-    <Folder Include="Visual\" />
-    <Folder Include="Resources\values-v21\" />
-    <Folder Include="Resources\anim-v21\" />
-    <Folder Include="Resources\drawable-v21\" />
-    <Folder Include="Resources\color\" />
-    <Folder Include="Resources\raw\" />
   </ItemGroup>
 </Project>

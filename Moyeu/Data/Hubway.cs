@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
@@ -14,8 +13,8 @@ namespace Moyeu
 
 	public class Hubway : IObservable<Station[]>
 	{
-		const string HubwayStationInfoUrl = "https://gbfs.thehubway.com/gbfs/en/station_information.json";
-		const string HubwayStationStatusUrl = "https://gbfs.thehubway.com/gbfs/en/station_status.json";
+		const string HubwayStationInfoUrl = "https://gbfs.bluebikes.com/gbfs/en/station_information.json";
+		const string HubwayStationStatusUrl = "https://gbfs.bluebikes.com/gbfs/en/station_status.json";
 
 		public static readonly Func<Station, bool> AvailableBikeStationPredicate = s => s.BikeCount > 1 && s.EmptySlotCount > 1;
 
@@ -157,11 +156,6 @@ namespace Moyeu
 				var response = serializer.Deserialize<GbfsStationInformationResponse> (reader);
 				return response.Data.Stations.ToDictionary (s => s.Id, s => s);
 			}
-		}
-
-		DateTime FromUnixTime (long secs)
-		{
-			return (new DateTime (1970, 1, 1, 0, 0, 1, DateTimeKind.Utc) + TimeSpan.FromSeconds (secs / 1000.0)).ToLocalTime ();
 		}
 
 		public IDisposable Subscribe (IObserver<Station[]> observer)
